@@ -1,12 +1,15 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useSale } from './SaleContext';
 
 export interface ReportItem {
   id: number;
   title: string;
   priceINR: string;
   priceUSD: string;
+  oldPriceINR?: string;
+  oldPriceUSD?: string;
   desc: string;
 }
 
@@ -23,6 +26,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<ReportItem[]>([]);
+  const { isSaleActive } = useSale();
 
   // Load from local storage on mount
   useEffect(() => {
@@ -56,12 +60,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = () => setCart([]);
 
   const totalINR = cart.reduce((sum, item) => {
-    const num = parseInt(item.priceINR.replace(/[^0-9]/g, ''), 10);
+    const priceStr = isSaleActive ? item.priceINR : (item.oldPriceINR || item.priceINR);
+    const num = parseInt(priceStr.replace(/[^0-9]/g, ''), 10);
     return sum + (isNaN(num) ? 0 : num);
   }, 0);
 
   const totalUSD = cart.reduce((sum, item) => {
-    const num = parseFloat(item.priceUSD.replace(/[^0-9.]/g, ''));
+    const priceStr = isSaleActive ? item.priceUSD : (item.oldPriceUSD || item.priceUSD);
+    const num = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
     return sum + (isNaN(num) ? 0 : num);
   }, 0);
 

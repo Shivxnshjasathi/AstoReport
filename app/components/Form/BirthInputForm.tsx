@@ -6,9 +6,17 @@ import { Calendar, Clock, User, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LocationSearch from './LocationSearch';
 import { LocationData } from '@/lib/services/geocoding';
+import { useLanguage } from '../../context/LanguageContext';
+
+const formDict = {
+  en: { alert: "Please select a location", name: "YOUR NAME", generating: "CONNECTING...", generate: "GENERATE KUNDLI" },
+  hi: { alert: "कृपया एक स्थान चुनें", name: "आपका नाम", generating: "कनेक्ट हो रहा है...", generate: "कुंडली बनाएं" }
+};
 
 const BirthInputForm = () => {
   const router = useRouter();
+  const { language } = useLanguage();
+  const t = formDict[language];
   const [formData, setFormData] = useState({
     name: '',
     dob: '',
@@ -19,7 +27,7 @@ const BirthInputForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!location) return alert('Please select a location');
+    if (!location) return alert(t.alert);
     setIsGenerating(true);
 
     // Encode data in URL params for the report page
@@ -45,8 +53,8 @@ const BirthInputForm = () => {
           <input
             required
             type="text"
-            placeholder="YOUR NAME"
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-xs uppercase tracking-widest rounded-none"
+            placeholder={t.name}
+            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
@@ -58,7 +66,7 @@ const BirthInputForm = () => {
           <input
             required
             type="date"
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-xs uppercase tracking-widest rounded-none"
+            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
             value={formData.dob}
             onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
           />
@@ -70,7 +78,7 @@ const BirthInputForm = () => {
           <input
             required
             type="time"
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-xs uppercase tracking-widest rounded-none"
+            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
             value={formData.tob}
             onChange={(e) => setFormData({ ...formData, tob: e.target.value })}
           />
@@ -90,11 +98,11 @@ const BirthInputForm = () => {
         {isGenerating ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
-            CONNECTING...
+            {t.generating}
           </>
         ) : (
           <>
-            GENERATE KUNDLI
+            {t.generate}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </>
         )}

@@ -3,15 +3,22 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Loader2 } from 'lucide-react';
 import { searchLocation, LocationData } from '@/lib/services/geocoding';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface LocationSearchProps {
   onSelect: (location: LocationData) => void;
 }
 
+const locationDict = {
+  en: "SEARCH BIRTH CITY...",
+  hi: "जन्म शहर खोजें..."
+};
+
 const LocationSearch: React.FC<LocationSearchProps> = ({ onSelect }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<LocationData[]>([]);
   const [loading, setLoading] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -36,8 +43,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelect }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="SEARCH BIRTH CITY..."
-          className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-xs uppercase tracking-widest rounded-none"
+          placeholder={locationDict[language]}
+          className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
         />
         {loading && (
           <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#B78E28] w-4 h-4 animate-spin" />

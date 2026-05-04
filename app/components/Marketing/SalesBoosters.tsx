@@ -1,22 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Sparkles, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSale } from '../../context/SaleContext';
+import { useLanguage } from '../../context/LanguageContext';
+
+const bannerDict = {
+  en: "50% Off All Premium Reports",
+  hi: "सभी प्रीमियम रिपोर्ट पर 50% की छूट"
+};
 
 export default function SalesBoosters() {
-  const [timeLeft, setTimeLeft] = useState(24 * 60 * 60); // 24 hours in seconds
+  const { isSaleActive, timeLeft } = useSale();
+  const { language } = useLanguage();
   const [isBannerVisible, setIsBannerVisible] = useState(true);
 
-  // Timer logic
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number | null) => {
+    if (seconds === null) return '00:00:00';
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
@@ -27,7 +28,7 @@ export default function SalesBoosters() {
     <>
       {/* Hello Bar (Urgency) */}
       <AnimatePresence>
-        {isBannerVisible && (
+        {isSaleActive && isBannerVisible && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
@@ -37,7 +38,7 @@ export default function SalesBoosters() {
             <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
               <p className="text-[#E5D6C8] text-[10px] sm:text-xs uppercase tracking-[0.1em] flex items-center gap-2 font-medium">
                 <Sparkles className="w-3 h-3 text-[#B78E28]" />
-                Rare Cosmic Alignment: 50% Off All Premium Reports
+                {bannerDict[language]}
               </p>
               <div className="flex items-center gap-4">
                 <span className="text-[#B78E28] font-mono text-sm tracking-widest font-bold">

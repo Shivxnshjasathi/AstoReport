@@ -10,14 +10,66 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import { ReportPDF } from '../components/PDF/ReportPDF';
+import { useLanguage } from '../context/LanguageContext';
 
 const PDFDownloadLink = dynamic(
   () => import('@react-pdf/renderer').then(mod => mod.PDFDownloadLink),
   { ssr: false, loading: () => <button className="p-2 bg-white/5 border border-white/10 rounded-lg"><Loader2 className="w-5 h-5 text-amber-500 animate-spin" /></button> }
 );
 
+const reportDict = {
+  en: {
+    connecting: "Connecting to the Cosmos...",
+    invalid: "Invalid report data.",
+    back: "BACK",
+    share: "SHARE",
+    copied: "Link copied!",
+    kundliTitle: "Kundli",
+    lagna: "Lagna (D1)",
+    navamsa: "Navamsa (D9)",
+    planetsPos: "Planetary Positions",
+    planet: "Planet",
+    longitude: "Longitude",
+    rashi: "Rashi",
+    nakshatra: "Nakshatra",
+    currentDasha: "Current Vimshottari Dasha",
+    maha: "Maha Dasha",
+    antar: "Antar Dasha",
+    ends: "Ends",
+    blueprint: "Career & Wealth Blueprint",
+    discover: "Discover your hidden potential, ideal career paths, and precise timelines for financial growth.",
+    unlock: "Unlock Full Analysis for $19.99",
+    loading: "Loading Premium Report..."
+  },
+  hi: {
+    connecting: "ब्रह्मांड से जुड़ रहे हैं...",
+    invalid: "अमान्य रिपोर्ट डेटा।",
+    back: "वापस",
+    share: "शेयर",
+    copied: "लिंक कॉपी किया गया!",
+    kundliTitle: "की कुंडली",
+    lagna: "लग्न (D1)",
+    navamsa: "नवमांश (D9)",
+    planetsPos: "ग्रहों की स्थिति",
+    planet: "ग्रह",
+    longitude: "देशांतर",
+    rashi: "राशि",
+    nakshatra: "नक्षत्र",
+    currentDasha: "वर्तमान विंशोत्तरी दशा",
+    maha: "महा दशा",
+    antar: "अंतर दशा",
+    ends: "समाप्त",
+    blueprint: "करियर और धन खाका",
+    discover: "अपनी छिपी क्षमता, आदर्श करियर पथ और वित्तीय विकास के लिए सटीक समय-सीमा की खोज करें।",
+    unlock: "₹1499 में पूर्ण विश्लेषण अनलॉक करें",
+    loading: "प्रीमियम रिपोर्ट लोड हो रही है..."
+  }
+};
+
 const ReportContent = () => {
   const searchParams = useSearchParams();
+  const { language } = useLanguage();
+  const t = reportDict[language];
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +100,7 @@ const ReportContent = () => {
     return (
       <div className="min-h-screen bg-[#1E1B4B] flex flex-col items-center justify-center text-white gap-4">
         <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
-        <p className="text-xl font-medium text-amber-100">Connecting to the Cosmos...</p>
+        <p className="text-xl font-medium text-amber-100">{t.connecting}</p>
       </div>
     );
   }
@@ -56,7 +108,7 @@ const ReportContent = () => {
   if (error || !data) {
     return (
       <div className="min-h-screen bg-[#1E1B4B] flex items-center justify-center text-white">
-        <p className="text-amber-500 font-bold">{error || 'Invalid report data.'}</p>
+        <p className="text-amber-500 font-bold">{error || t.invalid}</p>
       </div>
     );
   }
@@ -100,19 +152,19 @@ const ReportContent = () => {
           <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6">
             <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
               <ArrowLeft className="w-4 h-4" />
-              BACK
+              {t.back}
             </Link>
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
-                  alert('Link copied!');
+                  alert(t.copied);
                 }}
                 className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs group"
                 title="Share Report URL"
               >
                 <Share2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="hidden sm:block">SHARE</span>
+                <span className="hidden sm:block">{t.share}</span>
               </button>
               <PDFDownloadLink
                 document={<ReportPDF name={name} dob={dob} tob={tob} locName={locName} planets={data.planets} dasha={data.currentDasha} />}
@@ -130,7 +182,7 @@ const ReportContent = () => {
           {/* User Info Header */}
           <div className="text-center py-8">
             <h1 className="text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-6 font-light">
-              {name}'s Kundli
+              {language === 'en' ? `${name}'s ${t.kundliTitle}` : `${name} ${t.kundliTitle}`}
             </h1>
             <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-12 text-[#7D756B] text-xs uppercase tracking-[0.2em]">
               <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#B78E28]" />{dob}</div>
@@ -141,21 +193,21 @@ const ReportContent = () => {
 
           {/* Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <KundliChart houses={d1.houses} houseRashis={d1.houseRashis} title="Lagna (D1)" />
-            <KundliChart houses={d9.houses} houseRashis={d9.houseRashis} title="Navamsa (D9)" />
+            <KundliChart houses={d1.houses} houseRashis={d1.houseRashis} title={t.lagna} />
+            <KundliChart houses={d9.houses} houseRashis={d9.houseRashis} title={t.navamsa} />
           </div>
 
           {/* Planetary Table */}
           <div className="bg-[#121212]/80 backdrop-blur-lg border border-[#7D756B]/30 rounded-3xl overflow-hidden p-6 lg:p-8">
-            <h2 className="text-lg font-serif text-[#E5D6C8] uppercase tracking-[0.15em] mb-6 border-b border-[#7D756B]/30 pb-4">Planetary Positions</h2>
+            <h2 className="text-lg font-serif text-[#E5D6C8] uppercase tracking-[0.15em] mb-6 border-b border-[#7D756B]/30 pb-4">{t.planetsPos}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs uppercase tracking-[0.1em]">
                 <thead className="text-[#7D756B]">
                   <tr>
-                    <th className="py-4 font-normal">Planet</th>
-                    <th className="py-4 font-normal">Longitude</th>
-                    <th className="py-4 font-normal">Rashi</th>
-                    <th className="py-4 font-normal">Nakshatra</th>
+                    <th className="py-4 font-normal">{t.planet}</th>
+                    <th className="py-4 font-normal">{t.longitude}</th>
+                    <th className="py-4 font-normal">{t.rashi}</th>
+                    <th className="py-4 font-normal">{t.nakshatra}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#7D756B]/20">
@@ -177,21 +229,21 @@ const ReportContent = () => {
             <div className="bg-[#121212]/80 backdrop-blur-lg border border-[#7D756B]/30 p-6 lg:p-8 rounded-3xl">
               <h2 className="text-lg font-serif text-[#E5D6C8] uppercase tracking-[0.15em] mb-6 flex items-center gap-2 border-b border-[#7D756B]/30 pb-4">
                 <Sparkles className="w-4 h-4 text-[#B78E28]" />
-                Current Vimshottari Dasha
+                {t.currentDasha}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {data.currentDasha.mahadasha && (
                   <div className="border border-[#7D756B]/30 p-6 rounded-2xl relative">
-                    <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-2">Maha Dasha</p>
+                    <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-2">{t.maha}</p>
                     <p className="text-3xl font-serif font-light text-[#E5D6C8]">{data.currentDasha.mahadasha.planet}</p>
-                    <p className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] mt-4">Ends: {data.currentDasha.mahadasha.end}</p>
+                    <p className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] mt-4">{t.ends}: {data.currentDasha.mahadasha.end}</p>
                   </div>
                 )}
                 {data.currentDasha.antardasha && (
                   <div className="border border-[#7D756B]/30 p-6 rounded-2xl relative">
-                    <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-2">Antar Dasha</p>
+                    <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-2">{t.antar}</p>
                     <p className="text-3xl font-serif font-light text-[#E5D6C8]">{data.currentDasha.antardasha.planet}</p>
-                    <p className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] mt-4">Ends: {data.currentDasha.antardasha.end}</p>
+                    <p className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] mt-4">{t.ends}: {data.currentDasha.antardasha.end}</p>
                   </div>
                 )}
               </div>
@@ -220,13 +272,13 @@ const ReportContent = () => {
                 <Lock className="w-8 h-8 text-[#B78E28]" />
               </div>
               <h2 className="text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4">
-                Career & Wealth Blueprint
+                {t.blueprint}
               </h2>
               <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-md mx-auto leading-relaxed mb-8">
-                Discover your hidden potential, ideal career paths, and precise timelines for financial growth.
+                {t.discover}
               </p>
               <Link href="/store" className="bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] px-8 py-4 rounded-full text-xs uppercase tracking-widest transition-all font-semibold shadow-[0_0_20px_rgba(183,142,40,0.3)]">
-                Unlock Full Analysis for $19.99
+                {t.unlock}
               </Link>
             </div>
           </div>

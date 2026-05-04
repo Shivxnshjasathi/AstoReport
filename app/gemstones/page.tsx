@@ -2,41 +2,33 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Gem, Sparkles, ShoppingCart, Check } from 'lucide-react';
-import { useCart } from '../context/CartContext';
+import { ArrowLeft, Gem, PhoneCall, MessageCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-const gemstones = [
-  {
-    name: "Premium Sapphires",
-    description: "Harness the power of Jupiter & Saturn.",
-    icon: <Sparkles className="w-5 h-5 text-[#B78E28]" />,
-    items: [
-      { id: 101, title: "Ceylon Yellow Sapphire", priceINR: "₹25,000", priceUSD: "$299.99", desc: "For wealth, wisdom, and marriage. Certified unheated Pukhraj." },
-      { id: 102, title: "Blue Sapphire (Neelam)", priceINR: "₹35,000", priceUSD: "$420.00", desc: "For career acceleration and Saturn balancing. High clarity." },
-    ]
+const dict = {
+  en: {
+    back: "BACK",
+    title: "PREMIUM GEMSTONES",
+    subtitle: "CONNECT WITH OUR EXPERTS FOR HIGH QUALITY CERTIFIED GEMS. ONE CALL CAN CHANGE EVERYTHING.",
+    cardTitle: "Need High Quality Gems?",
+    cardDesc: "CONTACT US FOR 100% NATURAL, UNTREATED, AND LAB-CERTIFIED ASTROLOGICAL GEMSTONES. WE PROVIDE THE HIGHEST QUALITY GEMS FOR YOUR SPECIFIC COSMIC NEEDS.",
+    btnCall: "CALL SUPPORT",
+    btnMsg: "WHATSAPP US"
   },
-  {
-    name: "Emeralds & Rubies",
-    description: "For intellect, business, and leadership.",
-    icon: <Gem className="w-5 h-5 text-[#B78E28]" />,
-    items: [
-      { id: 103, title: "Zambian Emerald (Panna)", priceINR: "₹18,000", priceUSD: "$210.00", desc: "For communication, memory, and business success." },
-      { id: 104, title: "Burmese Ruby (Manik)", priceINR: "₹45,000", priceUSD: "$550.00", desc: "For fame, vitality, and leadership. Powerful Sun balancing." },
-    ]
-  },
-  {
-    name: "Protective Stones",
-    description: "Guard against negative planetary energies.",
-    icon: <Gem className="w-5 h-5 text-[#B78E28]" />,
-    items: [
-      { id: 105, title: "Hessonite (Gomed)", priceINR: "₹8,500", priceUSD: "$99.99", desc: "For Rahu balancing, removing confusion, and sudden wealth." },
-      { id: 106, title: "Cat's Eye (Lehsuniya)", priceINR: "₹7,200", priceUSD: "$85.00", desc: "For Ketu balancing, intuition, and spiritual growth." },
-    ]
+  hi: {
+    back: "वापस",
+    title: "प्रीमियम रत्न",
+    subtitle: "उच्च गुणवत्ता वाले प्रमाणित रत्नों के लिए हमारे विशेषज्ञों से जुड़ें। एक कॉल सब कुछ बदल सकती है।",
+    cardTitle: "उच्च गुणवत्ता वाले रत्न चाहिए?",
+    cardDesc: "100% प्राकृतिक, अनुपचारित और लैब-प्रमाणित ज्योतिषीय रत्नों के लिए हमसे संपर्क करें। हम आपकी विशिष्ट लौकिक आवश्यकताओं के लिए उच्चतम गुणवत्ता वाले रत्न प्रदान करते हैं।",
+    btnCall: "कॉल समर्थन",
+    btnMsg: "हमें व्हाट्सएप करें"
   }
-];
+};
 
 export default function GemstonesPage() {
-  const { cart, addToCart } = useCart();
+  const { language } = useLanguage();
+  const t = dict[language];
 
   return (
     <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden py-12 px-6 lg:px-12">
@@ -45,77 +37,44 @@ export default function GemstonesPage() {
         <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6 mb-12">
           <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
             <ArrowLeft className="w-4 h-4" />
-            BACK
-          </Link>
-          <Link href="/checkout" className="flex items-center gap-2 text-[#E5D6C8] hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em] text-xs">
-            <ShoppingCart className="w-4 h-4" />
-            <span>CART ({cart.length})</span>
+            {t.back}
           </Link>
         </div>
 
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <Gem className="w-8 h-8 text-[#B78E28] mx-auto mb-6" strokeWidth={1} />
-          <h1 className="text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">
-            Premium Gemstones
-          </h1>
-          <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed">
-            100% natural, untreated, and lab-certified astrological gemstones carefully sourced to balance your planetary energies.
-          </p>
-        </div>
+        {/* Contact Section matching Homepage Feel */}
+        <section className="w-full py-12">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl lg:text-4xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">{t.title}</h2>
+              <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-2xl mx-auto leading-relaxed">
+                {t.subtitle}
+              </p>
+            </div>
 
-        {/* Categories */}
-        <div className="space-y-24">
-          {gemstones.map((category, idx) => (
-            <section key={idx}>
-              <div className="flex flex-col items-center mb-12">
-                <div className="flex items-center gap-3 mb-2">
-                  {category.icon}
-                  <h2 className="text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.15em] font-light text-center">
-                    {category.name}
-                  </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-lg bg-gradient-to-b from-[#121212] to-[#1A1A1A] border border-[#B78E28]/30 p-10 rounded-[2.5rem] hover:border-[#B78E28]/60 transition-colors flex flex-col items-center text-center shadow-[0_10px_40px_rgba(183,142,40,0.1)]">
+                <div className="w-20 h-20 bg-[#B78E28]/10 border border-[#B78E28]/30 rounded-full flex items-center justify-center mb-8">
+                  <Gem className="w-8 h-8 text-[#B78E28]" strokeWidth={1.5} />
                 </div>
-                <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] text-center">
-                  {category.description}
+                
+                <h3 className="text-2xl font-serif text-[#E5D6C8] mb-2">{t.cardTitle}</h3>
+                <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.1em] leading-relaxed mb-10">
+                  {t.cardDesc}
                 </p>
+                
+                <div className="w-full space-y-4">
+                  <a href="tel:+919818999037" className="w-full bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-bold">
+                    <PhoneCall className="w-4 h-4" /> {t.btnCall}
+                  </a>
+                  <a href="https://wa.me/918604802202" target="_blank" rel="noopener noreferrer" className="w-full bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-semibold">
+                    <MessageCircle className="w-4 h-4" /> {t.btnMsg}
+                  </a>
+                </div>
               </div>
+            </div>
+          </div>
+        </section>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                {category.items.map((item) => (
-                  <div key={item.id} className="group relative flex flex-col justify-between bg-[#121212] border border-[#7D756B]/30 p-8 rounded-[2rem] hover:border-[#E5D6C8]/60 transition-all duration-500">
-                    <div>
-                      <h3 className="text-xl font-serif text-[#E5D6C8] leading-snug mb-3 pr-4">
-                        {item.title}
-                      </h3>
-                      <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.1em] leading-relaxed mb-8 min-h-[40px]">
-                        {item.desc}
-                      </p>
-                    </div>
-                    <div className="flex items-end justify-between mt-auto">
-                      <div>
-                        <span className="block text-2xl font-light text-[#B78E28]">{item.priceINR}</span>
-                        <span className="block text-xs text-[#7D756B] uppercase mt-1">{item.priceUSD}</span>
-                      </div>
-                      {cart.find(c => c.id === item.id) ? (
-                        <button disabled className="bg-[#E5D6C8] border border-[#E5D6C8] text-[#121212] text-[10px] uppercase tracking-widest px-6 py-3 rounded-full font-semibold flex items-center gap-2">
-                          <Check className="w-3 h-3" /> ADDED
-                        </button>
-                      ) : (
-                        <button 
-                          onClick={() => addToCart(item as any)}
-                          className="bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#B78E28] hover:text-[#121212] hover:border-[#B78E28] text-[10px] uppercase tracking-widest px-6 py-3 rounded-full transition-colors font-semibold"
-                        >
-                          ADD TO CART
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-        
       </div>
     </main>
   );
