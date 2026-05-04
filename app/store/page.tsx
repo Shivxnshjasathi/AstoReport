@@ -11,6 +11,14 @@ const getTiers = (lang: 'en' | 'hi') => {
   if (lang === 'hi') {
     return [
       {
+        name: "सर्वश्रेष्ठ जीवन ब्लूप्रिंट",
+        description: "5 सबसे शक्तिशाली रिपोर्टों का एक विशेष बंडल। सब कुछ एक साथ प्राप्त करें और भारी बचत करें।",
+        icon: <Crown className="w-5 h-5 text-[#B78E28]" />,
+        reports: [
+          { id: 99, title: "अल्टीमेट डेस्टिनी गाइड (बंडल)", priceINR: "₹999", oldPriceINR: "₹1999", priceUSD: "$19.99", oldPriceUSD: "$39.99", desc: "करियर, भाग्य, प्रेम, 2026 वार्षिक और वास्तु रिपोर्ट शामिल हैं।" },
+        ]
+      },
+      {
         name: "मूलभूत रूपरेखा",
         description: "मूल ग्रहीय अंतर्दृष्टि और पारंपरिक विश्लेषण।",
         icon: <Star className="w-5 h-5 text-[#B78E28]" />,
@@ -70,6 +78,14 @@ const getTiers = (lang: 'en' | 'hi') => {
 
   // Default English
   return [
+    {
+      name: "All-Access Life Blueprint",
+      description: "An exclusive bundle of the 5 most powerful reports. Get everything at once and save massive.",
+      icon: <Crown className="w-5 h-5 text-[#B78E28]" />,
+      reports: [
+        { id: 99, title: "Ultimate Destiny Guide (Bundle)", priceINR: "₹999", oldPriceINR: "₹1999", priceUSD: "$19.99", oldPriceUSD: "$39.99", desc: "Includes Career, Fortune, Love, 2026 Yearly, and Vastu Reports." },
+      ]
+    },
     {
       name: "Foundational Blueprints",
       description: "Core planetary insights and traditional analysis.",

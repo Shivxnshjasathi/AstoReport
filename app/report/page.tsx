@@ -12,10 +12,6 @@ import dynamic from 'next/dynamic';
 import { ReportPDF } from '../components/PDF/ReportPDF';
 import { useLanguage } from '../context/LanguageContext';
 
-const PDFDownloadLink = dynamic(
-  () => import('@react-pdf/renderer').then(mod => mod.PDFDownloadLink),
-  { ssr: false, loading: () => <button className="p-2 bg-white/5 border border-white/10 rounded-lg"><Loader2 className="w-5 h-5 text-amber-500 animate-spin" /></button> }
-);
 
 const reportDict = {
   en: {
@@ -38,8 +34,13 @@ const reportDict = {
     ends: "Ends",
     blueprint: "Career & Wealth Blueprint",
     discover: "Discover your hidden potential, ideal career paths, and precise timelines for financial growth.",
-    unlock: "Unlock Full Analysis for $19.99",
-    loading: "Loading Premium Report..."
+    unlock: "Unlock Full Analysis for ₹1499",
+    loading: "Loading Premium Report...",
+    modalTitle: "Unlock Your Free Kundli",
+    modalDesc: "Enter your details to save this report and receive free daily personalized horoscopes via WhatsApp & Email.",
+    modalPhone: "WHATSAPP NUMBER",
+    modalEmail: "EMAIL ADDRESS",
+    modalBtn: "UNLOCK NOW"
   },
   hi: {
     connecting: "ब्रह्मांड से जुड़ रहे हैं...",
@@ -62,7 +63,12 @@ const reportDict = {
     blueprint: "करियर और धन खाका",
     discover: "अपनी छिपी क्षमता, आदर्श करियर पथ और वित्तीय विकास के लिए सटीक समय-सीमा की खोज करें।",
     unlock: "₹1499 में पूर्ण विश्लेषण अनलॉक करें",
-    loading: "प्रीमियम रिपोर्ट लोड हो रही है..."
+    loading: "प्रीमियम रिपोर्ट लोड हो रही है...",
+    modalTitle: "अपनी मुफ़्त कुंडली अनलॉक करें",
+    modalDesc: "इस रिपोर्ट को सहेजने और मुफ़्त दैनिक राशिफल प्राप्त करने के लिए अपना विवरण दर्ज करें।",
+    modalPhone: "व्हाट्सएप नंबर",
+    modalEmail: "ईमेल पता",
+    modalBtn: "अभी अनलॉक करें"
   }
 };
 
@@ -98,9 +104,9 @@ const ReportContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#1E1B4B] flex flex-col items-center justify-center text-white gap-4">
-        <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
-        <p className="text-xl font-medium text-amber-100">{t.connecting}</p>
+      <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center text-[#E5D6C8] gap-4">
+        <Loader2 className="w-8 h-8 text-[#B78E28] animate-spin" />
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[#7D756B]">{t.connecting}</p>
       </div>
     );
   }
@@ -138,8 +144,10 @@ const ReportContent = () => {
   const d1 = buildChartData(data.planets, data.lagnaRashi);
   const d9 = buildChartData(data.planets, data.navamsaLagnaRashi, true);
 
+
   return (
     <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden">
+      
       <div className="w-full max-w-[1400px] mx-auto py-12 px-6 lg:px-12">
         
         <motion.div 
@@ -166,16 +174,30 @@ const ReportContent = () => {
                 <Share2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="hidden sm:block">{t.share}</span>
               </button>
-              <PDFDownloadLink
-                document={<ReportPDF name={name} dob={dob} tob={tob} locName={locName} planets={data.planets} dasha={data.currentDasha} />}
-                fileName={`${name}_Kundli.pdf`}
+              <button
+                onClick={async () => {
+                  const { pdf } = await import('@react-pdf/renderer');
+                  const blob = await pdf(
+                    <ReportPDF
+                      name={name} dob={dob} tob={tob} locName={locName}
+                      planets={data.planets} dasha={data.currentDasha}
+                      d1Houses={d1.houses} d1HouseRashis={d1.houseRashis}
+                      d9Houses={d9.houses} d9HouseRashis={d9.houseRashis}
+                    />
+                  ).toBlob();
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${name}_Kundli.pdf`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
                 className="flex items-center gap-2 bg-transparent border border-[#E5D6C8] px-4 py-2 rounded-full hover:bg-[#E5D6C8] hover:text-[#121212] transition-colors uppercase tracking-[0.2em] text-xs group"
                 title="Download PDF"
               >
-                {({ loading }) => (
-                  loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-                )}
-              </PDFDownloadLink>
+                <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
+                <span className="hidden sm:block">PDF</span>
+              </button>
             </div>
           </div>
 
@@ -292,9 +314,8 @@ const ReportContent = () => {
 const ReportPage = () => {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#1E1B4B] flex flex-col items-center justify-center text-white gap-4">
-        <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
-        <p className="text-xl font-medium text-amber-100">Loading Premium Report...</p>
+      <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center text-[#E5D6C8] gap-4">
+        <Loader2 className="w-8 h-8 text-[#B78E28] animate-spin" />
       </div>
     }>
       <ReportContent />

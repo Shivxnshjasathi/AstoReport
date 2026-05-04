@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Trash2, ShieldCheck, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Trash2, ShieldCheck, Loader2, CheckCircle, Zap } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSale } from '../context/SaleContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -72,11 +72,27 @@ export default function CheckoutPage() {
     
     setIsProcessing(true);
 
-    // Simulate API call and payment gateway delay
+    // Build WhatsApp order message
+    const itemsList = cart.map(item => `• ${item.title} — ${isSaleActive ? item.priceINR : (item.oldPriceINR || item.priceINR)}`).join('%0A');
+    const message = 
+      `🙏 *New Order — AstroReport*%0A%0A` +
+      `*Customer Details:*%0A` +
+      `Name: ${formData.name}%0A` +
+      `Email: ${formData.email}%0A` +
+      `Phone: ${formData.phone}%0A` +
+      `DOB: ${formData.dob}%0A` +
+      `Time of Birth: ${formData.tob}%0A` +
+      `Place of Birth: ${formData.pob}%0A%0A` +
+      `*Reports Ordered:*%0A${itemsList}%0A%0A` +
+      `*Total: ₹${cart.reduce((s, i) => s + (parseInt((isSaleActive ? i.priceINR : (i.oldPriceINR || i.priceINR)).replace(/[^0-9]/g,'')) || 0), 0).toLocaleString('en-IN')}*%0A%0A` +
+      `Please process this order. Thank you! 🌟`;
+
     setTimeout(() => {
       clearCart();
+      // Open WhatsApp with order details
+      window.open(`https://wa.me/916366105204?text=${message}`, '_blank');
       router.push('/success');
-    }, 2000);
+    }, 1500);
   };
 
   return (
@@ -241,6 +257,22 @@ export default function CheckoutPage() {
                 <p className="text-[10px] text-[#7D756B] text-center uppercase tracking-[0.1em] mt-6">
                   {t.footer}
                 </p>
+
+                {/* Trust Badges */}
+                <div className="mt-8 pt-8 border-t border-[#7D756B]/20 grid grid-cols-3 gap-4 text-center">
+                  <div className="flex flex-col items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-[#B78E28]" />
+                    <span className="text-[8px] uppercase tracking-widest text-[#7D756B]">256-bit Secure</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-[#B78E28]" />
+                    <span className="text-[8px] uppercase tracking-widest text-[#7D756B]">100% Satisfaction</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <Zap className="w-5 h-5 text-[#B78E28]" />
+                    <span className="text-[8px] uppercase tracking-widest text-[#7D756B]">Instant Delivery</span>
+                  </div>
+                </div>
               </form>
             </div>
           </div>
