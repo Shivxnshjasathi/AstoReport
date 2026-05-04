@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowRight, Trash2, ShieldCheck, Loader2, CheckCircle, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Trash2, ShieldCheck, Loader2, CheckCircle, Zap, MessageCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSale } from '../context/SaleContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -56,6 +56,9 @@ export default function CheckoutPage() {
   const t = checkoutDict[language];
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [orderDone, setOrderDone] = useState(false);
+  const [referredBy, setReferredBy] = useState('');
+  const [myCode, setMyCode] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -71,27 +74,33 @@ export default function CheckoutPage() {
     if (cart.length === 0) return alert(t.alert);
     
     setIsProcessing(true);
+    const slug = formData.name.trim().toUpperCase().replace(/\s+/g,'').slice(0, 8);
+    const code = `ASTRO-${slug}-20`;
+    setMyCode(code);
 
     // Build WhatsApp order message
     const itemsList = cart.map(item => `• ${item.title} — ${isSaleActive ? item.priceINR : (item.oldPriceINR || item.priceINR)}`).join('%0A');
-    const message = 
-      `🙏 *New Order — AstroReport*%0A%0A` +
+    const message =
+      `🙏 *Namaste! We would like to order a report from AstroReport.*%0A%0A` +
       `*Customer Details:*%0A` +
-      `Name: ${formData.name}%0A` +
-      `Email: ${formData.email}%0A` +
-      `Phone: ${formData.phone}%0A` +
-      `DOB: ${formData.dob}%0A` +
-      `Time of Birth: ${formData.tob}%0A` +
-      `Place of Birth: ${formData.pob}%0A%0A` +
-      `*Reports Ordered:*%0A${itemsList}%0A%0A` +
-      `*Total: ₹${cart.reduce((s, i) => s + (parseInt((isSaleActive ? i.priceINR : (i.oldPriceINR || i.priceINR)).replace(/[^0-9]/g,'')) || 0), 0).toLocaleString('en-IN')}*%0A%0A` +
-      `Please process this order. Thank you! 🌟`;
+      `👤 Name: ${formData.name}%0A` +
+      `📞 Phone: ${formData.phone}%0A` +
+      `📧 Email: ${formData.email}%0A` +
+      `🎂 Date of Birth: ${formData.dob}%0A` +
+      `⏰ Time of Birth: ${formData.tob}%0A` +
+      `📍 Place of Birth: ${formData.pob}%0A` +
+      (referredBy ? `🎁 Referred By: ${referredBy}%0A` : '') +
+      `%0A*Reports Requested:*%0A${itemsList}%0A%0A` +
+      `*Total: ₹${totalINR.toLocaleString('en-IN')}*%0A%0A` +
+      `Please send the accurate & detailed report on this WhatsApp number.%0A%0A` +
+      `📋 *Note:* We are happy to wait 4–5 days for the complete accurate report. 🌟%0A%0A` +
+      `Thank you! 🙏`;
 
     setTimeout(() => {
       clearCart();
-      // Open WhatsApp with order details
       window.open(`https://wa.me/916366105204?text=${message}`, '_blank');
-      router.push('/success');
+      setOrderDone(true);
+      setIsProcessing(false);
     }, 1500);
   };
 
@@ -151,11 +160,26 @@ export default function CheckoutPage() {
                   ))}
                 </div>
                 
-                <div className="pt-6 border-t border-[#7D756B]/50 flex items-end justify-between">
-                  <span className="text-sm uppercase tracking-[0.2em] text-[#7D756B]">{t.total}</span>
-                  <div className="text-right">
-                    <span className="block text-3xl font-serif text-[#E5D6C8] font-light">₹{totalINR.toLocaleString('en-IN')}</span>
-                    <span className="block text-xs uppercase tracking-[0.2em] text-[#7D756B] mt-1">${totalUSD.toFixed(2)} USD</span>
+                <div className="pt-6 border-t border-[#7D756B]/50 space-y-4">
+                  {/* Referred By */}
+                  <div className="space-y-1">
+                    <p className="text-[9px] text-[#7D756B] uppercase tracking-widest">
+                      {language === 'hi' ? 'किसने रेफर किया? (वैकल्पिक)' : 'Referred by (Optional)'}
+                    </p>
+                    <input
+                      type="text"
+                      value={referredBy}
+                      onChange={e => setReferredBy(e.target.value)}
+                      placeholder={language === 'hi' ? 'दोस्त का नाम या कोड' : "Friend's name or code"}
+                      className="w-full py-2 px-3 bg-transparent border border-[#7D756B]/30 focus:border-[#B78E28] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B]/50 text-[10px] rounded-xl transition-colors"
+                    />
+                    <p className="text-[9px] text-[#7D756B]/60 tracking-wide">
+                      {language === 'hi' ? '✦ अगली बार उन्हें छूट मिलेगी' : '✦ They will get a discount next time'}
+                    </p>
+                  </div>
+                  <div className="flex items-end justify-between pt-2">
+                    <span className="text-sm uppercase tracking-[0.2em] text-[#7D756B]">{t.total}</span>
+                    <span className="text-3xl font-serif text-[#E5D6C8] font-light">₹{totalINR.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               </div>
@@ -278,6 +302,63 @@ export default function CheckoutPage() {
           </div>
           
         </div>
+        {/* POST-ORDER: Show referral code */}
+        {orderDone && myCode && (
+          <div className="fixed inset-0 z-[100] bg-[#121212]/95 backdrop-blur-md flex items-center justify-center p-6">
+            <div className="bg-[#1A1A1A] border border-[#B78E28]/30 rounded-[2.5rem] p-10 max-w-md w-full text-center space-y-6 shadow-[0_0_60px_rgba(183,142,40,0.15)]">
+              <div className="w-16 h-16 bg-[#B78E28]/10 border border-[#B78E28]/30 rounded-full flex items-center justify-center mx-auto">
+                <span className="text-2xl">🎉</span>
+              </div>
+              <div>
+                <h2 className="text-xl font-serif text-[#E5D6C8] uppercase tracking-widest mb-2">
+                  {language === 'hi' ? 'ऑर्डर हो गया!' : 'Order Placed!'}
+                </h2>
+                <p className="text-[#7D756B] text-[10px] uppercase tracking-widest leading-relaxed">
+                  {language === 'hi'
+                    ? 'आपकी रिपोर्ट 4–5 दिनों में व्हाट्सएप पर भेजी जाएगी।'
+                    : 'Your report will be sent on WhatsApp within 4–5 days.'}
+                </p>
+              </div>
+              <div className="border-t border-[#7D756B]/20 pt-6 space-y-3">
+                <p className="text-[10px] text-[#7D756B] uppercase tracking-widest">
+                  {language === 'hi' ? '🎁 आपका रेफरल कोड — दोस्तों को शेयर करें' : '🎁 Your referral code — share with friends'}
+                </p>
+                <div className="flex items-center justify-between bg-[#121212] border border-[#B78E28]/30 rounded-xl px-5 py-4">
+                  <span className="font-mono text-[#B78E28] text-base tracking-widest font-bold">{myCode}</span>
+                  <button
+                    onClick={() => navigator.clipboard.writeText(myCode)}
+                    className="text-[9px] uppercase tracking-widest text-[#7D756B] hover:text-[#E5D6C8] transition-colors"
+                  >
+                    {language === 'hi' ? 'कॉपी' : 'COPY'}
+                  </button>
+                </div>
+                <p className="text-[9px] text-[#7D756B]/60 uppercase tracking-widest">
+                  {language === 'hi'
+                    ? 'जो दोस्त यह कोड दें उन्हें अगली बार छूट मिलेगी'
+                    : 'Friends who share this code get a discount next time'}
+                </p>
+                <button
+                  onClick={() => {
+                    const msg = language === 'hi'
+                      ? `🌟 *AstroReport* से सटीक ज्योतिष रिपोर्ट पाएं!%0A%0Aमैंने अभी अपनी रिपोर्ट ऑर्डर की — बहुत अच्छी सेवा है!%0A%0Aऑर्डर करते समय मेरा नाम दें: *${myCode}* — आपको अगली बार छूट मिलेगी! 🙏%0A%0Ahttps://astro-report.vercel.app/store`
+                      : `🌟 Get accurate Vedic astrology reports from *AstroReport*!%0A%0AI just ordered mine — great service!%0A%0AMention my name at checkout: *${myCode}* — you may get a discount next time! 🙏%0A%0Ahttps://astro-report.vercel.app/store`;
+                    window.open(`https://wa.me/?text=${msg}`, '_blank');
+                  }}
+                  className="w-full py-3 bg-[#25D366] text-white hover:brightness-110 rounded-xl text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  {language === 'hi' ? 'व्हाट्सएप पर शेयर करें' : 'Share on WhatsApp'}
+                </button>
+              </div>
+              <button
+                onClick={() => router.push('/')}
+                className="text-[10px] text-[#7D756B] uppercase tracking-widest hover:text-[#E5D6C8] transition-colors"
+              >
+                {language === 'hi' ? 'होम पर जाएं →' : 'Go to Home →'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

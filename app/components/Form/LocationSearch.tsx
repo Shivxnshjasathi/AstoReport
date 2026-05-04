@@ -37,17 +37,17 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelect }) => {
 
   return (
     <div className="relative w-full">
-      <div className="relative">
-        <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7D756B] w-5 h-5" />
+      <div className="relative flex items-center border-b border-[#7D756B]/50 focus-within:border-[#E5D6C8] transition-all">
+        <Search className="flex-shrink-0 text-[#7D756B] w-5 h-5 mr-3" />
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={locationDict[language]}
-          className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
+          className="flex-1 min-w-0 py-3 bg-transparent focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] font-sans text-[16px] md:text-sm uppercase tracking-wide"
         />
         {loading && (
-          <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#B78E28] w-4 h-4 animate-spin" />
+          <Loader2 className="flex-shrink-0 text-[#B78E28] w-4 h-4 animate-spin ml-2" />
         )}
       </div>
 

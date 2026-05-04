@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import BirthInputForm from './components/Form/BirthInputForm';
 import { ArrowRight, Sun, Moon, PhoneCall, MessageCircle, Star, ShieldCheck, PlayCircle, BookOpen, Gem, Users, BookMarked, Activity, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
@@ -133,6 +134,22 @@ export default function Home() {
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 600], [0, -120]);
   const parallaxOpacity = useTransform(scrollY, [0, 400], [0.20, 0.06]);
+  const [referName, setReferName] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
+
+  const generateCode = () => {
+    if (!referName.trim()) return;
+    const slug = referName.trim().toUpperCase().replace(/\s+/g, '').slice(0, 8);
+    setGeneratedCode(`ASTRO-${slug}-20`);
+  };
+
+  const shareOnWhatsApp = () => {
+    const code = generatedCode;
+    const msg = language === 'hi'
+      ? `🌟 *AstroReport* पर 20% की छूट पाएं!%0A%0Aमेरा रेफरल कोड उपयोग करें चेकआउट के समय: *${code}*%0A%0Aअभी खरीदें: https://astro-report.vercel.app/store`
+      : `🌟 Get 20% OFF on AstroReport premium reports!%0A%0AUse my referral code at checkout: *${code}*%0A%0AShop now: https://astro-report.vercel.app/store`;
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  };
 
   return (
     <main className="min-h-screen bg-[#121212] font-sans flex flex-col relative overflow-hidden">
@@ -156,7 +173,7 @@ export default function Home() {
       </nav>
 
       {/* HERO SECTION */}
-      <section className="relative w-full max-w-[1400px] mx-auto px-6 lg:px-24 py-20 lg:py-32 flex flex-col lg:flex-row items-center justify-between">
+      <section className="relative w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-24 py-16 lg:py-32 flex flex-col lg:flex-row items-center justify-between gap-12 overflow-hidden">
         <motion.div style={{ y: parallaxY, opacity: parallaxOpacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
           {/* Ring 4 (Outermost) */}
           <div className="absolute w-[900px] h-[900px] rounded-full border border-[#7D756B]/10 animate-[spin_120s_linear_infinite]">
@@ -184,23 +201,23 @@ export default function Home() {
           <div className="absolute w-3 h-3 bg-[#B78E28] rounded-full shadow-[0_0_50px_rgba(183,142,40,1)] animate-pulse" />
         </motion.div>
 
-        <div className="flex-1 relative z-10 text-center lg:text-left mb-16 lg:mb-0">
+        <div className="flex-1 relative z-10 text-center lg:text-left w-full">
           <p className="text-[#B78E28] text-[10px] uppercase tracking-[0.3em] mb-4">{t.heroTag}</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-[#E5D6C8] uppercase leading-[1.1] mb-6 font-light break-words">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif text-[#E5D6C8] uppercase leading-[1.1] mb-6 font-light break-words px-2 sm:px-0">
             {t.heroTitle1} <br />{t.heroTitle2}<br />{t.heroTitle3}
           </h1>
-          <p className="text-[#7D756B] text-xs lg:text-sm uppercase tracking-[0.2em] max-w-lg leading-relaxed mb-10 mx-auto lg:mx-0">
+          <p className="text-[#7D756B] text-xs lg:text-sm uppercase tracking-[0.1em] sm:tracking-[0.2em] max-w-lg leading-relaxed mb-10 mx-auto lg:mx-0 px-2 sm:px-0">
             {t.heroDesc}
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
-            <Link href="/store" className="bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] px-8 py-4 rounded-full text-xs uppercase tracking-widest transition-all font-semibold shadow-[0_0_30px_rgba(183,142,40,0.3)] hover:shadow-[0_0_40px_rgba(183,142,40,0.6)]">
+            <Link href="/store" className="w-full sm:w-auto bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] px-8 py-4 rounded-full text-xs uppercase tracking-widest transition-all font-semibold shadow-[0_0_30px_rgba(183,142,40,0.3)] hover:shadow-[0_0_40px_rgba(183,142,40,0.6)] text-center">
               {t.heroBtn}
             </Link>
           </div>
         </div>
 
-        <div className="flex-1 w-full max-w-md relative z-10 bg-[#121212]/80 backdrop-blur-lg p-8 lg:p-10 border border-[#7D756B]/30 rounded-[2.5rem] shadow-2xl hover:border-[#B78E28]/50 transition-colors duration-700 group">
-          <h3 className="text-center font-serif text-[#E5D6C8] text-xl mb-2 tracking-widest uppercase font-light group-hover:text-[#B78E28] transition-colors duration-500">{t.formTitle}</h3>
+        <div className="w-full lg:flex-1 lg:max-w-md relative z-10 bg-[#121212]/80 backdrop-blur-lg p-6 sm:p-8 lg:p-10 border border-[#7D756B]/30 rounded-[2rem] shadow-2xl hover:border-[#B78E28]/50 transition-colors duration-700 group overflow-hidden">
+          <h3 className="text-center font-serif text-[#E5D6C8] text-lg sm:text-xl mb-2 tracking-widest uppercase font-light group-hover:text-[#B78E28] transition-colors duration-500">{t.formTitle}</h3>
           <p className="text-center text-[#7D756B] text-[10px] uppercase tracking-[0.1em] mb-8">{t.formDesc}</p>
           <BirthInputForm />
         </div>
@@ -283,6 +300,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* CONSULTATION SECTION */}
       <section id="consult" className="w-full bg-[#1A1A1A] py-24">
@@ -460,13 +478,21 @@ export default function Home() {
             
           </div>
 
-          <div className="border-t border-[#7D756B]/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[#7D756B] text-[10px] uppercase tracking-[0.1em]">
-            <p>{t.footerCopy}</p>
-            <div className="flex gap-4">
-              <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerTerms}</span>
-              <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerPrivacy}</span>
-              <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerRefund}</span>
+          <div className="border-t border-[#7D756B]/20 pt-8 space-y-4">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[#7D756B] text-[10px] uppercase tracking-[0.1em]">
+              <p>{t.footerCopy}</p>
+              <div className="flex gap-4">
+                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerTerms}</span>
+                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerPrivacy}</span>
+                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerRefund}</span>
+              </div>
             </div>
+            {/* Referral tiny note */}
+            <p className="text-[#7D756B]/50 text-[9px] uppercase tracking-[0.15em] text-center">
+              {language === 'hi'
+                ? '✦ दोस्त को रेयर करें — उन्हें अपना कोड ASTRO-[NAME]-20 दें और वे चेकआउट पर 20% छूट पाएंगे'
+                : '✦ Refer a friend — share your code ASTRO-[NAME]-20 and they get 20% off at checkout'}
+            </p>
           </div>
         </div>
       </footer>

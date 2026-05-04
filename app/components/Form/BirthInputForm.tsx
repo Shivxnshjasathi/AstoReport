@@ -45,40 +45,40 @@ const BirthInputForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-lg w-full mx-auto">
+    <form onSubmit={handleSubmit} className="space-y-6 w-full">
       <div className="space-y-4">
         {/* Name Input */}
-        <div className="relative">
-          <User className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7D756B] w-5 h-5" />
+        <div className="relative flex items-center border-b border-[#7D756B]/50 focus-within:border-[#E5D6C8] transition-all">
+          <User className="flex-shrink-0 text-[#7D756B] w-5 h-5 mr-3" />
           <input
             required
             type="text"
             placeholder={t.name}
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
+            className="flex-1 min-w-0 py-3 bg-transparent focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] font-sans text-[16px] md:text-sm uppercase tracking-wide"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
         </div>
 
         {/* Date of Birth */}
-        <div className="relative">
-          <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7D756B] w-5 h-5" />
+        <div className="relative flex items-center border-b border-[#7D756B]/50 focus-within:border-[#E5D6C8] transition-all overflow-hidden">
+          <Calendar className="flex-shrink-0 text-[#7D756B] w-5 h-5 mr-3" />
           <input
             required
             type="date"
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
+            className="flex-1 min-w-0 py-3 bg-transparent focus:outline-none text-[#E5D6C8] [color-scheme:dark] font-sans text-[16px] md:text-sm"
             value={formData.dob}
             onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
           />
         </div>
 
         {/* Time of Birth */}
-        <div className="relative">
-          <Clock className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7D756B] w-5 h-5" />
+        <div className="relative flex items-center border-b border-[#7D756B]/50 focus-within:border-[#E5D6C8] transition-all overflow-hidden">
+          <Clock className="flex-shrink-0 text-[#7D756B] w-5 h-5 mr-3" />
           <input
             required
             type="time"
-            className="w-full pl-8 pr-4 py-3 bg-transparent border-b border-[#7D756B]/50 focus:border-[#E5D6C8] focus:outline-none text-[#E5D6C8] transition-all [color-scheme:dark] font-sans text-[16px] md:text-xs uppercase tracking-widest rounded-none"
+            className="flex-1 min-w-0 py-3 bg-transparent focus:outline-none text-[#E5D6C8] [color-scheme:dark] font-sans text-[16px] md:text-sm"
             value={formData.tob}
             onChange={(e) => setFormData({ ...formData, tob: e.target.value })}
           />
