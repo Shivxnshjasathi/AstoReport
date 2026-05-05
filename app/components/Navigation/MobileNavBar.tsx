@@ -3,19 +3,17 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Sparkles, BookOpen, ShoppingCart, Gem } from 'lucide-react';
+import { Home, Sparkles, BookOpen, MessageCircle, Gem } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useCart } from '../../context/CartContext';
 
 const navDict = {
-  en: { home: "Home", stars: "Stars", reports: "Reports", gems: "Gems", cart: "Cart" },
-  hi: { home: "होम", stars: "सितारे", reports: "रिपोर्ट", gems: "रत्न", cart: "कार्ट" }
+  en: { home: "Home", stars: "Stars", reports: "Reports", gems: "Gems", contact: "Contact" },
+  hi: { home: "होम", stars: "सितारे", reports: "रिपोर्ट", gems: "रत्न", contact: "संपर्क" }
 };
 
 export default function MobileNavBar() {
   const pathname = usePathname();
   const { language } = useLanguage();
-  const { cart } = useCart();
   const t = navDict[language];
 
   const isReportDetail = pathname?.startsWith('/store/') && pathname !== '/store';
@@ -45,14 +43,9 @@ export default function MobileNavBar() {
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.gems}</span>
         </Link>
         
-        <Link href="/checkout" className={`flex flex-col items-center gap-1 w-14 relative ${pathname === '/checkout' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
-          <ShoppingCart className="w-5 h-5" strokeWidth={pathname === '/checkout' ? 2 : 1.5} />
-          {cart.length > 0 && (
-            <span className="absolute top-0 right-1 w-4 h-4 bg-[#B78E28] text-[#121212] rounded-full flex items-center justify-center text-[8px] font-bold">
-              {cart.length}
-            </span>
-          )}
-          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.cart}</span>
+        <Link href="/contact" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/contact' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
+          <MessageCircle className="w-5 h-5" strokeWidth={pathname === '/contact' ? 2 : 1.5} />
+          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.contact}</span>
         </Link>
 
       </div>

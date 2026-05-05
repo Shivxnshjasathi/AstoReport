@@ -1,4 +1,4 @@
-# 🌟 AstroReport — Premium Vedic Astrology SaaS Platform
+mrom here to in mobile # 🌟 AstroReport — Premium Vedic Astrology SaaS Platform
 
 > A high-conversion, bilingual (English/Hindi) Vedic astrology platform offering accurate Kundli generation, trust-first premium reports, gemstone curation, and expert consultations — powered by WhatsApp-first lead capture and a viral growth loop.
 

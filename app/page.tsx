@@ -168,18 +168,9 @@ export default function Home() {
           <Moon className="w-5 h-5 font-light" strokeWidth={1} />
         </div>
         
-        <div className="flex items-center gap-6 lg:gap-12">
+        <div className="flex items-center gap-6 lg:gap-16">
           <Link href="/store" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navReports}</Link>
           <Link href="/contact" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navContact}</Link>
-          <Link href="/checkout" className="flex items-center gap-2 hover:text-[#B78E28] transition-colors relative">
-            <ShoppingCart className="w-5 h-5" />
-            {cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 w-4 h-4 bg-[#B78E28] text-[#121212] rounded-full flex items-center justify-center text-[8px] font-bold">
-                {cart.length}
-              </span>
-            )}
-            <span className="hidden lg:block">CART</span>
-          </Link>
         </div>
       </nav>
 
