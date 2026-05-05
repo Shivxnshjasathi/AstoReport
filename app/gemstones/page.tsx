@@ -63,10 +63,10 @@ export default function GemstonesPage() {
                 </p>
                 
                 <div className="w-full space-y-4">
-                  <a href="tel:+919818999037" className="w-full bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-bold">
+                  <a href="tel:+916366105204" className="w-full bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-bold">
                     <PhoneCall className="w-4 h-4" /> {t.btnCall}
                   </a>
-                  <a href="https://wa.me/918604802202?text=Namaste!%20I%20am%20interested%20in%20buying%20high-quality%20astrological%20gemstones.%20Please%20guide%20me. 🙏" target="_blank" rel="noopener noreferrer" className="w-full bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-semibold">
+                  <a href="https://wa.me/916366105204?text=Namaste!%20I%20am%20interested%20in%20buying%20high-quality%20astrological%20gemstones.%20Please%20guide%20me. 🙏" target="_blank" rel="noopener noreferrer" className="w-full bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212] py-4 rounded-full text-[10px] uppercase tracking-widest transition-colors flex justify-center items-center gap-3 font-semibold">
                     <MessageCircle className="w-4 h-4" /> {t.btnMsg}
                   </a>
                 </div>

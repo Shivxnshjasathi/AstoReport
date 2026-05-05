@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Calendar, Clock, User, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import LocationSearch from './LocationSearch';
+import dynamic from 'next/dynamic';
+const LocationSearch = dynamic(() => import('./LocationSearch'), { 
+  ssr: false,
+  loading: () => <div className="h-12 border-b border-[#7D756B]/50 animate-pulse" />
+});
 import { LocationData } from '@/lib/services/geocoding';
 import { useLanguage } from '../../context/LanguageContext';
 

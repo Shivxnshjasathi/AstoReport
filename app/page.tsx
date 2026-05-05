@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
 import BirthInputForm from './components/Form/BirthInputForm';
-import { ArrowRight, Sun, Moon, PhoneCall, MessageCircle, Star, ShieldCheck, PlayCircle, BookOpen, Gem, Users, BookMarked, Activity, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Sun, Moon, PhoneCall, MessageCircle, Star, ShieldCheck, PlayCircle, BookOpen, Gem, Users, BookMarked, Activity, ArrowUpRight, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from './context/LanguageContext';
+import { useCart } from './context/CartContext';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const dict = {
@@ -54,7 +55,7 @@ const dict = {
     t3Name: "Sarah K.",
     t3Location: "London, UK",
     footerTagline: "A trusted guide in Vedic Astrology. Built on research, ethics, and responsibility.",
-    footerSales: "Sales: +91-9818999037",
+    footerSales: "Sales: +91-6366105204",
     footerSupport: "Support: +91-6366105204",
     footerGemstones: "Premium Gemstones",
     footerReports: "Explore Reports",
@@ -113,7 +114,7 @@ const dict = {
     t3Name: "सारा के.",
     t3Location: "लंदन, यूके",
     footerTagline: "वैदिक ज्योतिष में एक विश्वसनीय मार्गदर्शक। अनुसंधान, नैतिकता और जिम्मेदारी पर निर्मित।",
-    footerSales: "बिक्री: +91-9818999037",
+    footerSales: "बिक्री: +91-6366105204",
     footerSupport: "सहायता: +91-6366105204",
     footerGemstones: "प्रीमियम रत्न",
     footerReports: "रिपोर्ट्स देखें",
@@ -130,6 +131,7 @@ const dict = {
 
 export default function Home() {
   const { language, setLanguage } = useLanguage();
+  const { cart } = useCart();
   const t = dict[language];
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 600], [0, -120]);
@@ -166,9 +168,18 @@ export default function Home() {
           <Moon className="w-5 h-5 font-light" strokeWidth={1} />
         </div>
         
-        <div className="flex items-center gap-6 lg:gap-16">
+        <div className="flex items-center gap-6 lg:gap-12">
           <Link href="/store" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navReports}</Link>
           <Link href="/contact" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navContact}</Link>
+          <Link href="/checkout" className="flex items-center gap-2 hover:text-[#B78E28] transition-colors relative">
+            <ShoppingCart className="w-5 h-5" />
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 w-4 h-4 bg-[#B78E28] text-[#121212] rounded-full flex items-center justify-center text-[8px] font-bold">
+                {cart.length}
+              </span>
+            )}
+            <span className="hidden lg:block">CART</span>
+          </Link>
         </div>
       </nav>
 
@@ -547,9 +558,9 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-[#7D756B] text-[10px] uppercase tracking-[0.1em]">
               <p>{t.footerCopy}</p>
               <div className="flex gap-4">
-                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerTerms}</span>
-                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerPrivacy}</span>
-                <span className="hover:text-[#E5D6C8] cursor-pointer">{t.footerRefund}</span>
+                <Link href="/terms" className="hover:text-[#E5D6C8] transition-colors">{t.footerTerms}</Link>
+                <Link href="/privacy" className="hover:text-[#E5D6C8] transition-colors">{t.footerPrivacy}</Link>
+                <Link href="/refund" className="hover:text-[#E5D6C8] transition-colors">{t.footerRefund}</Link>
               </div>
             </div>
             {/* Referral tiny note */}

@@ -94,8 +94,8 @@ export default function ContactPage() {
                 <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.callUs}</h3>
                 <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.callTime}</p>
                 <div className="space-y-2">
-                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.sales}</span> +91-9818999037</p>
-                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.support}</span> +91-8604802202</p>
+                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.sales}</span> +91-6366105204</p>
+                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.support}</span> +91-6366105204</p>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.emailUs}</h3>
                 <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.emailTime}</p>
-                <p className="text-[#E5D6C8] text-sm tracking-[0.1em]">support@astro.com</p>
+                <p className="text-[#E5D6C8] text-sm tracking-[0.1em]">contact.zincstate@gmail.com</p>
               </div>
             </div>
 
@@ -119,9 +119,8 @@ export default function ContactPage() {
                 <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.location}</h3>
                 <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.locSub}</p>
                 <p className="text-[#E5D6C8] text-sm tracking-[0.1em] leading-relaxed">
-                  108 Cosmic Avenue,<br />
-                  Spiritual District, New Delhi,<br />
-                  India - 110001
+                  Bellandur, Bangalore,<br />
+                  Karnataka, India - 560103
                 </p>
               </div>
             </div>

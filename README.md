@@ -96,7 +96,7 @@ npm run dev
 ## 🌟 Business Contact
 
 - **WhatsApp:** +91 6366 105 204
-- **Email:** support@astroreport.com
+- **Email:** contact.zincstate@gmail.com
 - **Platform:** [astro-report.vercel.app](https://astro-report.vercel.app)
 
 ---

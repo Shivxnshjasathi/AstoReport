@@ -140,8 +140,8 @@ export default function CheckoutPage() {
             ) : (
               <div className="space-y-6">
                 <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-4">
-                  {cart.map((item) => (
-                    <div key={item.id} className="flex items-start justify-between border-b border-[#7D756B]/20 pb-4 group">
+                  {cart.map((item, index) => (
+                    <div key={item.id} className={`flex items-start justify-between border-b border-[#7D756B]/20 pb-4 group ${index === cart.length - 1 ? 'border-b-0' : ''}`}>
                       <div className="flex-1 pr-4">
                         <h3 className="text-lg font-serif text-[#E5D6C8] mb-1">{item.title}</h3>
                         <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.1em]">{item.desc}</p>
