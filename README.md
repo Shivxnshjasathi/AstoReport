@@ -1,5 +1,10 @@
 # 🌟 AstroReport — Premium Vedic Astrology SaaS Platform
 
+![Next.js](https://img.shields.io/badge/Next.js-14+-black?logo=next.js)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Custom_Theme-38B2AC?logo=tailwind-css)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue?logo=typescript)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+
 > A high-conversion, bilingual (English/Hindi) Vedic astrology platform offering accurate Kundli generation, trust-first premium reports, gemstone curation, and expert consultations — powered by WhatsApp-first lead capture and a viral growth loop.
 
 ---
@@ -80,16 +85,54 @@ astro-report/
 
 ## 🚀 Getting Started
 
+### Prerequisites
+- Node.js (v18 or higher recommended)
+- npm or yarn or pnpm
+
+### Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/Shivxnshjasathi/AstoReport.git
 
+# Navigate to the project directory
+cd AstoReport
+
 # Install dependencies
 npm install
 
-# Run development server
+# Run the development server
 npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+---
+
+## 🛠️ Deploy
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+Feel free to check [issues page](https://github.com/Shivxnshjasathi/AstoReport/issues).
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is [MIT](https://choosealicense.com/licenses/mit/) licensed.
 
 ---
 
