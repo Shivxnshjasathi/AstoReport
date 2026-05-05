@@ -154,7 +154,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#121212] font-sans flex flex-col relative overflow-hidden">
       
-      <nav className="flex justify-center items-center gap-6 lg:gap-16 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0">
+      <nav className="flex justify-center items-center gap-6 lg:gap-16 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0 md:top-[40px]">
         <div className="flex items-center gap-6 lg:gap-16">
           <Link href="/gemstones" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navGemstones}</Link>
           <Link href="/astrology" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navHoroscopes}</Link>
@@ -414,6 +414,71 @@ export default function Home() {
                 <span>Exact Remedies</span> <span>✦</span>
               </>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* REFERRAL SECTION */}
+      <section className="w-full py-24 bg-[#121212] relative overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-24 flex flex-col lg:flex-row items-center gap-16">
+          <div className="flex-1 text-center lg:text-left">
+            <h2 className="text-3xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-widest mb-6 leading-tight">
+              {language === 'hi' ? 'दोस्तों को रेफर करें,' : 'Refer a Friend,'}<br />
+              <span className="text-[#B78E28]">{language === 'hi' ? 'खुशियां फैलाएं' : 'Spread the Light'}</span>
+            </h2>
+            <p className="text-[#7D756B] text-xs lg:text-sm uppercase tracking-widest leading-loose mb-10 max-w-xl mx-auto lg:mx-0">
+              {language === 'hi' 
+                ? 'अपने दोस्तों के साथ ज्योतिष की शक्ति साझा करें। उन्हें उनके पहले प्रीमियम ऑर्डर पर 20% की छूट मिलेगी।' 
+                : 'Share the power of Vedic astrology with your friends. They get 20% OFF on their first premium order.'}
+            </p>
+          </div>
+
+          <div className="w-full max-w-md bg-[#1A1A1A] border border-[#B78E28]/30 p-10 rounded-[2.5rem] shadow-2xl">
+            <div className="space-y-6">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder={language === 'hi' ? 'अपना नाम दर्ज करें' : "ENTER YOUR NAME"}
+                  className="w-full py-4 bg-transparent border-b border-[#7D756B]/30 focus:border-[#B78E28] focus:outline-none text-[#E5D6C8] placeholder-[#7D756B] transition-all font-sans text-xs uppercase tracking-[0.2em] rounded-none"
+                  value={referName}
+                  onChange={(e) => setReferName(e.target.value)}
+                />
+              </div>
+
+              {!generatedCode ? (
+                <button
+                  onClick={generateCode}
+                  disabled={!referName.trim()}
+                  className="w-full py-4 bg-transparent border border-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212] text-[#E5D6C8] font-sans text-[10px] uppercase tracking-widest rounded-full transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                >
+                  {language === 'hi' ? 'कोड जनरेट करें' : 'GENERATE MY CODE'}
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-6"
+                >
+                  <div className="flex items-center justify-between bg-[#121212] border border-[#B78E28]/30 rounded-2xl px-6 py-5">
+                    <span className="font-mono text-[#B78E28] text-lg tracking-[0.2em] font-bold">{generatedCode}</span>
+                    <button 
+                      onClick={() => navigator.clipboard.writeText(generatedCode)}
+                      className="text-[10px] uppercase tracking-widest text-[#7D756B] hover:text-[#E5D6C8] transition-colors"
+                    >
+                      {language === 'hi' ? 'कॉपी' : 'COPY'}
+                    </button>
+                  </div>
+                  <button
+                    onClick={shareOnWhatsApp}
+                    className="w-full py-4 bg-[#25D366] text-white hover:brightness-110 rounded-full text-[10px] uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(37,211,102,0.3)]"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    {language === 'hi' ? 'व्हाट्सएप पर शेयर करें' : 'SHARE ON WHATSAPP'}
+                  </button>
+                </motion.div>
+              )}
+            </div>
           </div>
         </div>
       </section>

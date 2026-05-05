@@ -24,7 +24,8 @@ const checkoutDict = {
     tob: "TIME OF BIRTH (HH:MM AM/PM)",
     pob: "PLACE OF BIRTH (CITY, STATE, COUNTRY)",
     processing: "PROCESSING...",
-    placeOrder: "PLACE ORDER",
+    placeOrder: "CONFIRM ON WHATSAPP",
+    waNote: "Clicking this will open WhatsApp to personally confirm your order details with us.",
     alert: "Your cart is empty",
     footer: "Reports will be sent to your email instantly."
   },
@@ -43,7 +44,8 @@ const checkoutDict = {
     tob: "जन्म का समय (HH:MM AM/PM)",
     pob: "जन्म स्थान (शहर, राज्य, देश)",
     processing: "प्रोसेसिंग...",
-    placeOrder: "ऑर्डर दें",
+    placeOrder: "व्हाट्सएप पर ऑर्डर दें",
+    waNote: "इस पर क्लिक करने से हमारे साथ आपके ऑर्डर की व्यक्तिगत रूप से पुष्टि करने के लिए व्हाट्सएप खुल जाएगा।",
     alert: "आपकी कार्ट खाली है",
     footer: "रिपोर्ट तुरंत आपके ईमेल पर भेजी जाएगी।"
   }
@@ -272,12 +274,17 @@ export default function CheckoutPage() {
                     </>
                   ) : (
                     <>
+                      <MessageCircle className="w-4 h-4 text-[#25D366]" />
                       {t.placeOrder}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </button>
                 
+                <p className="text-[9px] text-[#7D756B]/60 text-center uppercase tracking-widest mt-4 italic">
+                  {t.waNote}
+                </p>
+
                 <p className="text-[10px] text-[#7D756B] text-center uppercase tracking-[0.1em] mt-6">
                   {t.footer}
                 </p>

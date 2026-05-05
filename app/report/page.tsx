@@ -27,7 +27,6 @@ const reportDict = {
     planet: "Planet",
     longitude: "Longitude",
     rashi: "Rashi",
-    nakshatra: "Nakshatra",
     currentDasha: "Current Vimshottari Dasha",
     maha: "Maha Dasha",
     antar: "Antar Dasha",
@@ -55,7 +54,6 @@ const reportDict = {
     planet: "ग्रह",
     longitude: "देशांतर",
     rashi: "राशि",
-    nakshatra: "नक्षत्र",
     currentDasha: "वर्तमान विंशोत्तरी दशा",
     maha: "महा दशा",
     antar: "अंतर दशा",
@@ -229,7 +227,6 @@ const ReportContent = () => {
                     <th className="py-4 font-normal">{t.planet}</th>
                     <th className="py-4 font-normal">{t.longitude}</th>
                     <th className="py-4 font-normal">{t.rashi}</th>
-                    <th className="py-4 font-normal">{t.nakshatra}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#7D756B]/20">
@@ -238,7 +235,6 @@ const ReportContent = () => {
                       <td className="py-4 text-[#E5D6C8]">{p.name}</td>
                       <td className="py-4 font-mono text-[#B78E28]">{formatDegrees(p.longitude % 30)}</td>
                       <td className="py-4 text-[#7D756B]">{p.rashi}</td>
-                      <td className="py-4 text-[#7D756B]">{p.nakshatra}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, Star, Diamond, Crown, ShoppingCart, Check, Sparkles, Compass } from 'lucide-react';
+import { ArrowLeft, BookOpen, Star, Diamond, Crown, ShoppingCart, Check, Sparkles, Compass, MessageCircle, Hand } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSale } from '../context/SaleContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -70,7 +70,16 @@ const getTiers = (lang: 'en' | 'hi') => {
         reports: [
           { id: 18, title: "संपूर्ण अंक ज्योतिष रिपोर्ट", priceINR: "₹199", oldPriceINR: "₹399", priceUSD: "$3.99", oldPriceUSD: "$7.99", desc: "अपने जीवन पथ, अभिव्यक्ति और आत्मा की लालसा संख्या की खोज करें।" },
           { id: 19, title: "गृह वास्तु विश्लेषण", priceINR: "₹499", oldPriceINR: "₹999", priceUSD: "$9.99", oldPriceUSD: "$19.99", desc: "शांति और समृद्धि के लिए अपने रहने की जगह को ब्रह्मांडीय ऊर्जा के साथ संरेखित करें।" },
-          { id: 20, title: "व्यापार वास्तु रिपोर्ट", priceINR: "₹799", oldPriceINR: "₹1599", priceUSD: "$15.99", oldPriceUSD: "$31.99", desc: "अपने व्यावसायिक स्थान में विकास को अधिकतम करें और बाधाओं को कम करें।" },
+          { id: 20, title: "व्यापार वास्तु रिपोर्ट", priceINR: "₹799", oldPriceINR: "1599", priceUSD: "$15.99", oldPriceUSD: "$31.99", desc: "अपने व्यावसायिक स्थान में विकास को अधिकतम करें और बाधाओं को कम करें।" },
+        ]
+      },
+      {
+        name: "हस्तरेखा शास्त्र (Palmistry)",
+        description: "अपनी हथेली की रेखाओं में छिपे भविष्य और व्यक्तित्व को समझें।",
+        icon: <Hand className="w-5 h-5 text-[#B78E28]" />,
+        reports: [
+          { id: 21, title: "हस्तरेखा विश्लेषण रिपोर्ट", priceINR: "₹299", oldPriceINR: "₹599", priceUSD: "$5.99", oldPriceUSD: "$11.99", desc: "आपकी जीवन रेखा, हृदय रेखा और मस्तिष्क रेखा का विस्तृत विश्लेषण।" },
+          { id: 22, title: "प्रीमियम हस्तरेखा भविष्य", priceINR: "₹599", oldPriceINR: "₹1199", priceUSD: "$11.99", oldPriceUSD: "$23.99", desc: "आपके भविष्य, करियर और स्वास्थ्य के बारे में हस्तरेखा के माध्यम से गहन जानकारी।" },
         ]
       }
     ];
@@ -138,20 +147,49 @@ const getTiers = (lang: 'en' | 'hi') => {
       reports: [
         { id: 18, title: "Complete Numerology Report", priceINR: "₹199", oldPriceINR: "₹399", priceUSD: "$3.99", oldPriceUSD: "$7.99", desc: "Discover your life path, expression, and soul urge numbers." },
         { id: 19, title: "Home Vastu Analysis", priceINR: "₹499", oldPriceINR: "₹999", priceUSD: "$9.99", oldPriceUSD: "$19.99", desc: "Align your living space with cosmic energies for peace and prosperity." },
-        { id: 20, title: "Business Vastu Report", priceINR: "₹799", oldPriceINR: "₹1599", priceUSD: "$15.99", oldPriceUSD: "$31.99", desc: "Maximize growth and minimize obstacles in your commercial space." },
+        { id: 20, title: "Business Vastu Report", priceINR: "₹799", oldPriceINR: "1599", priceUSD: "$15.99", oldPriceUSD: "$31.99", desc: "Maximize growth and minimize obstacles in your commercial space." },
+      ]
+    },
+    {
+      name: "Palmistry & Hand Analysis",
+      description: "Decode the secrets hidden in the lines of your palms.",
+      icon: <Hand className="w-5 h-5 text-[#B78E28]" />,
+      reports: [
+        { id: 21, title: "Basic Palm Analysis", priceINR: "₹299", oldPriceINR: "₹599", priceUSD: "$5.99", oldPriceUSD: "$11.99", desc: "A detailed reading of your life, heart, and head lines." },
+        { id: 22, title: "Premium Hand Reading", priceINR: "₹599", oldPriceINR: "1199", priceUSD: "$11.99", oldPriceUSD: "$23.99", desc: "In-depth future predictions and personality analysis via palmistry." },
       ]
     }
   ];
 };
 
 const storeDict = {
-  en: { back: "BACK", cart: "CART", title: "Premium Reports", desc: "Unlock profound cosmic insights. Choose from our curated collection of high-precision astrological blueprints.", add: "ADD", added: "ADDED" },
-  hi: { back: "वापस", cart: "कार्ट", title: "प्रीमियम रिपोर्ट", desc: "गहन लौकिक अंतर्दृष्टि प्राप्त करें। उच्च-सटीक ज्योतिषीय ब्लूप्रिंट के हमारे क्यूरेटेड संग्रह में से चुनें।", add: "जोड़ें", added: "जोड़ दिया" }
+  en: { 
+    back: "BACK", 
+    cart: "CART", 
+    title: "Premium Reports", 
+    desc: "Unlock profound cosmic insights. Choose from our curated collection of high-precision astrological blueprints.", 
+    add: "ADD", 
+    added: "ADDED",
+    waMsg: "Namaste! I want to order the *[NAME]* report. Please guide me on how to proceed. 🙏",
+    saleEnds: "SALE ENDS:",
+    endsIn: ""
+  },
+  hi: { 
+    back: "वापस", 
+    cart: "कार्ट", 
+    title: "प्रीमियम रिपोर्ट", 
+    desc: "गहन लौकिक अंतर्दृष्टि प्राप्त करें। उच्च-सटीक ज्योतिषीय ब्लूप्रिंट के हमारे क्यूरेटेड संग्रह में से चुनें।", 
+    add: "जोड़ें", 
+    added: "जोड़ दिया",
+    waMsg: "नमस्ते! मैं *[NAME]* रिपोर्ट ऑर्डर करना चाहता हूँ। कृपया मुझे आगे की प्रक्रिया बताएं। 🙏",
+    saleEnds: "सेल समाप्त:",
+    endsIn: "में"
+  }
 };
 
 export default function StorePage() {
-  const { cart, addToCart } = useCart();
-  const { isSaleActive } = useSale();
+  const { cart, addToCart, removeFromCart } = useCart();
+  const { isSaleActive, timeLeft } = useSale();
   const { language } = useLanguage();
   
   const tiers = getTiers(language);
@@ -201,15 +239,29 @@ export default function StorePage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 {tier.reports.map((report) => (
-                  <div key={report.id} className="group relative flex flex-col justify-between bg-[#121212] border border-[#7D756B]/30 p-6 rounded-[2rem] hover:border-[#E5D6C8]/60 transition-all duration-500">
-                    <div>
-                      <h3 className="text-lg font-serif text-[#E5D6C8] leading-snug mb-3 pr-4">
-                        {report.title}
-                      </h3>
-                      <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.1em] leading-relaxed mb-8 min-h-[40px]">
-                        {report.desc}
-                      </p>
-                    </div>
+                  <div key={report.id} className="group relative flex flex-col justify-between bg-[#121212] border border-[#7D756B]/30 p-6 rounded-[2rem] hover:border-[#E5D6C8]/60 transition-all duration-500 overflow-hidden">
+                    {isSaleActive && (
+                      <div className="absolute top-4 right-4 bg-[#B78E28] text-[#121212] text-[8px] font-bold px-2 py-0.5 rounded-full z-10 animate-pulse">
+                        50% OFF
+                      </div>
+                    )}
+                    <Link href={`/store/${report.id}`} className="block cursor-pointer">
+                      <div>
+                        <h3 className="text-lg font-serif text-[#E5D6C8] leading-snug mb-3 pr-4 group-hover:text-[#B78E28] transition-colors">
+                          {report.title}
+                        </h3>
+                        <p className="text-[10px] text-[#7D756B] uppercase tracking-[0.1em] leading-relaxed mb-4 min-h-[40px]">
+                          {report.desc}
+                        </p>
+                        
+                        {isSaleActive && timeLeft !== null && (
+                          <div className="flex items-center gap-1.5 text-[#B78E28] text-[9px] font-bold tracking-widest mb-6 bg-[#B78E28]/5 w-max px-2 py-1 rounded-lg border border-[#B78E28]/20">
+                            <Sparkles className="w-3 h-3 animate-pulse" />
+                            {t.saleEnds} {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')} {t.endsIn}
+                          </div>
+                        )}
+                      </div>
+                    </Link>
                     <div className="flex items-end justify-between mt-auto">
                       <div>
                         <div className="flex items-end gap-2">
@@ -225,18 +277,38 @@ export default function StorePage() {
                           {isSaleActive && <span className="block text-[8px] text-[#7D756B] line-through mb-[1px] uppercase">{report.oldPriceUSD}</span>}
                         </div>
                       </div>
-                      {cart.find(item => item.id === report.id) ? (
-                        <button disabled className="bg-[#E5D6C8] border border-[#E5D6C8] text-[#121212] text-[10px] uppercase tracking-widest px-4 py-2 rounded-full font-semibold flex items-center gap-1">
-                          <Check className="w-3 h-3" /> {t.added}
-                        </button>
-                      ) : (
-                        <button 
-                          onClick={() => addToCart(report as any)}
-                          className="bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212] text-[10px] uppercase tracking-widest px-4 py-2 rounded-full transition-colors font-semibold"
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            const msg = t.waMsg.replace('[NAME]', report.title);
+                            window.open(`https://wa.me/916366105204?text=${encodeURIComponent(msg)}`, '_blank');
+                          }}
+                          className="p-2 border border-[#25D366]/30 text-[#25D366] hover:bg-[#25D366]/10 rounded-full transition-all"
+                          title="Order on WhatsApp"
                         >
-                          {t.add}
+                          <MessageCircle className="w-4 h-4" />
                         </button>
-                      )}
+                        <button 
+                          onClick={() => {
+                            if (cart.find(item => item.id === report.id)) {
+                              removeFromCart(report.id);
+                            } else {
+                              addToCart(report as any);
+                            }
+                          }}
+                          className={`text-[10px] uppercase tracking-widest px-4 py-2 rounded-full font-semibold flex items-center gap-1 transition-all ${
+                            cart.find(item => item.id === report.id)
+                            ? 'bg-[#E5D6C8] border border-[#E5D6C8] text-[#121212] hover:bg-[#7D756B]/20 hover:text-[#E5D6C8]'
+                            : 'bg-transparent border border-[#E5D6C8] text-[#E5D6C8] hover:bg-[#E5D6C8] hover:text-[#121212]'
+                          }`}
+                        >
+                          {cart.find(item => item.id === report.id) ? (
+                            <><Check className="w-3 h-3" /> {t.added}</>
+                          ) : (
+                            t.add
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

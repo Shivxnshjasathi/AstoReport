@@ -16,6 +16,9 @@ export default function MobileNavBar() {
   const { language } = useLanguage();
   const t = navDict[language];
 
+  const isReportDetail = pathname?.startsWith('/store/') && pathname !== '/store';
+  if (isReportDetail) return null;
+
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-[#121212]/95 backdrop-blur-xl border-t border-[#7D756B]/30 z-[100] pb-safe">
       <div className="flex items-center justify-around py-3 px-1">

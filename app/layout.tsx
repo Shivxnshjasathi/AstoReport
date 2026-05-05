@@ -58,14 +58,6 @@ export default function RootLayout({
               <SalesBoosters />
               {children}
               <MobileNavBar />
-              <Link
-                href="https://wa.me/916366105204?text=Namaste!%20I%20am%20interested%20in%20a%20premium%20astrology%20report.%20Please%20guide%20me."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fixed bottom-20 md:bottom-8 right-4 md:right-8 bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:scale-110 hover:shadow-[0_0_30px_rgba(37,211,102,0.6)] transition-all z-[90] flex items-center justify-center"
-              >
-                <MessageCircle className="w-6 h-6" />
-              </Link>
             </CartProvider>
           </SaleProvider>
         </LanguageProvider>

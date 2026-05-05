@@ -22,9 +22,14 @@ export const SaleProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (savedEnd) {
       end = parseInt(savedEnd, 10);
+      // If expired, restart it for the 30-min experience
+      if (now >= end) {
+        end = now + (30 * 60 * 1000);
+        localStorage.setItem('astro_sale_end', end.toString());
+      }
     } else {
-      // Random duration between 45 mins to 2.5 hours
-      const duration = Math.floor(Math.random() * (150 * 60 * 1000 - 45 * 60 * 1000)) + 45 * 60 * 1000;
+      // Set fixed duration to 30 minutes
+      const duration = 30 * 60 * 1000;
       end = now + duration;
       localStorage.setItem('astro_sale_end', end.toString());
     }
