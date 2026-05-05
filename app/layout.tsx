@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     title: "AstroReport",
     statusBarStyle: "black-translucent",
   },
+  icons: {
+    icon: '/icon.png',
+  },
   formatDetection: {
     telephone: false,
   },

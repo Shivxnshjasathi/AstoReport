@@ -1,6 +1,6 @@
-# 🌟 AstroReport — Vedic Astrology SaaS Platform
+# 🌟 AstroReport — Premium Vedic Astrology SaaS Platform
 
-> A premium, bilingual (English/Hindi) Vedic astrology platform offering free Kundli generation, personalized reports, gemstone recommendations, and expert consultations — powered by WhatsApp-first lead capture and conversion.
+> A high-conversion, bilingual (English/Hindi) Vedic astrology platform offering accurate Kundli generation, trust-first premium reports, gemstone curation, and expert consultations — powered by WhatsApp-first lead capture and a viral growth loop.
 
 ---
 
@@ -10,63 +10,38 @@
 
 ---
 
-## ✨ Features
+## ✨ Premium Features
 
 ### 🔭 Free Kundli Generator
-- Enter name, date of birth, time of birth, and place of birth
-- Auto geocoding via location search (lat/lon/timezone detection)
-- Generates accurate **D1 (Lagna)** and **D9 (Navamsa)** Kundli charts
-- Displays **Vimshottari Dasha** (Maha Dasha + Antar Dasha)
-- Full **Planetary Positions** table (Planet, Longitude, Rashi, Nakshatra)
-- **Completely free** — no signup, no paywall
+- **High-Precision Engine**: Accurate **D1 (Lagna)** and **D9 (Navamsa)** Kundli charts generated instantly.
+- **Dynamic Data**: Displays **Vimshottari Dasha** and complete **Planetary Positions**.
+- **Auto Geocoding**: Smart location search with timezone detection.
+- **PDF Export**: One-click download of the full Kundli as a beautifully styled PDF report.
 
-### 📄 PDF Report Download
-- One-click download of the full Kundli as a styled PDF
-- Includes **both D1 and D9 charts** rendered as SVG grids inside the PDF
-- Works on **mobile** (iOS Safari, Android Chrome) using `pdf().toBlob()`
+### 📚 Premium Reports Store (22+ Products)
+- **Trust-First Narrative**: Detailed landing pages for each report that bridge emotional pain points with technical astrological logic (D10, Shadbala, planetary transits).
+- **3D Book Mockups**: Interactive, responsive book covers for every premium product.
+- **Dynamic Routing**: Stable, SEO-friendly detail pages for all 22+ premium reports.
+- **Smart Cart Toggle**: One-tap "Add to Cart" that toggles between adding and removing for a seamless shopping experience.
 
-### 🛒 Premium Reports Store
-- Browse and add multiple reports to cart
-- Reports include: Full Kundli, Marriage Compatibility, Career Blueprint, Annual Forecast, Numerology, Baby Name, Vastu
-- Flash sale system with countdown timer
-- Gemstone recommendations page
+### 💰 WhatsApp-First Checkout
+- **Lead Capture**: Collects full birth details and order summaries in a single, structured WhatsApp message.
+- **Zero Friction**: No account creation or complex payment gateways required for high-conversion lead generation.
+- **Manual Fulfillment**: Perfect for small to medium astrology businesses managing orders via WhatsApp Business.
 
-### 💳 WhatsApp-First Checkout
-- Customer fills order details (name, DOB, TOB, place of birth)
-- Order is dispatched as a **structured WhatsApp message** to the business number
-- Includes all birth details, reports ordered, and total amount
-- **4–5 day delivery note** included automatically in message
-- No payment gateway needed — ideal for India-first WhatsApp-based businesses
+### 🎁 Viral Referral System
+- **Personalized Branding**: Users generate their own codes (e.g., `ASTRO-NAME-20`) on the homepage.
+- **Sharing Loop**: One-tap sharing to WhatsApp with pre-written referral messages.
+- **Post-Checkout Success**: Encourages customers to share their code immediately after a purchase to earn manual rewards.
 
-### 🎁 Referral System
-- After placing an order, customers receive their **personal referral code** (e.g. `ASTRO-PRIYA-20`)
-- One-tap **WhatsApp Share button** with a pre-written referral message
-- At checkout, customers can enter **"Referred by"** (friend's name/code)
-- That referrer's name appears in the WhatsApp order message → you give them a discount next time
-- **Zero backend needed** — fully manual, honor-based system
+### 🌐 Full Bilingual Support
+- **EN/HI Toggle**: Seamless transition between English and Hindi across the entire platform.
+- **Localized Content**: All 22+ reports feature translated titles, descriptions, and "Astrological Logic" sections.
 
-### 🌐 Bilingual — English & Hindi
-- Every single string on every page is fully localized
-- Language toggle in the footer (persists via context)
-- Covers: Homepage, Kundli Report, Store, Checkout, Contact, Gemstones, Astrology pages
-- Hindi text includes Devanagari across all CTAs, labels, modals, and messages
-
-### 🪐 Cosmic UI & Animations
-- Solar system parallax background (4 orbiting rings with glowing planets)
-- Scroll-linked parallax with `framer-motion` (`useScroll` + `useTransform`)
-- Subtle opacity fade on scroll so content stays readable
-- Dark cosmic palette: `#121212` base, `#B78E28` gold, `#E5D6C8` cream
-
-### 📱 Mobile Responsive
-- All form inputs use `flex` layout with `min-w-0` to prevent native date/time input overflow
-- Hero section stacks properly on small screens
-- Bottom navigation bar for mobile
-- Font sizes scale correctly across breakpoints
-
-### 📞 WhatsApp Contact Button
-- Floating WhatsApp button on all pages
-- Business number: **+91 6366 105 204**
-- All CTAs (Contact, Checkout, Share) route through WhatsApp
+### 📱 Premium UX & Mobile Optimization
+- **Cosmic Aesthetics**: Gold/Dark theme (`#121212`, `#B78E28`, `#E5D6C8`) with micro-animations and parallax solar system backgrounds.
+- **Safe-Area Support**: Custom CSS utilities to handle mobile notches and home indicators on modern devices.
+- **Prioritized Navigation**: Smart mobile nav bar that hides on detail pages to focus user attention on primary CTAs.
 
 ---
 
@@ -74,13 +49,12 @@
 
 | Layer | Technology |
 |---|---|
-| **Framework** | Next.js 15 (App Router) |
-| **Styling** | Tailwind CSS |
+| **Framework** | Next.js 14+ (App Router) |
+| **Styling** | Tailwind CSS (Custom Theme) |
 | **Animations** | Framer Motion |
-| **PDF Generation** | `@react-pdf/renderer` |
 | **Icons** | Lucide React |
-| **Language** | TypeScript |
-| **Deployment** | Vercel |
+| **Context** | React Context (Language, Cart, Sale) |
+| **Asset Generation** | Custom AI-generated Favicons & Mockups |
 
 ---
 
@@ -89,30 +63,17 @@
 ```
 astro-report/
 ├── app/
-│   ├── page.tsx                    # Homepage (Hero, Store, Experts, Testimonials, Footer)
-│   ├── layout.tsx                  # Root layout (providers, nav, WhatsApp button)
-│   ├── report/page.tsx             # Free Kundli Report page
-│   ├── store/page.tsx              # Premium Reports Store
-│   ├── checkout/page.tsx           # Checkout with WhatsApp order dispatch
-│   ├── gemstones/page.tsx          # Gemstone recommendations
-│   ├── astrology/page.tsx          # Horoscope / Astrology tools
-│   ├── contact/page.tsx            # Contact page
-│   ├── success/page.tsx            # Order success page
+│   ├── [id]/page.tsx               # Dynamic Premium Report Detail Page
+│   ├── store/page.tsx              # Main Reports Listing (Grid/Tiers)
+│   ├── checkout/page.tsx           # Order capture & WA dispatch
+│   ├── report/page.tsx             # Free Kundli Generator
+│   ├── gemstones/page.tsx          # Premium Gemstones landing
 │   ├── components/
-│   │   ├── Chart/KundliChart.tsx   # SVG North Indian Kundli chart
-│   │   ├── Form/BirthInputForm.tsx # Birth details form
-│   │   ├── Form/LocationSearch.tsx # Geocoding location search
-│   │   ├── PDF/ReportPDF.tsx       # PDF document with D1/D9 charts
-│   │   ├── Navigation/             # Navbar, mobile bottom nav
-│   │   └── Marketing/              # Sale banner, promotional components
-│   └── context/
-│       ├── LanguageContext.tsx     # EN/HI language toggle
-│       ├── CartContext.tsx         # Shopping cart state
-│       └── SaleContext.tsx         # Flash sale activation
-├── lib/
-│   ├── astro/actions.ts            # Kundli calculation engine
-│   └── services/geocoding.ts      # Location → lat/lon/timezone
-└── public/                         # Static assets
+│   │   ├── Navigation/             # Sticky Action Bars, Mobile Nav
+│   │   ├── Form/                   # BirthInput, LocationSearch
+│   │   └── Marketing/              # SalesBoosters, WhatsAppWidget
+│   └── data/
+│       └── reportsDetails.ts       # Source of Truth for 22+ Premium Reports
 ```
 
 ---
@@ -124,61 +85,10 @@ astro-report/
 git clone https://github.com/Shivxnshjasathi/AstoReport.git
 
 # Install dependencies
-cd astro-report
 npm install
 
 # Run development server
 npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
----
-
-## ⚙️ Configuration
-
-### Business WhatsApp Number
-Update the number in two places:
-
-**`app/checkout/page.tsx`** — order dispatch:
-```ts
-window.open(`https://wa.me/916366105204?text=${message}`, '_blank');
-```
-
-**`app/layout.tsx`** — floating contact button:
-```ts
-href="https://wa.me/916366105204"
-```
-
-Replace `916366105204` with your number (country code + number, no `+` or spaces).
-
----
-
-## 💰 Monetization Strategy
-
-| Revenue Stream | Status |
-|---|---|
-| Premium PDF Reports (₹299–₹1499) | ✅ Store live |
-| WhatsApp Consultation Booking | ✅ Contact flow live |
-| Gemstone Shop | ✅ Page live |
-| Referral Program | ✅ Post-order code generation |
-| Flash Sales | ✅ Sale banner with timer |
-| Payment Gateway (Razorpay) | 🔜 Planned |
-| Database / User Accounts (Supabase) | 🔜 Planned |
-| Live Astrologer Booking Calendar | 🔜 Planned |
-
----
-
-## 📦 Key Dependencies
-
-```json
-{
-  "next": "^15.x",
-  "framer-motion": "^11.x",
-  "@react-pdf/renderer": "^4.x",
-  "lucide-react": "^0.x",
-  "tailwindcss": "^4.x"
-}
 ```
 
 ---
@@ -186,6 +96,7 @@ Replace `916366105204` with your number (country code + number, no `+` or spaces
 ## 🌟 Business Contact
 
 - **WhatsApp:** +91 6366 105 204
+- **Email:** support@astroreport.com
 - **Platform:** [astro-report.vercel.app](https://astro-report.vercel.app)
 
 ---
