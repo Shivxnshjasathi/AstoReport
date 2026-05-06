@@ -111,22 +111,23 @@ export default function CheckoutPage() {
       <div className="max-w-[1200px] mx-auto w-full relative z-10">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6 mb-12">
-          <Link href="/store" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
+        <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-4 mb-8">
+          <Link href="/store" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[10px]">
             <ArrowLeft className="w-4 h-4" />
-            {t.back}
+            <span className="hidden sm:inline">{t.back}</span>
+            <span className="sm:hidden">BACK</span>
           </Link>
-          <div className="flex items-center gap-2 text-[#7D756B] uppercase tracking-[0.2em] text-xs">
-            <ShieldCheck className="w-4 h-4" />
-            {t.secure}
+          <div className="flex items-center gap-2 text-[#7D756B] uppercase tracking-[0.2em] text-[10px]">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{t.secure}</span>
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
           
           {/* Order Summary (Left) */}
           <div className="flex-1">
-            <h1 className="text-3xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-8 font-light">
+            <h1 className="text-2xl lg:text-3xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-6 lg:mb-8 font-light">
               {t.summary}
             </h1>
 

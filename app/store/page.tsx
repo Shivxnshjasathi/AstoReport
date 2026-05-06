@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, BookOpen, Star, Diamond, Crown, ShoppingCart, Check, Sparkles, Compass, MessageCircle, Hand } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSale } from '../context/SaleContext';
@@ -196,46 +197,99 @@ export default function StorePage() {
   const t = storeDict[language];
 
   return (
-    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden py-12 px-6 lg:px-12">
-      <div className="max-w-[1400px] mx-auto w-full">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6 mb-12">
-          <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
-            <ArrowLeft className="w-4 h-4" />
-            {t.back}
-          </Link>
-          <Link href="/checkout" className="flex items-center gap-2 text-[#E5D6C8] hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em] text-xs">
-            <ShoppingCart className="w-4 h-4" />
-            <span>{t.cart} ({cart.length})</span>
-          </Link>
+    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden pb-40">
+      {/* Immersive Store Hero */}
+      <section className="relative w-full min-h-[40vh] lg:min-h-[50vh] flex flex-col items-center justify-center pt-6 pb-12 overflow-hidden border-b border-[#7D756B]/20">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/store-hero-bg.png" 
+            alt="Celestial Library" 
+            fill 
+            className="object-cover opacity-40 scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/60 to-[#121212]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />
         </div>
 
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <BookOpen className="w-8 h-8 text-[#B78E28] mx-auto mb-6" strokeWidth={1} />
-          <h1 className="text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 text-center">
+          <div className="flex items-center justify-between w-full mb-6 lg:mb-0 lg:absolute lg:top-0 lg:left-0 lg:px-6">
+            <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[9px] group">
+              <div className="w-8 h-8 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] transition-all">
+                <ArrowLeft className="w-3.5 h-3.5" />
+              </div>
+              {t.back}
+            </Link>
+
+            <Link href="/checkout" className="flex items-center gap-2 text-[#E5D6C8] hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em] text-[9px] group">
+              <span className="hidden sm:inline">{t.cart} ({cart.length})</span>
+              <span className="sm:hidden">({cart.length})</span>
+              <div className="w-8 h-8 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] transition-all">
+                <ShoppingCart className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+          </div>
+
+          <BookOpen className="w-10 h-10 lg:w-12 lg:h-12 text-[#B78E28] mx-auto mb-6 lg:mb-8 opacity-80" strokeWidth={1} />
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-6 font-light leading-tight">
             {t.title}
           </h1>
-          <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#7D756B] text-[9px] sm:text-xs uppercase tracking-[0.3em] max-w-xl mx-auto leading-loose px-4">
             {t.desc}
           </p>
         </div>
+      </section>
+
+      <div className="max-w-[1400px] mx-auto w-full px-4 lg:px-12 mt-12 lg:mt-20">
 
         {/* Tiers */}
-        <div className="space-y-24">
+        <div className="space-y-16 lg:space-y-24">
           {tiers.map((tier, idx) => (
             <section key={idx}>
-              <div className="flex flex-col items-center mb-12">
-                <div className="flex items-center gap-3 mb-2">
-                  {tier.icon}
-                  <h2 className="text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.15em] font-light text-center">
-                    {tier.name}
-                  </h2>
+              {idx === 0 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-12 lg:mb-16 bg-[#1A1A1A]/30 backdrop-blur-md rounded-[2.5rem] lg:rounded-[3rem] p-6 lg:p-12 border border-[#7D756B]/20 overflow-hidden relative group">
+                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity hidden lg:block">
+                    <Crown className="w-32 h-32 text-[#B78E28]" />
+                  </div>
+                  
+                  <div className="lg:col-span-5 relative z-10 text-center lg:text-left">
+                    <div className="inline-flex items-center gap-2 bg-[#B78E28]/10 text-[#B78E28] px-4 py-2 rounded-full text-[9px] lg:text-[10px] font-bold uppercase tracking-widest mb-6 border border-[#B78E28]/30">
+                      <Sparkles className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                      MOST POWERFUL CHOICE
+                    </div>
+                    <h2 className="text-2xl sm:text-3xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-6 leading-tight">
+                      {tier.name}
+                    </h2>
+                    <p className="text-[#7D756B] text-xs lg:text-base mb-8 leading-relaxed max-w-md mx-auto lg:mx-0">
+                      {tier.description}
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-7 relative z-10 flex justify-center lg:justify-end">
+                     <div className="relative w-full max-w-lg aspect-[4/3] lg:aspect-video rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl border border-[#7D756B]/30">
+                        <Image 
+                          src="/bundle-showcase.png" 
+                          alt="Bundle Showcase" 
+                          fill 
+                          className="object-cover group-hover:scale-105 transition-transform duration-1000" 
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/80 via-transparent to-transparent" />
+                     </div>
+                  </div>
                 </div>
-                <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] text-center">
-                  {tier.description}
-                </p>
-              </div>
+              ) : (
+                <div className="flex flex-col items-center mb-12">
+                  <div className="flex items-center gap-3 mb-2">
+                    {tier.icon}
+                    <h2 className="text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.15em] font-light text-center">
+                      {tier.name}
+                    </h2>
+                  </div>
+                  <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] text-center">
+                    {tier.description}
+                  </p>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 {tier.reports.map((report) => (

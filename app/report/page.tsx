@@ -9,6 +9,7 @@ import { Share2, ArrowLeft, MapPin, Calendar, Clock, Loader2, Sparkles, Download
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { ReportPDF } from '../components/PDF/ReportPDF';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -144,15 +145,26 @@ const ReportContent = () => {
 
 
   return (
-    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden">
-      
-      <div className="w-full max-w-[1400px] mx-auto py-12 px-6 lg:px-12">
+    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden pb-32">
+      {/* Immersive Background */}
+      <div className="fixed inset-0 z-0">
+        <Image 
+          src="/kundli-bg.png" 
+          alt="Celestial Mandala" 
+          fill 
+          className="object-cover opacity-30 scale-110"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/80 to-[#121212]" />
+      </div>
+
+      <div className="w-full max-w-[1400px] mx-auto pt-12 pb-24 px-4 lg:px-12 relative z-10">
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-6xl mx-auto w-full space-y-12 relative z-10"
+          className="max-w-6xl mx-auto w-full space-y-10 lg:space-y-12"
         >
           {/* Header & Actions */}
           <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6">

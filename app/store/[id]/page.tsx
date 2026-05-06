@@ -4,11 +4,12 @@ import React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ShoppingCart, Check, Sparkles, Book, ShieldCheck, Zap, Info } from 'lucide-react';
-import { useCart } from '@/app/context/CartContext';
-import { useSale } from '@/app/context/SaleContext';
-import { useLanguage } from '@/app/context/LanguageContext';
-import { reportsDetails } from '@/app/data/reportsDetails';
+import { useCart } from '../../context/CartContext';
+import { useSale } from '../../context/SaleContext';
+import { useLanguage } from '../../context/LanguageContext';
+import { reportsDetails } from '../../data/reportsDetails';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 const BookMockup = dynamic(() => import('@/app/components/Product/BookMockup'), { 
@@ -51,94 +52,141 @@ export default function ReportDetailPage() {
   const t = translations[language as keyof typeof translations] || translations.en;
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#E5D6C8] font-sans pb-40">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between">
-        <button onClick={() => router.back()} className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[10px]">
-          <ArrowLeft className="w-4 h-4" />
-          {t.back}
-        </button>
-        <Link href="/checkout" className="flex items-center gap-2 text-[#E5D6C8] hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em] text-[10px]">
-          <ShoppingCart className="w-4 h-4" />
-          ({cart.length})
-        </Link>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mt-4 lg:mt-8">
-        {/* Left Side: Book Mockup */}
-        <div className="lg:sticky lg:top-12 flex justify-center perspective-1000 order-1 mb-8 lg:mb-0">
-          <BookMockup title={report.title[language as 'en' | 'hi']} />
+    <main className="min-h-screen bg-[#121212] text-[#E5D6C8] font-sans pb-40 relative">
+      {/* Premium Hero Section */}
+      <section className="relative w-full min-h-[50vh] lg:min-h-[60vh] flex flex-col items-center justify-center pt-6 pb-12 overflow-hidden border-b border-[#7D756B]/20">
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/report-hero-bg.png" 
+            alt="Celestial Background" 
+            fill 
+            className="object-cover opacity-50"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-transparent to-[#121212]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />
         </div>
 
-        {/* Right Side: Details */}
-        <div className="space-y-8 lg:space-y-12 py-4 lg:py-8 order-2">
-          <div className="text-center lg:text-left">
-            {isSaleActive && (
-              <div className="inline-flex items-center gap-2 bg-[#B78E28]/10 text-[#B78E28] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-[#B78E28]/30 animate-pulse">
-                <Sparkles className="w-3 h-3" />
-                50% OFF FLASH SALE
+        <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+          <div className="flex items-center mb-6 lg:mb-0 lg:absolute lg:top-0 lg:left-6">
+            <button 
+              onClick={() => router.back()} 
+              className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[9px] group"
+            >
+              <div className="w-8 h-8 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] transition-all">
+                <ArrowLeft className="w-3.5 h-3.5" />
               </div>
-            )}
-            <h1 className="text-3xl md:text-5xl font-serif text-[#E5D6C8] leading-tight mb-6">
-              {report.title[language as 'en' | 'hi']}
-            </h1>
-            <div className="flex items-center justify-center lg:justify-start gap-4 mb-8">
-               <div className="flex items-center gap-2">
-                 <span className="text-2xl md:text-3xl font-light text-[#B78E28]">
-                   {isSaleActive ? report.priceINR : report.oldPriceINR}
-                 </span>
-                 {isSaleActive && <span className="text-sm text-[#7D756B] line-through">{report.oldPriceINR}</span>}
-               </div>
-               <div className="w-px h-8 bg-[#7D756B]/30" />
-               <div className="flex items-center gap-2">
-                 <span className="text-lg font-light text-[#B78E28]">
-                   {isSaleActive ? report.priceUSD : report.oldPriceUSD}
-                 </span>
-                 {isSaleActive && <span className="text-[10px] text-[#7D756B] line-through uppercase">{report.oldPriceUSD}</span>}
-               </div>
-            </div>
+              {t.back}
+            </button>
           </div>
 
-          <div className="space-y-8">
-            <section className="bg-[#1A1A1A] p-8 rounded-3xl border border-[#7D756B]/20">
-              <div className="flex items-center gap-3 mb-4 text-[#B78E28]">
-                <Info className="w-5 h-5" />
-                <h3 className="font-serif text-lg uppercase tracking-widest">{t.overview}</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+            {/* Hero Text */}
+            <div className="text-center lg:text-left order-1 lg:order-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                {isSaleActive && (
+                  <div className="inline-flex items-center gap-2 bg-[#B78E28]/10 text-[#B78E28] px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest mb-6 lg:mb-8 border border-[#B78E28]/30 animate-pulse">
+                    <Sparkles className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                    50% OFF FLASH SALE
+                  </div>
+                )}
+                <h1 className="text-3xl md:text-5xl lg:text-7xl font-serif text-[#E5D6C8] leading-tight mb-8">
+                  {report.title[language as 'en' | 'hi']}
+                </h1>
+                
+                <div className="flex items-center justify-center lg:justify-start gap-4 lg:gap-8 mb-10 lg:mb-12">
+                   <div className="flex flex-col">
+                     <span className="text-[8px] lg:text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-1">Domestic</span>
+                     <div className="flex items-center gap-2 lg:gap-3">
+                       <span className="text-2xl lg:text-4xl font-light text-[#B78E28]">
+                         {isSaleActive ? report.priceINR : report.oldPriceINR}
+                       </span>
+                       {isSaleActive && <span className="text-[10px] lg:text-sm text-[#7D756B] line-through">{report.oldPriceINR}</span>}
+                     </div>
+                   </div>
+                   <div className="w-px h-10 lg:h-12 bg-[#7D756B]/20" />
+                   <div className="flex flex-col">
+                     <span className="text-[8px] lg:text-[10px] text-[#7D756B] uppercase tracking-[0.2em] mb-1">International</span>
+                     <div className="flex items-center gap-2 lg:gap-3">
+                       <span className="text-xl lg:text-3xl font-light text-[#B78E28]">
+                         {isSaleActive ? report.priceUSD : report.oldPriceUSD}
+                       </span>
+                       {isSaleActive && <span className="text-[9px] lg:text-[10px] text-[#7D756B] line-through uppercase">{report.oldPriceUSD}</span>}
+                     </div>
+                   </div>
+                </div>
+
+                <div className="flex flex-row items-center justify-center lg:justify-start gap-3 lg:gap-4">
+                  <div className="flex items-center gap-2 bg-[#1A1A1A]/50 backdrop-blur-sm px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg border border-[#7D756B]/20">
+                    <ShieldCheck className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#B78E28]" />
+                    <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-[#E5D6C8]">{t.secure}</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-[#1A1A1A]/50 backdrop-blur-sm px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg border border-[#7D756B]/20">
+                    <Zap className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#B78E28]" />
+                    <span className="text-[8px] lg:text-[9px] uppercase tracking-widest text-[#E5D6C8]">{t.delivery}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Mockup Showcase */}
+            <div className="flex justify-center perspective-1000 order-2 lg:order-1 lg:mt-0">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8 }}
+                className="relative scale-90 lg:scale-100"
+              >
+                <div className="absolute -inset-10 bg-[#B78E28]/10 blur-[60px] rounded-full opacity-50" />
+                <BookMockup title={report.title[language as 'en' | 'hi']} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Content Section */}
+      <div className="max-w-6xl mx-auto px-6 py-12 lg:py-32">
+        <div className="grid grid-cols-1 gap-10 lg:gap-12 items-start">
+          <div className="space-y-10 lg:space-y-12">
+            <section className="bg-[#1A1A1A]/30 backdrop-blur-md p-8 lg:p-16 rounded-[2.5rem] lg:rounded-[3rem] border border-[#7D756B]/20 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-10">
+                <Info className="w-24 h-24 text-[#B78E28]" />
               </div>
-              <p className="text-[#E5D6C8]/80 leading-relaxed text-sm md:text-base">
+              <div className="flex items-center gap-4 mb-8 text-[#B78E28]">
+                <div className="w-10 h-[1px] bg-[#B78E28]" />
+                <h3 className="font-serif text-2xl uppercase tracking-[0.2em]">{t.overview}</h3>
+              </div>
+              <p className="text-[#E5D6C8]/90 leading-relaxed text-base lg:text-lg max-w-4xl">
                 {report.whatIsIt[language as 'en' | 'hi']}
               </p>
             </section>
 
-            <section className="p-8 rounded-3xl border border-[#7D756B]/10 hover:border-[#B78E28]/30 transition-all group">
-              <div className="flex items-center gap-3 mb-4 text-[#B78E28]">
-                <Zap className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <h3 className="font-serif text-lg uppercase tracking-widest">{t.fixes}</h3>
-              </div>
-              <p className="text-[#E5D6C8]/80 leading-relaxed text-sm md:text-base">
-                {report.whatItFixes[language as 'en' | 'hi']}
-              </p>
-            </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <section className="p-10 rounded-[3rem] border border-[#7D756B]/10 hover:border-[#B78E28]/30 transition-all duration-700 group bg-[#121212]">
+                <div className="flex items-center gap-4 mb-8 text-[#B78E28]">
+                  <Zap className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-serif text-xl uppercase tracking-[0.2em]">{t.fixes}</h3>
+                </div>
+                <p className="text-[#7D756B] group-hover:text-[#E5D6C8] leading-relaxed text-sm lg:text-base transition-colors">
+                  {report.whatItFixes[language as 'en' | 'hi']}
+                </p>
+              </section>
 
-            <section className="p-8 rounded-3xl border border-[#7D756B]/10 hover:border-[#B78E28]/30 transition-all group">
-              <div className="flex items-center gap-3 mb-4 text-[#B78E28]">
-                <Book className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <h3 className="font-serif text-lg uppercase tracking-widest">{t.logic}</h3>
-              </div>
-              <p className="text-[#E5D6C8]/80 leading-relaxed text-sm md:text-base italic font-serif">
-                {report.astrologicalLogic[language as 'en' | 'hi']}
-              </p>
-            </section>
-          </div>
-
-          <div className="flex items-center gap-6 py-6 border-y border-[#7D756B]/20">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#B78E28]" />
-              <span className="text-[10px] uppercase tracking-widest text-[#7D756B]">{t.secure}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-[#B78E28]" />
-              <span className="text-[10px] uppercase tracking-widest text-[#7D756B]">{t.delivery}</span>
+              <section className="p-10 rounded-[3rem] border border-[#7D756B]/10 hover:border-[#B78E28]/30 transition-all duration-700 group bg-[#121212]">
+                <div className="flex items-center gap-4 mb-8 text-[#B78E28]">
+                  <Book className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  <h3 className="font-serif text-xl uppercase tracking-[0.2em]">{t.logic}</h3>
+                </div>
+                <p className="text-[#7D756B] group-hover:text-[#E5D6C8] leading-relaxed text-sm lg:text-base italic font-serif transition-colors">
+                  {report.astrologicalLogic[language as 'en' | 'hi']}
+                </p>
+              </section>
             </div>
           </div>
         </div>

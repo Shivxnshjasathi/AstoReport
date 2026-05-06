@@ -1,28 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #121212;
+  --foreground: #E5D6C8;
+  --gold: #B78E28;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html, body {
+    @apply overflow-x-hidden bg-[#121212] selection:bg-[#B78E28]/30 selection:text-[#E5D6C8];
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    background: var(--background);
+    color: var(--foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .safe-area-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+::-webkit-scrollbar-thumb {
+  background: #7D756B/20;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B78E28/40;
 }
 
 @keyframes marquee {
@@ -36,8 +56,4 @@ body {
 
 .animate-marquee-fast {
   animation: marquee 15s linear infinite;
-}
-
-.safe-area-bottom {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
 }

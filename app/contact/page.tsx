@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -59,66 +61,85 @@ export default function ContactPage() {
   const t = contactDict[language];
 
   return (
-    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden py-12 px-6 lg:px-12">
-      <div className="max-w-[1200px] mx-auto w-full">
+    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden pb-20">
+      {/* Immersive Background */}
+      <div className="fixed inset-0 z-0">
+        <Image 
+          src="/contact-bg.png" 
+          alt="Spiritual Sanctuary" 
+          fill 
+          className="object-cover opacity-30 scale-105"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/80 to-[#121212]" />
+      </div>
+
+      <div className="max-w-[1200px] mx-auto w-full pt-6 px-4 lg:px-12 relative z-10">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6 mb-12">
-          <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
-            <ArrowLeft className="w-4 h-4" />
+        <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-4 mb-8">
+          <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[10px] group">
+            <div className="w-8 h-8 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] transition-all">
+              <ArrowLeft className="w-4 h-4" />
+            </div>
             {t.back}
           </Link>
-          <div className="flex items-center gap-2 text-[#E5D6C8] uppercase tracking-[0.2em] text-xs">
+          <div className="flex items-center gap-2 text-[#E5D6C8] uppercase tracking-[0.2em] text-[10px]">
             {t.contactUs}
           </div>
         </div>
 
-        <div className="text-center mb-16">
-          <h1 className="text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <h1 className="text-4xl lg:text-6xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light leading-tight">
             {t.title}
           </h1>
-          <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#7D756B] text-[9px] lg:text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed px-4">
             {t.desc}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           
           {/* Contact Details */}
-          <div className="flex flex-col justify-center space-y-12">
+          <div className="flex flex-col space-y-8 lg:space-y-12 order-2 lg:order-1 px-4 lg:px-0">
             
             <div className="flex items-start gap-6">
               <div className="w-12 h-12 rounded-full bg-[#B78E28]/10 flex items-center justify-center shrink-0 border border-[#B78E28]/30">
-                <Phone className="w-5 h-5 text-[#B78E28]" strokeWidth={1.5} />
+                <Phone className="w-5 h-5 text-[#B78E28]" strokeWidth={1} />
               </div>
               <div>
-                <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.callUs}</h3>
-                <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.callTime}</p>
+                <h3 className="text-[#E5D6C8] font-serif text-lg lg:text-xl tracking-widest uppercase mb-2">{t.callUs}</h3>
+                <p className="text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-4">{t.callTime}</p>
                 <div className="space-y-2">
-                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.sales}</span> +91-6366105204</p>
-                  <p className="text-[#E5D6C8] text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.support}</span> +91-6366105204</p>
+                  <p className="text-[#E5D6C8] text-xs lg:text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.sales}</span> +91-6366105204</p>
+                  <p className="text-[#E5D6C8] text-xs lg:text-sm tracking-[0.1em]"><span className="text-[#7D756B] mr-2">{t.support}</span> +91-6366105204</p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-start gap-6">
               <div className="w-12 h-12 rounded-full bg-[#B78E28]/10 flex items-center justify-center shrink-0 border border-[#B78E28]/30">
-                <Mail className="w-5 h-5 text-[#B78E28]" strokeWidth={1.5} />
+                <Mail className="w-5 h-5 text-[#B78E28]" strokeWidth={1} />
               </div>
               <div>
-                <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.emailUs}</h3>
-                <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.emailTime}</p>
-                <p className="text-[#E5D6C8] text-sm tracking-[0.1em]">contact.zincstate@gmail.com</p>
+                <h3 className="text-[#E5D6C8] font-serif text-lg lg:text-xl tracking-widest uppercase mb-2">{t.emailUs}</h3>
+                <p className="text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-4">{t.emailTime}</p>
+                <p className="text-[#E5D6C8] text-xs lg:text-sm tracking-[0.1em]">contact.zincstate@gmail.com</p>
               </div>
             </div>
 
             <div className="flex items-start gap-6">
               <div className="w-12 h-12 rounded-full bg-[#B78E28]/10 flex items-center justify-center shrink-0 border border-[#B78E28]/30">
-                <MapPin className="w-5 h-5 text-[#B78E28]" strokeWidth={1.5} />
+                <MapPin className="w-5 h-5 text-[#B78E28]" strokeWidth={1} />
               </div>
               <div>
-                <h3 className="text-[#E5D6C8] font-serif text-xl tracking-widest uppercase mb-2">{t.location}</h3>
-                <p className="text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-4">{t.locSub}</p>
-                <p className="text-[#E5D6C8] text-sm tracking-[0.1em] leading-relaxed">
+                <h3 className="text-[#E5D6C8] font-serif text-lg lg:text-xl tracking-widest uppercase mb-2">{t.location}</h3>
+                <p className="text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-4">{t.locSub}</p>
+                <p className="text-[#E5D6C8] text-xs lg:text-sm tracking-[0.1em] leading-relaxed">
                   Bellandur, Bangalore,<br />
                   Karnataka, India - 560103
                 </p>
@@ -128,17 +149,13 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-[#121212] border border-[#7D756B]/30 p-8 lg:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
-              <div className="w-[300px] h-[300px] rounded-full border border-white -top-20 -right-20 absolute" />
-            </div>
-
-            <h3 className="text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-8">{t.sendMsg}</h3>
+          <div className="bg-[#121212]/60 backdrop-blur-2xl border border-[#7D756B]/30 p-8 lg:p-12 rounded-[2.5rem] shadow-2xl relative overflow-hidden order-1 lg:order-2 mx-4 lg:mx-0">
+            <h3 className="text-xl lg:text-2xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-8">{t.sendMsg}</h3>
             
             <form className="space-y-6 relative z-10" onSubmit={(e) => { e.preventDefault(); alert(t.alert); }}>
               
               <div>
-                <label className="block text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-2">{t.nameLabel}</label>
+                <label className="block text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-2">{t.nameLabel}</label>
                 <input 
                   type="text" 
                   className="w-full bg-transparent border-b border-[#7D756B]/30 pb-3 text-[#E5D6C8] text-sm focus:outline-none focus:border-[#B78E28] transition-colors"
@@ -148,7 +165,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="block text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-2">{t.emailLabel}</label>
+                <label className="block text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-2">{t.emailLabel}</label>
                 <input 
                   type="email" 
                   className="w-full bg-transparent border-b border-[#7D756B]/30 pb-3 text-[#E5D6C8] text-sm focus:outline-none focus:border-[#B78E28] transition-colors"
@@ -158,9 +175,9 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label className="block text-[#7D756B] text-[10px] uppercase tracking-[0.2em] mb-2">{t.msgLabel}</label>
+                <label className="block text-[#7D756B] text-[8px] lg:text-[10px] uppercase tracking-[0.2em] mb-2">{t.msgLabel}</label>
                 <textarea 
-                  className="w-full bg-transparent border-b border-[#7D756B]/30 pb-3 text-[#E5D6C8] text-sm focus:outline-none focus:border-[#B78E28] transition-colors min-h-[100px] resize-none"
+                  className="w-full bg-transparent border-b border-[#7D756B]/30 pb-3 text-[#E5D6C8] text-sm focus:outline-none focus:border-[#B78E28] transition-colors min-h-[80px] resize-none"
                   placeholder={t.msgPlace}
                   required
                 />
@@ -168,9 +185,9 @@ export default function ContactPage() {
 
               <button 
                 type="submit"
-                className="w-full bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] py-4 rounded-full text-xs uppercase tracking-widest transition-colors font-semibold flex justify-center items-center gap-3 mt-8"
+                className="w-full bg-[#B78E28] text-[#121212] hover:bg-[#E5D6C8] py-4 lg:py-5 rounded-full text-[10px] uppercase tracking-widest transition-all font-bold flex justify-center items-center gap-3 mt-6 lg:mt-8 shadow-[0_0_20px_rgba(183,142,40,0.2)]"
               >
-                {t.submit} <Send className="w-4 h-4" />
+                {t.submit} <Send className="w-3 h-3 lg:w-4 lg:h-4" />
               </button>
 
             </form>

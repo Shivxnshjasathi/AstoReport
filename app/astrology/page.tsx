@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Sparkles, Star } from 'lucide-react';
 import { getDailyHoroscope } from './actions';
 import { useLanguage } from '../context/LanguageContext';
@@ -81,25 +82,39 @@ export default function AstrologyPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden py-12 px-6 lg:px-12">
-      <div className="max-w-[1200px] mx-auto w-full">
+    <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden pb-32">
+      {/* Immersive Background */}
+      <div className="fixed inset-0 z-0">
+        <Image 
+          src="/horoscope-bg.png" 
+          alt="Zodiac Constellations" 
+          fill 
+          className="object-cover opacity-30 scale-110"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/80 to-[#121212]" />
+      </div>
+
+      <div className="max-w-[1200px] mx-auto w-full pt-12 px-4 lg:px-12 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-6 mb-12">
-          <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-xs">
-            <ArrowLeft className="w-4 h-4" />
+          <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[9px] group">
+            <div className="w-8 h-8 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] transition-all">
+              <ArrowLeft className="w-3.5 h-3.5" />
+            </div>
             {t.back}
           </Link>
-          <div className="flex items-center gap-2 text-[#E5D6C8] uppercase tracking-[0.2em] text-xs">
-            <Star className="w-4 h-4" />
+          <div className="flex items-center gap-2 text-[#E5D6C8] uppercase tracking-[0.2em] text-[9px]">
+            <Star className="w-4 h-4 text-[#B78E28]" />
             {t.daily}
           </div>
         </div>
 
-        <div className="text-center mb-16">
-          <h1 className="text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">
+        <div className="text-center mb-12 lg:mb-16">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light leading-tight">
             {t.title}
           </h1>
-          <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#7D756B] text-[9px] sm:text-xs uppercase tracking-[0.2em] max-w-xl mx-auto leading-relaxed px-4">
             {t.desc}
           </p>
         </div>
