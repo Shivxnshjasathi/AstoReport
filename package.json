@@ -20,6 +20,7 @@
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "tarot-card-meanings": "^1.0.2",
     "vedic-calc": "^2.0.0"
   },
   "devDependencies": {

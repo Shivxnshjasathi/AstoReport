@@ -91,6 +91,8 @@ export default function AstrologyPage() {
           fill 
           className="object-cover opacity-30 scale-110"
           priority
+          sizes="100vw"
+          quality={50}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/80 to-[#121212]" />
       </div>

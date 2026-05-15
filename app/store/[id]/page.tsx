@@ -63,6 +63,8 @@ export default function ReportDetailPage() {
             fill 
             className="object-cover opacity-50"
             priority
+            sizes="100vw"
+            quality={50}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-transparent to-[#121212]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />

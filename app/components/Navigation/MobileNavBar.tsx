@@ -3,12 +3,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Sparkles, BookOpen, MessageCircle, Gem } from 'lucide-react';
+import { Home, Sparkles, BookOpen, Gem, Layers } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const navDict = {
-  en: { home: "Home", stars: "Stars", reports: "Reports", gems: "Gems", contact: "Contact" },
-  hi: { home: "होम", stars: "सितारे", reports: "रिपोर्ट", gems: "रत्न", contact: "संपर्क" }
+  en: { home: "Home", stars: "Stars", tarot: "Tarot", reports: "Reports", gems: "Gems" },
+  hi: { home: "होम", stars: "सितारे", tarot: "टैरो", reports: "रिपोर्ट", gems: "रत्न" }
 };
 
 export default function MobileNavBar() {
@@ -32,6 +32,11 @@ export default function MobileNavBar() {
           <Sparkles className="w-5 h-5" strokeWidth={pathname === '/astrology' ? 2 : 1.5} />
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.stars}</span>
         </Link>
+
+        <Link href="/tarot" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/tarot' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
+          <Layers className="w-5 h-5" strokeWidth={pathname === '/tarot' ? 2 : 1.5} />
+          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.tarot}</span>
+        </Link>
         
         <Link href="/store" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/store' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
           <BookOpen className="w-5 h-5" strokeWidth={pathname === '/store' ? 2 : 1.5} />
@@ -41,11 +46,6 @@ export default function MobileNavBar() {
         <Link href="/gemstones" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/gemstones' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
           <Gem className="w-5 h-5" strokeWidth={pathname === '/gemstones' ? 2 : 1.5} />
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.gems}</span>
-        </Link>
-        
-        <Link href="/contact" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/contact' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
-          <MessageCircle className="w-5 h-5" strokeWidth={pathname === '/contact' ? 2 : 1.5} />
-          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.contact}</span>
         </Link>
 
       </div>

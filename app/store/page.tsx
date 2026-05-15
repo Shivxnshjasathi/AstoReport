@@ -207,6 +207,8 @@ export default function StorePage() {
             fill 
             className="object-cover opacity-40 scale-105"
             priority
+            sizes="100vw"
+            quality={50}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#121212]/60 to-[#121212]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />
@@ -271,7 +273,9 @@ export default function StorePage() {
                           src="/bundle-showcase.png" 
                           alt="Bundle Showcase" 
                           fill 
-                          className="object-cover group-hover:scale-105 transition-transform duration-1000" 
+                          className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          quality={70}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/80 via-transparent to-transparent" />
                      </div>

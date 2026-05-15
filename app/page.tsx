@@ -12,6 +12,7 @@ const dict = {
   en: {
     navGemstones: "GEMSTONES",
     navHoroscopes: "HOROSCOPES",
+    navTarot: "TAROT",
     navReports: "REPORTS",
     navContact: "CONTACT US",
     heroTitle1: "A Deeper",
@@ -60,6 +61,7 @@ const dict = {
   hi: {
     navGemstones: "रत्न",
     navHoroscopes: "राशिफल",
+    navTarot: "टैरो",
     navReports: "रिपोर्ट्स",
     navContact: "संपर्क करें",
     heroTitle1: "आपके जीवन की",
@@ -126,6 +128,7 @@ export default function Home() {
         <div className="flex items-center gap-6 lg:gap-16">
           <Link href="/gemstones" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navGemstones}</Link>
           <Link href="/astrology" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navHoroscopes}</Link>
+          <Link href="/tarot" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navTarot}</Link>
         </div>
         
         <div className="flex items-center gap-4 text-[#E5D6C8] mx-4 lg:mx-8">
@@ -157,7 +160,7 @@ export default function Home() {
             transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
             className="absolute w-[1000px] h-[1000px] opacity-10"
           >
-            <Image src="/zodiac-wheel.png" alt="Zodiac Wheel" fill className="object-contain" />
+            <Image src="/zodiac-wheel.png" alt="Zodiac Wheel" fill className="object-contain" sizes="(max-width: 768px) 100vw, 1000px" quality={50} loading="eager" />
           </motion.div>
         </motion.div>
 
@@ -221,7 +224,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <Link href="/gemstones" className="group h-[30rem] lg:h-[40rem] relative rounded-[3rem] overflow-hidden border border-[#7D756B]/30 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/20 to-transparent z-10" />
-              <Image src="/gemstones-showcase.png" alt="Gemstones" fill className="object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100" />
+              <Image src="/gemstones-showcase.png" alt="Gemstones" fill className="object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 50vw" quality={70} />
               <div className="absolute bottom-12 left-12 z-20">
                 <span className="text-[#B78E28] text-[10px] uppercase tracking-[0.3em] mb-4 block opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">Celestial Remedies</span>
                 <h3 className="text-3xl lg:text-5xl font-serif mb-4 text-[#E5D6C8]">{t.qsGemstones}</h3>
@@ -231,7 +234,7 @@ export default function Home() {
             
             <Link href="/store" className="group h-[30rem] lg:h-[40rem] relative rounded-[3rem] overflow-hidden border border-[#7D756B]/30 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/20 to-transparent z-10" />
-              <Image src="/reports-showcase.png" alt="Astrology Reports" fill className="object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100" />
+              <Image src="/reports-showcase.png" alt="Astrology Reports" fill className="object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 50vw" quality={70} />
               <div className="absolute bottom-12 left-12 z-20">
                 <span className="text-[#B78E28] text-[10px] uppercase tracking-[0.2em] mb-4 block opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">Ancient Blueprints</span>
                 <h3 className="text-3xl lg:text-5xl font-serif mb-4 text-[#E5D6C8]">{t.qsReports}</h3>
@@ -253,7 +256,7 @@ export default function Home() {
           <div className="flex justify-center items-center gap-16 flex-wrap">
             <div className="text-center group">
               <div className="w-32 h-32 rounded-full bg-[#1A1A1A] border border-[#B78E28]/30 mx-auto mb-6 flex items-center justify-center group-hover:border-[#B78E28] transition-all duration-700 relative overflow-hidden">
-                <Image src="/acharya-sharma.png" alt="Acharya Sharma" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <Image src="/acharya-sharma.png" alt="Acharya Sharma" fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="128px" quality={75} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <h4 className="text-[#E5D6C8] font-serif uppercase tracking-widest text-base mb-2">{t.expert1Name}</h4>
@@ -261,7 +264,7 @@ export default function Home() {
             </div>
             <div className="text-center group">
               <div className="w-32 h-32 rounded-full bg-[#1A1A1A] border border-[#B78E28]/30 mx-auto mb-6 flex items-center justify-center group-hover:border-[#B78E28] transition-all duration-700 relative overflow-hidden">
-                <Image src="/dr-verma.png" alt="Dr. K. Verma" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                <Image src="/dr-verma.png" alt="Dr. K. Verma" fill className="object-cover group-hover:scale-110 transition-transform duration-700" sizes="128px" quality={75} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <h4 className="text-[#E5D6C8] font-serif uppercase tracking-widest text-base mb-2">{t.expert2Name}</h4>
@@ -311,7 +314,7 @@ export default function Home() {
       <section className="py-24 lg:py-40 px-4 lg:px-12 relative overflow-hidden border-y border-[#7D756B]/20">
         {/* Cosmic Background Layer */}
         <div className="absolute inset-0 z-0">
-          <Image src="/cosmic-bg.png" alt="Cosmic Background" fill className="object-cover opacity-30" />
+          <Image src="/cosmic-bg.png" alt="Cosmic Background" fill className="object-cover opacity-30" sizes="100vw" quality={50} />
           <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-transparent to-[#121212]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#121212] via-transparent to-[#121212]" />
         </div>
@@ -399,6 +402,7 @@ export default function Home() {
               <ul className="space-y-4 text-[#7D756B] text-[10px] uppercase tracking-[0.2em]">
                 <li><Link href="/gemstones" className="hover:text-[#B78E28] transition-colors">{t.footerGemstones}</Link></li>
                 <li><Link href="/store" className="hover:text-[#B78E28] transition-colors">{t.footerReports}</Link></li>
+                <li><Link href="/tarot" className="hover:text-[#B78E28] transition-colors">{language === 'hi' ? 'टैरो रीडिंग' : 'Tarot Reading'}</Link></li>
                 <li><Link href="/astrology" className="hover:text-[#B78E28] transition-colors">{t.footerCalc}</Link></li>
                 <li><Link href="/contact" className="hover:text-[#B78E28] transition-colors">{t.footerContact}</Link></li>
               </ul>
