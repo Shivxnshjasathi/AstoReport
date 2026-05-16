@@ -47,8 +47,8 @@ export default function MobileNavBar() {
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.reports}</span>
         </Link>
 
-        <Link href="/panchang" className={`flex flex-col items-center gap-1 w-14 ${isToolActive ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
-          <Compass className="w-5 h-5" strokeWidth={isToolActive ? 2 : 1.5} />
+        <Link href="/#tools-hub" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/#tools-hub' || isToolActive ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
+          <Compass className="w-5 h-5" strokeWidth={pathname === '/#tools-hub' || isToolActive ? 2 : 1.5} />
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.tools}</span>
         </Link>
 

@@ -9,10 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.75",
+    "@ai-sdk/react": "^3.0.186",
     "@node-jhora/core": "^2.1.0",
     "@node-jhora/ephe": "^440.2.0",
     "@node-jhora/prediction": "^2.1.0",
     "@react-pdf/renderer": "^4.5.1",
+    "ai": "^6.0.184",
     "astronomy-engine": "^2.1.19",
     "aztro-js": "^0.1.5",
     "framer-motion": "^12.38.0",

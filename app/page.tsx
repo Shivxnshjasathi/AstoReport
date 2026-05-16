@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from './context/LanguageContext';
 import { useCart } from './context/CartContext';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 
 const dict = {
   en: {
@@ -39,11 +39,14 @@ const dict = {
     footerGemstones: "Premium Gemstones",
     footerReports: "Explore Reports",
     footerCalc: "Free Calculators",
-    footerContact: "Contact Support",
+    footerContact: "Support",
     footerCopy: "All rights reserved © AstroReport 2026",
     footerTerms: "Terms & Services",
     footerPrivacy: "Privacy Policy",
     footerRefund: "Refund Policy",
+    toolTab: "TOOLS",
+    allTools: "All Tools",
+    tabAll: "All",
     testimonialTitle: "Real Cosmic Impact",
     testimonialDesc: "Our community's journey through the stars.",
     t1Quote: "\"The Career Report told me to pivot in October 2025, and I got a 30% raise within two months. Absolutely frightening how accurate it was.\"",
@@ -79,6 +82,14 @@ const dict = {
     toolFestivalsDesc: "Vedic festivals and fasts",
     toolDosha: "Dosha Quiz",
     toolDoshaDesc: "Check for Manglik, Sade Sati, etc",
+    toolConsult: "Live Consult",
+    toolConsultDesc: "Talk to verified experts",
+    toolCompare: "Chart Sync",
+    toolCompareDesc: "Compare two birth charts",
+    toolNewsletter: "WhatsApp Daily",
+    toolNewsletterDesc: "Daily horoscope on WhatsApp",
+    toolBlog: "Astro Blog",
+    toolBlogDesc: "Vedic wisdom & remedies",
   },
   hi: {
     navGemstones: "रत्न",
@@ -115,6 +126,9 @@ const dict = {
     footerTerms: "नियम और सेवाएं",
     footerPrivacy: "गोपनीयता नीति",
     footerRefund: "वापसी नीति",
+    toolTab: "टूल्स",
+    allTools: "सभी टूल्स",
+    tabAll: "सब",
     testimonialTitle: "वास्तविक लौकिक प्रभाव",
     testimonialDesc: "सितारों के माध्यम से हमारे समुदाय की यात्रा।",
     t1Quote: "\"करियर रिपोर्ट ने मुझे अक्टूबर 2025 में बदलाव करने के लिए कहा, और मुझे दो महीने के भीतर 30% वेतन वृद्धि मिली। यह अविश्वसनीय रूप से सटीक था।\"",
@@ -150,12 +164,51 @@ const dict = {
     toolFestivalsDesc: "वैदिक त्योहार और व्रत",
     toolDosha: "दोष क्विज",
     toolDoshaDesc: "मांगलिक, साढ़े साती आदि की जांच करें",
+    toolConsult: "लाइव परामर्श",
+    toolConsultDesc: "विशेषज्ञों से बात करें",
+    toolCompare: "चार्ट सिंक",
+    toolCompareDesc: "दो कुंडलियों की तुलना करें",
+    toolNewsletter: "व्हाट्सएप डेली",
+    toolNewsletterDesc: "व्हाट्सएप पर दैनिक राशिफल",
+    toolBlog: "एस्ट्रो ब्लॉग",
+    toolBlogDesc: "वैदिक ज्ञान और उपाय",
   }
 };
 
 export default function Home() {
   const { language, setLanguage } = useLanguage();
   const t = dict[language];
+  const [activeTab, setActiveTab] = useState<'all' | 'daily' | 'life' | 'solutions' | 'advanced'>('all');
+
+  const toolCategories = {
+    daily: [
+      { href: '/panchang', icon: '🕉️', title: t.toolPanchang },
+      { href: '/muhurat', icon: '🌅', title: t.toolMuhurat },
+      { href: '/transits', icon: '🪐', title: t.toolTransits },
+      { href: '/festivals', icon: '📅', title: t.toolFestivals },
+    ],
+    life: [
+      { href: '/moon-sign', icon: '🌙', title: t.toolMoon },
+      { href: '/match', icon: '💑', title: t.toolMatch },
+      { href: '/numerology', icon: '🔢', title: t.toolNumerology },
+      { href: '/dosha', icon: '🧘', title: t.toolDosha },
+    ],
+    solutions: [
+      { href: '/mantras', icon: '📿', title: t.toolMantras },
+      { href: '/dreams', icon: '💭', title: t.toolDreams },
+      { href: '/consult', icon: '📞', title: t.toolConsult },
+    ],
+    advanced: [
+      { href: '/compare', icon: '📊', title: t.toolCompare },
+      { href: '/newsletter', icon: '📱', title: t.toolNewsletter },
+      { href: '/blog', icon: '🎯', title: t.toolBlog },
+    ]
+  } as const;
+
+  const catLabels = {
+    en: { all: 'All', daily: 'Daily', life: 'Life', solutions: 'Remedies', advanced: 'Advanced' },
+    hi: { all: 'सब', daily: 'दैनिक', life: 'जीवन', solutions: 'उपाय', advanced: 'एडवांस्ड' }
+  } as const;
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 600], [0, -120]);
   const parallaxOpacity = useTransform(scrollY, [0, 400], [0.3, 0.0]);
@@ -168,8 +221,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#121212] font-sans flex flex-col relative overflow-hidden">
       
-      <nav className="flex justify-center items-center gap-6 lg:gap-16 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0">
-        <div className="flex items-center gap-6 lg:gap-16">
+      <nav className="flex justify-center items-center gap-6 lg:gap-12 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0">
+        <div className="flex items-center gap-6 lg:gap-12">
           <Link href="/panchang" className="hover:text-[#B78E28] transition-colors hidden md:block">{language === 'hi' ? 'पंचांग' : 'PANCHANG'}</Link>
           <Link href="/astrology" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navHoroscopes}</Link>
           <Link href="/tarot" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navTarot}</Link>
@@ -181,8 +234,36 @@ export default function Home() {
           <Moon className="w-5 h-5 font-light" strokeWidth={1} />
         </div>
         
-        <div className="flex items-center gap-6 lg:gap-16">
+        <div className="flex items-center gap-6 lg:gap-12">
           <Link href="/store" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navReports}</Link>
+          
+          {/* TOOLS DROPDOWN (MOVED TO RIGHT NEXT TO CONTACT) */}
+          <div className="relative group hidden md:block">
+            <button className="flex items-center gap-1 hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em]">
+              {t.toolTab}
+            </button>
+            <div className="absolute top-full right-0 mt-4 w-[600px] bg-[#121212] border border-[#7D756B]/30 rounded-[2rem] p-8 shadow-2xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50">
+              <div className="grid grid-cols-3 gap-6">
+                {Object.entries(toolCategories).map(([key, tools]) => (
+                  <div key={key} className="space-y-4">
+                    <h4 className="text-[8px] text-[#B78E28] font-bold tracking-[0.3em] border-b border-[#7D756B]/20 pb-2 mb-4">{catLabels[language][key as keyof typeof catLabels['en']]}</h4>
+                    <div className="space-y-3">
+                      {tools.map((tool, i) => (
+                        <Link key={i} href={tool.href} className="flex items-center gap-3 hover:translate-x-1 transition-transform group/item">
+                          <span className="text-lg group-hover/item:scale-110 transition-transform">{tool.icon}</span>
+                          <span className="text-[9px] tracking-widest text-[#7D756B] group-hover/item:text-[#E5D6C8] transition-colors">{tool.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 pt-6 border-t border-[#7D756B]/20 text-center">
+                <Link href="#tools-hub" className="text-[9px] text-[#B78E28] hover:text-[#E5D6C8] transition-colors tracking-[0.4em] font-black">{t.allTools} ✧</Link>
+              </div>
+            </div>
+          </div>
+
           <Link href="/contact" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navContact}</Link>
         </div>
       </nav>
@@ -254,6 +335,7 @@ export default function Home() {
 
       {/* QUICK ACTIONS */}
       <section className="pt-6 pb-12 lg:pt-12 lg:pb-20 px-4 lg:px-12 relative overflow-hidden bg-[#121212]">
+
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-12 lg:mb-24">
             <h2 className="text-3xl sm:text-4xl lg:text-6xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 lg:mb-6 font-light leading-tight">
@@ -289,41 +371,71 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FREE COSMIC TOOLS */}
-      <section className="pt-6 pb-12 lg:pt-12 lg:pb-20 px-4 lg:px-12 relative overflow-hidden bg-[#121212] border-t border-[#7D756B]/20">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-12 lg:mb-20">
-            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 lg:mb-6 font-light leading-tight">
+      {/* COSMIC TOOL HUB - HIGH UX TABBED INTERFACE */}
+      <section id="tools-hub" className="py-12 lg:py-20 relative overflow-hidden bg-[#121212] border-t border-[#7D756B]/20">
+        <div className="max-w-[1000px] mx-auto px-4">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl lg:text-4xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-3 font-light">
               {t.toolsTitle}
             </h2>
-            <div className="w-16 lg:w-24 h-[1px] bg-[#B78E28] mx-auto mb-6 lg:mb-8" />
-            <p className="text-[#7D756B] text-[8px] sm:text-xs uppercase tracking-[0.2em] lg:tracking-[0.3em] max-w-2xl mx-auto leading-loose px-4">
+            <p className="text-[#7D756B] text-[8px] uppercase tracking-[0.2em] max-w-lg mx-auto leading-relaxed">
               {t.toolsDesc}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
-            {[
-              { href: '/panchang', icon: '🕉️', title: t.toolPanchang, desc: t.toolPanchangDesc, accent: 'border-amber-800/30 hover:border-amber-600/50' },
-              { href: '/match', icon: '💑', title: t.toolMatch, desc: t.toolMatchDesc, accent: 'border-pink-900/30 hover:border-pink-600/50' },
-              { href: '/numerology', icon: '🔢', title: t.toolNumerology, desc: t.toolNumerologyDesc, accent: 'border-indigo-900/30 hover:border-indigo-600/50' },
-              { href: '/moon-sign', icon: '🌙', title: t.toolMoon, desc: t.toolMoonDesc, accent: 'border-blue-900/30 hover:border-blue-600/50' },
-              { href: '/mantras', icon: '📿', title: t.toolMantras, desc: t.toolMantrasDesc, accent: 'border-orange-900/30 hover:border-orange-600/50' },
-              { href: '/muhurat', icon: '🌅', title: t.toolMuhurat, desc: t.toolMuhuratDesc, accent: 'border-yellow-900/30 hover:border-yellow-600/50' },
-              { href: '/dreams', icon: '💭', title: t.toolDreams, desc: t.toolDreamsDesc, accent: 'border-purple-900/30 hover:border-purple-600/50' },
-              { href: '/transits', icon: '🪐', title: t.toolTransits, desc: t.toolTransitsDesc, accent: 'border-teal-900/30 hover:border-teal-600/50' },
-              { href: '/festivals', icon: '📅', title: t.toolFestivals, desc: t.toolFestivalsDesc, accent: 'border-green-900/30 hover:border-green-600/50' },
-              { href: '/dosha', icon: '🧘', title: t.toolDosha, desc: t.toolDoshaDesc, accent: 'border-red-900/30 hover:border-red-600/50' },
-            ].map((tool, i) => (
-              <Link key={i} href={tool.href} className={`group bg-[#1A1A1A]/30 backdrop-blur-md border ${tool.accent} rounded-[2rem] p-6 lg:p-8 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(183,142,40,0.1)] flex flex-col items-center text-center`}>
-                <span className="text-3xl lg:text-4xl mb-4 group-hover:scale-110 transition-transform block">{tool.icon}</span>
-                <h3 className="text-sm font-serif text-[#E5D6C8] uppercase tracking-widest mb-2 group-hover:text-[#B78E28] transition-colors">{tool.title}</h3>
-                <p className="text-[8px] text-[#7D756B] uppercase tracking-widest leading-relaxed">{tool.desc}</p>
-                <div className="w-8 h-[1px] bg-[#B78E28]/30 group-hover:w-16 transition-all duration-700 mt-4" />
-              </Link>
+          {/* Category Tabs */}
+          <div className="flex justify-center gap-2 mb-10 overflow-x-auto pb-4 no-scrollbar">
+            {(['all', 'daily', 'life', 'solutions', 'advanced'] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveTab(cat)}
+                className={`px-6 py-2 rounded-full text-[9px] uppercase tracking-[0.2em] font-bold transition-all border shrink-0 ${
+                  activeTab === cat 
+                    ? 'bg-[#B78E28] text-[#121212] border-[#B78E28] shadow-[0_0_20px_rgba(183,142,40,0.3)]' 
+                    : 'bg-transparent text-[#7D756B] border-[#7D756B]/30 hover:border-[#E5D6C8]'
+                }`}
+              >
+                {catLabels[language][cat]}
+              </button>
             ))}
           </div>
+
+          {/* Tool Grid */}
+          <div className="relative min-h-[300px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-4 lg:gap-6"
+              >
+                {(activeTab === 'all' 
+                  ? Object.values(toolCategories).flat() 
+                  : toolCategories[activeTab]
+                ).map((tool, i) => (
+                  <Link 
+                    key={tool.title + i} 
+                    href={tool.href} 
+                    className="group flex flex-col items-center gap-2"
+                  >
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#1A1A1A] border border-[#7D756B]/30 flex items-center justify-center transition-all duration-500 group-hover:border-[#B78E28] group-hover:bg-[#B78E28]/10 group-hover:shadow-[0_0_20px_rgba(183,142,40,0.2)]">
+                      <span className="text-xl sm:text-2xl group-hover:scale-110 transition-transform">{tool.icon}</span>
+                    </div>
+                    <span className="text-[8px] sm:text-[9px] text-[#7D756B] uppercase tracking-widest text-center group-hover:text-[#E5D6C8] transition-colors leading-tight px-1">
+                      {tool.title}
+                    </span>
+                  </Link>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
+
+        {/* Decorative Background Glows */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-[#B78E28]/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-64 h-64 bg-amber-900/5 rounded-full blur-[100px] pointer-events-none" />
       </section>
 
       {/* EXPERT PROFILES SECTION */}
@@ -362,31 +474,33 @@ export default function Home() {
             <h2 className="text-3xl lg:text-4xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light">{t.testimonialTitle}</h2>
             <p className="text-[#7D756B] text-xs uppercase tracking-[0.2em] max-w-2xl mx-auto leading-relaxed">{t.testimonialDesc}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#121212] p-8 rounded-3xl border border-[#7D756B]/30 relative flex flex-col justify-between hover:shadow-[0_10px_40px_rgba(183,142,40,0.15)] hover:border-[#B78E28]/50 transition-all duration-500">
-              <Star className="absolute top-8 right-8 w-6 h-6 text-[#B78E28] opacity-20" />
-              <p className="text-[#E5D6C8] italic text-sm leading-loose mb-8 relative z-10 pr-6">{t.t1Quote}</p>
-              <div className="mt-auto relative z-10 border-t border-[#7D756B]/20 pt-6">
-                <p className="text-xs uppercase tracking-widest font-semibold text-[#B78E28]">{t.t1Name}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7D756B] mt-1">{t.t1Location}</p>
-              </div>
+          <div className="relative overflow-hidden py-4 pause-animation">
+            <div className="flex gap-6 animate-marquee-left">
+              {[
+                { quote: t.t1Quote, name: t.t1Name, loc: t.t1Location },
+                { quote: t.t2Quote, name: t.t2Name, loc: t.t2Location },
+                { quote: t.t3Quote, name: t.t3Name, loc: t.t3Location },
+              ].concat([
+                { quote: t.t1Quote, name: t.t1Name, loc: t.t1Location },
+                { quote: t.t2Quote, name: t.t2Name, loc: t.t2Location },
+                { quote: t.t3Quote, name: t.t3Name, loc: t.t3Location },
+                { quote: t.t1Quote, name: t.t1Name, loc: t.t1Location },
+                { quote: t.t2Quote, name: t.t2Name, loc: t.t2Location },
+                { quote: t.t3Quote, name: t.t3Name, loc: t.t3Location },
+              ]).map((test, i) => (
+                <div key={i} className="w-[300px] lg:w-[400px] bg-[#121212] p-8 rounded-3xl border border-[#7D756B]/20 relative flex flex-col justify-between shrink-0 hover:border-[#B78E28]/40 transition-all duration-500">
+                  <Star className="absolute top-6 right-6 w-5 h-5 text-[#B78E28] opacity-20" />
+                  <p className="text-[#E5D6C8]/80 italic text-xs lg:text-sm leading-loose mb-6 relative z-10 pr-4 font-light">"{test.quote}"</p>
+                  <div className="mt-auto border-t border-[#7D756B]/10 pt-4">
+                    <p className="text-[10px] uppercase tracking-widest font-bold text-[#B78E28]">{test.name}</p>
+                    <p className="text-[9px] uppercase tracking-[0.2em] text-[#7D756B] mt-0.5">{test.loc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="bg-[#121212] p-8 rounded-3xl border border-[#7D756B]/30 relative flex flex-col justify-between hover:shadow-[0_10px_40px_rgba(183,142,40,0.15)] hover:border-[#B78E28]/50 transition-all duration-500">
-              <Star className="absolute top-8 right-8 w-6 h-6 text-[#B78E28] opacity-20" />
-              <p className="text-[#E5D6C8] italic text-sm leading-loose mb-8 relative z-10 pr-6">{t.t2Quote}</p>
-              <div className="mt-auto relative z-10 border-t border-[#7D756B]/20 pt-6">
-                <p className="text-xs uppercase tracking-widest font-semibold text-[#B78E28]">{t.t2Name}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7D756B] mt-1">{t.t2Location}</p>
-              </div>
-            </div>
-            <div className="bg-[#121212] p-8 rounded-3xl border border-[#7D756B]/30 relative flex flex-col justify-between hover:shadow-[0_10px_40px_rgba(183,142,40,0.15)] hover:border-[#B78E28]/50 transition-all duration-500">
-              <Star className="absolute top-8 right-8 w-6 h-6 text-[#B78E28] opacity-20" />
-              <p className="text-[#E5D6C8] italic text-sm leading-loose mb-8 relative z-10 pr-6">{t.t3Quote}</p>
-              <div className="mt-auto relative z-10 border-t border-[#7D756B]/20 pt-6">
-                <p className="text-xs uppercase tracking-widest font-semibold text-[#B78E28]">{t.t3Name}</p>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#7D756B] mt-1">{t.t3Location}</p>
-              </div>
-            </div>
+            {/* Edge Fades */}
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#1A1A1A] to-transparent pointer-events-none z-10" />
+            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#1A1A1A] to-transparent pointer-events-none z-10" />
           </div>
         </div>
       </section>
