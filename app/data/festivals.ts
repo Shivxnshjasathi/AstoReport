@@ -1,0 +1,40 @@
+export interface Festival { date:string; name:{en:string;hi:string}; type:string; desc:{en:string;hi:string}; emoji:string; }
+
+export const FESTIVALS_2026: Festival[] = [
+  {date:'2026-01-14',name:{en:'Makar Sankranti',hi:'मकर संक्रांति'},type:'festival',desc:{en:'Sun enters Capricorn. Harvest festival celebrated with kite flying and til-gur.',hi:'सूर्य मकर राशि में प्रवेश। पतंगबाजी और तिल-गुड़ के साथ फसल उत्सव।'},emoji:'🪁'},
+  {date:'2026-01-29',name:{en:'Republic Day (Basant Panchami)',hi:'गणतंत्र दिवस / बसंत पंचमी'},type:'festival',desc:{en:'Worship of Goddess Saraswati. Beginning of spring season.',hi:'देवी सरस्वती की पूजा। वसंत ऋतु का आरंभ।'},emoji:'🌸'},
+  {date:'2026-02-27',name:{en:'Maha Shivaratri',hi:'महा शिवरात्रि'},type:'vrat',desc:{en:'Great night of Lord Shiva. Night-long worship and fasting.',hi:'भगवान शिव की महान रात्रि। रात भर पूजा और उपवास।'},emoji:'🔱'},
+  {date:'2026-03-14',name:{en:'Holi',hi:'होली'},type:'festival',desc:{en:'Festival of colors celebrating the victory of good over evil.',hi:'बुराई पर अच्छाई की जीत का जश्न। रंगों का त्योहार।'},emoji:'🎨'},
+  {date:'2026-03-30',name:{en:'Ugadi / Gudi Padwa',hi:'उगादि / गुड़ी पड़वा'},type:'festival',desc:{en:'Hindu New Year. New beginnings and fresh start.',hi:'हिंदू नव वर्ष। नई शुरुआत।'},emoji:'🎊'},
+  {date:'2026-04-02',name:{en:'Ram Navami',hi:'राम नवमी'},type:'festival',desc:{en:'Birthday of Lord Rama. Recitation of Ramayana.',hi:'भगवान राम का जन्मोत्सव। रामायण का पाठ।'},emoji:'🏹'},
+  {date:'2026-04-10',name:{en:'Hanuman Jayanti',hi:'हनुमान जयंती'},type:'festival',desc:{en:'Birthday of Lord Hanuman. Recite Hanuman Chalisa.',hi:'हनुमान जी का जन्मोत्सव। हनुमान चालीसा पाठ।'},emoji:'🐒'},
+  {date:'2026-05-12',name:{en:'Akshaya Tritiya',hi:'अक्षय तृतीया'},type:'festival',desc:{en:'Most auspicious day for new beginnings, buying gold.',hi:'नई शुरुआत और सोना खरीदने का सबसे शुभ दिन।'},emoji:'✨'},
+  {date:'2026-06-24',name:{en:'Guru Purnima',hi:'गुरु पूर्णिमा'},type:'vrat',desc:{en:'Day to honor spiritual teachers and gurus.',hi:'आध्यात्मिक गुरुओं को सम्मान देने का दिन।'},emoji:'🙏'},
+  {date:'2026-07-07',name:{en:'Jagannath Rath Yatra',hi:'जगन्नाथ रथ यात्रा'},type:'festival',desc:{en:'Grand chariot procession of Lord Jagannath in Puri.',hi:'पुरी में भगवान जगन्नाथ की भव्य रथ यात्रा।'},emoji:'🛕'},
+  {date:'2026-08-11',name:{en:'Nag Panchami',hi:'नाग पंचमी'},type:'vrat',desc:{en:'Worship of serpent deities for protection.',hi:'सुरक्षा के लिए नाग देवताओं की पूजा।'},emoji:'🐍'},
+  {date:'2026-08-15',name:{en:'Raksha Bandhan',hi:'रक्षा बंधन'},type:'festival',desc:{en:'Festival of sibling bond. Sister ties Rakhi on brother.',hi:'भाई-बहन के बंधन का त्योहार।'},emoji:'🧶'},
+  {date:'2026-08-24',name:{en:'Janmashtami',hi:'जन्माष्टमी'},type:'festival',desc:{en:'Birthday of Lord Krishna. Midnight celebrations.',hi:'भगवान कृष्ण का जन्मोत्सव। मध्यरात्रि उत्सव।'},emoji:'🦚'},
+  {date:'2026-09-04',name:{en:'Ganesh Chaturthi',hi:'गणेश चतुर्थी'},type:'festival',desc:{en:'Birthday of Lord Ganesha. 10-day celebration.',hi:'भगवान गणेश का जन्मोत्सव। 10 दिन का उत्सव।'},emoji:'🐘'},
+  {date:'2026-10-02',name:{en:'Navratri Begins',hi:'नवरात्रि प्रारंभ'},type:'vrat',desc:{en:'Nine nights of Goddess Durga worship and fasting.',hi:'देवी दुर्गा की नौ रातों की पूजा और उपवास।'},emoji:'🔥'},
+  {date:'2026-10-11',name:{en:'Dussehra / Vijayadashami',hi:'दशहरा / विजयादशमी'},type:'festival',desc:{en:'Victory of Lord Rama over Ravana. Burning of Ravana effigies.',hi:'भगवान राम की रावण पर विजय। रावण दहन।'},emoji:'🏹'},
+  {date:'2026-10-31',name:{en:'Dhanteras',hi:'धनतेरस'},type:'festival',desc:{en:'Buy gold, silver, utensils. Worship Lord Dhanvantari.',hi:'सोना, चांदी, बर्तन खरीदें। भगवान धन्वंतरि की पूजा।'},emoji:'💰'},
+  {date:'2026-11-01',name:{en:'Diwali',hi:'दीपावली'},type:'festival',desc:{en:'Festival of lights. Worship Lakshmi and Ganesh. Grand celebration.',hi:'दीपों का त्योहार। लक्ष्मी-गणेश पूजा। भव्य उत्सव।'},emoji:'🪔'},
+  {date:'2026-11-03',name:{en:'Bhai Dooj',hi:'भाई दूज'},type:'festival',desc:{en:'Sister prays for brother prosperity. Tilak ceremony.',hi:'बहन भाई की समृद्धि की प्रार्थना करती है। तिलक।'},emoji:'🤝'},
+  {date:'2026-11-05',name:{en:'Chhath Puja',hi:'छठ पूजा'},type:'vrat',desc:{en:'Worship of Sun God. 36 hours of rigorous fasting.',hi:'सूर्य देव की पूजा। 36 घंटे का कठिन उपवास।'},emoji:'☀️'},
+  {date:'2026-11-24',name:{en:'Dev Uthani Ekadashi',hi:'देव उठनी एकादशी'},type:'vrat',desc:{en:'Lord Vishnu wakes from cosmic sleep. Weddings resume.',hi:'भगवान विष्णु लौकिक निद्रा से जागते हैं। विवाह पुनः आरंभ।'},emoji:'🔔'},
+];
+
+export const EKADASHI_2026 = [
+  {date:'2026-01-10',name:'Pausha Putrada Ekadashi'},{date:'2026-01-25',name:'Shattila Ekadashi'},
+  {date:'2026-02-09',name:'Jaya Ekadashi'},{date:'2026-02-23',name:'Vijaya Ekadashi'},
+  {date:'2026-03-11',name:'Amalaki Ekadashi'},{date:'2026-03-25',name:'Papmochani Ekadashi'},
+  {date:'2026-04-09',name:'Kamada Ekadashi'},{date:'2026-04-24',name:'Varuthini Ekadashi'},
+  {date:'2026-05-09',name:'Mohini Ekadashi'},{date:'2026-05-23',name:'Apara Ekadashi'},
+  {date:'2026-06-07',name:'Nirjala Ekadashi'},{date:'2026-06-22',name:'Yogini Ekadashi'},
+  {date:'2026-07-07',name:'Devshayani Ekadashi'},{date:'2026-07-21',name:'Kamika Ekadashi'},
+  {date:'2026-08-05',name:'Pavitra Ekadashi'},{date:'2026-08-20',name:'Aja Ekadashi'},
+  {date:'2026-09-04',name:'Parsva Ekadashi'},{date:'2026-09-18',name:'Indira Ekadashi'},
+  {date:'2026-10-03',name:'Papankusha Ekadashi'},{date:'2026-10-18',name:'Rama Ekadashi'},
+  {date:'2026-11-02',name:'Devutthana Ekadashi'},{date:'2026-11-17',name:'Utpanna Ekadashi'},
+  {date:'2026-12-01',name:'Mokshada Ekadashi'},{date:'2026-12-16',name:'Saphala Ekadashi'},
+];

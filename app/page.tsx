@@ -67,6 +67,18 @@ const dict = {
     toolNumerologyDesc: "Life Path, Destiny & Soul Urge numbers",
     toolMoon: "Moon Sign",
     toolMoonDesc: "Find your Rashi & Birth Nakshatra",
+    toolMantras: "Mantras & Remedies",
+    toolMantrasDesc: "Vedic solutions for planetary doshas",
+    toolMuhurat: "Muhurat Finder",
+    toolMuhuratDesc: "Find auspicious timings",
+    toolDreams: "Dream Interpretation",
+    toolDreamsDesc: "Decode your subconscious",
+    toolTransits: "Live Transits",
+    toolTransitsDesc: "Track planetary movements",
+    toolFestivals: "Festival Calendar",
+    toolFestivalsDesc: "Vedic festivals and fasts",
+    toolDosha: "Dosha Quiz",
+    toolDoshaDesc: "Check for Manglik, Sade Sati, etc",
   },
   hi: {
     navGemstones: "रत्न",
@@ -126,6 +138,18 @@ const dict = {
     toolNumerologyDesc: "जीवन पथ, भाग्य और आत्मा अंक",
     toolMoon: "चंद्र राशि",
     toolMoonDesc: "अपनी राशि और जन्म नक्षत्र जानें",
+    toolMantras: "मंत्र और उपाय",
+    toolMantrasDesc: "ग्रह दोषों के लिए वैदिक समाधान",
+    toolMuhurat: "मुहूर्त फाइंडर",
+    toolMuhuratDesc: "शुभ समय खोजें",
+    toolDreams: "स्वप्न विचार",
+    toolDreamsDesc: "अपने अवचेतन को समझें",
+    toolTransits: "लाइव गोचर",
+    toolTransitsDesc: "ग्रहों की चाल को ट्रैक करें",
+    toolFestivals: "त्योहार कैलेंडर",
+    toolFestivalsDesc: "वैदिक त्योहार और व्रत",
+    toolDosha: "दोष क्विज",
+    toolDoshaDesc: "मांगलिक, साढ़े साती आदि की जांच करें",
   }
 };
 
@@ -278,12 +302,18 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
             {[
               { href: '/panchang', icon: '🕉️', title: t.toolPanchang, desc: t.toolPanchangDesc, accent: 'border-amber-800/30 hover:border-amber-600/50' },
               { href: '/match', icon: '💑', title: t.toolMatch, desc: t.toolMatchDesc, accent: 'border-pink-900/30 hover:border-pink-600/50' },
               { href: '/numerology', icon: '🔢', title: t.toolNumerology, desc: t.toolNumerologyDesc, accent: 'border-indigo-900/30 hover:border-indigo-600/50' },
               { href: '/moon-sign', icon: '🌙', title: t.toolMoon, desc: t.toolMoonDesc, accent: 'border-blue-900/30 hover:border-blue-600/50' },
+              { href: '/mantras', icon: '📿', title: t.toolMantras, desc: t.toolMantrasDesc, accent: 'border-orange-900/30 hover:border-orange-600/50' },
+              { href: '/muhurat', icon: '🌅', title: t.toolMuhurat, desc: t.toolMuhuratDesc, accent: 'border-yellow-900/30 hover:border-yellow-600/50' },
+              { href: '/dreams', icon: '💭', title: t.toolDreams, desc: t.toolDreamsDesc, accent: 'border-purple-900/30 hover:border-purple-600/50' },
+              { href: '/transits', icon: '🪐', title: t.toolTransits, desc: t.toolTransitsDesc, accent: 'border-teal-900/30 hover:border-teal-600/50' },
+              { href: '/festivals', icon: '📅', title: t.toolFestivals, desc: t.toolFestivalsDesc, accent: 'border-green-900/30 hover:border-green-600/50' },
+              { href: '/dosha', icon: '🧘', title: t.toolDosha, desc: t.toolDoshaDesc, accent: 'border-red-900/30 hover:border-red-600/50' },
             ].map((tool, i) => (
               <Link key={i} href={tool.href} className={`group bg-[#1A1A1A]/30 backdrop-blur-md border ${tool.accent} rounded-[2rem] p-6 lg:p-8 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(183,142,40,0.1)] flex flex-col items-center text-center`}>
                 <span className="text-3xl lg:text-4xl mb-4 group-hover:scale-110 transition-transform block">{tool.icon}</span>
