@@ -13,6 +13,7 @@
     "@node-jhora/ephe": "^440.2.0",
     "@node-jhora/prediction": "^2.1.0",
     "@react-pdf/renderer": "^4.5.1",
+    "astronomy-engine": "^2.1.19",
     "aztro-js": "^0.1.5",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.14.0",

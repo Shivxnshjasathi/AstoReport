@@ -41,14 +41,14 @@ function getCardAccent(card: DrawnCard['card']): string {
 export default function TarotPage() {
   const [spread, setSpread] = useState<SpreadType>('three-card');
   const [cards, setCards] = useState<DrawnCard[] | null>(null);
-  const [flipped, setFlipped] = useState<Set<number>>(new Set());
+  const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [reading, setReading] = useState(false);
   const [tab, setTab] = useState<'upright' | 'love' | 'career'>('upright');
   const { language } = useLanguage();
 
   const doReading = useCallback(() => {
     setCards(null);
-    setFlipped(new Set());
+    setFlippedIndices([]);
     setReading(true);
     setTimeout(() => {
       setCards(drawCards(spread));
@@ -57,18 +57,18 @@ export default function TarotPage() {
   }, [spread]);
 
   const flipCard = (i: number) => {
-    setFlipped(prev => { const n = new Set(prev); n.add(i); return n; });
+    setFlippedIndices(prev => prev.includes(i) ? prev : [...prev, i]);
   };
 
-  const allFlipped = cards ? flipped.size === cards.length : false;
+  const allFlipped = cards ? flippedIndices.length === cards.length : false;
 
   return (
     <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] relative overflow-hidden pb-32">
       {/* BG */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(183,142,40,0.08)_0%,_transparent_70%)]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-[#B78E28]/5 animate-[spin_120s_linear_infinite]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-[#7D756B]/10 animate-[spin_80s_linear_infinite_reverse]" />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, rgba(183,142,40,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full border border-[#B78E28]/5" style={{ transform: 'translate(-50%, -50%)', animation: 'spin 120s linear infinite' }} />
+        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full border border-[#7D756B]/10" style={{ transform: 'translate(-50%, -50%)', animation: 'spin 80s linear infinite reverse' }} />
       </div>
 
       <div className="max-w-[1200px] mx-auto w-full pt-12 px-4 lg:px-12 relative z-10">
@@ -102,7 +102,7 @@ export default function TarotPage() {
           {spreads.map(s => (
             <button
               key={s.id}
-              onClick={() => { setSpread(s.id); setCards(null); setFlipped(new Set()); }}
+              onClick={() => { setSpread(s.id); setCards(null); setFlippedIndices([]); }}
               className={`p-4 rounded-2xl border text-center transition-all duration-300 ${
                 spread === s.id
                   ? 'border-[#B78E28] bg-[#B78E28]/10 shadow-[0_0_30px_rgba(183,142,40,0.15)]'
@@ -140,28 +140,29 @@ export default function TarotPage() {
               transition={{ duration: 0.6 }}
             >
               {/* Cards Grid */}
-              <div className={`grid gap-3 sm:gap-4 mb-10 ${
-                cards.length === 1 ? 'grid-cols-1 max-w-[200px] mx-auto' :
-                cards.length <= 3 ? 'grid-cols-3 max-w-2xl mx-auto' :
-                'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 max-w-5xl mx-auto'
-              }`}>
+              <div
+                className={`grid gap-3 sm:gap-4 mb-10 ${
+                  cards.length === 1 ? 'grid-cols-1 max-w-[200px] mx-auto' :
+                  cards.length <= 3 ? 'grid-cols-3 max-w-2xl mx-auto' :
+                  'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 max-w-5xl mx-auto'
+                }`}
+              >
                 {cards.map((dc, i) => {
-                  const isFlipped = flipped.has(i);
+                  const isFlipped = flippedIndices.includes(i);
                   const accent = getCardAccent(dc.card);
                   return (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, rotateY: 180, scale: 0.8 }}
-                      animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: i * 0.15, duration: 0.6 }}
-                      className="perspective-[1000px]"
                     >
                       <button
                         onClick={() => flipCard(i)}
-                        className={`w-full aspect-[2/3] rounded-2xl relative transition-all duration-700 transform-gpu ${
+                        className={`w-full rounded-2xl relative transition-all duration-500 ${
                           isFlipped ? '' : 'hover:scale-105 cursor-pointer'
                         }`}
-                        style={{ transformStyle: 'preserve-3d' }}
+                        style={{ aspectRatio: '2/3' }}
                         disabled={isFlipped}
                       >
                         {!isFlipped ? (
@@ -176,10 +177,10 @@ export default function TarotPage() {
                         ) : (
                           /* Card Front */
                           <motion.div
-                            initial={{ rotateY: -180 }}
-                            animate={{ rotateY: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="absolute inset-0 rounded-2xl border bg-gradient-to-b from-[#1A1A1A] via-[#151515] to-[#0D0D0D] flex flex-col items-center justify-between p-4 overflow-hidden"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.4 }}
+                            className="absolute inset-0 rounded-2xl border bg-gradient-to-b from-[#1A1A1A] via-[#151515] to-[#0D0D0D] flex flex-col items-center justify-between p-3 sm:p-4 overflow-hidden"
                             style={{ borderColor: `${accent}40` }}
                           >
                             <div className="absolute top-0 left-0 right-0 h-1 opacity-60" style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }} />
@@ -188,11 +189,11 @@ export default function TarotPage() {
                               {dc.isReversed && <span className="text-[7px] bg-red-900/30 text-red-400 px-2 py-0.5 rounded-full uppercase tracking-wider">Reversed</span>}
                             </div>
                             <div className="text-center">
-                              <div className="text-3xl mb-2" style={dc.isReversed ? { transform: 'rotate(180deg)' } : {}}>{getCardGlyph(dc.card)}</div>
-                              <h3 className="font-serif text-sm tracking-wider mb-1" style={{ color: accent }}>{dc.card.name}</h3>
-                              <p className="text-[7px] uppercase tracking-[0.2em] text-[#7D756B]">{dc.card.element} {CARD_SYMBOLS[dc.card.element]}</p>
+                              <div className="text-2xl sm:text-3xl mb-2" style={dc.isReversed ? { transform: 'rotate(180deg)' } : {}}>{getCardGlyph(dc.card)}</div>
+                              <h3 className="font-serif text-[10px] sm:text-sm tracking-wider mb-1" style={{ color: accent }}>{dc.card.name}</h3>
+                              <p className="text-[6px] sm:text-[7px] uppercase tracking-[0.2em] text-[#7D756B]">{dc.card.element} {CARD_SYMBOLS[dc.card.element]}</p>
                             </div>
-                            <p className="text-[7px] text-center text-[#7D756B]/80 leading-relaxed line-clamp-2">{dc.isReversed ? dc.card.reversed : dc.card.upright}</p>
+                            <p className="text-[6px] sm:text-[7px] text-center text-[#7D756B]/80 leading-relaxed overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{dc.isReversed ? dc.card.reversed : dc.card.upright}</p>
                           </motion.div>
                         )}
                       </button>

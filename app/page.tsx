@@ -57,6 +57,16 @@ const dict = {
     t3Location: "Indiana, USA",
     qsTitle: "Divine Offerings",
     qsDesc: "Explore sacred gemstones and high-precision blueprints curated for your cosmic alignment.",
+    toolsTitle: "Free Cosmic Tools",
+    toolsDesc: "Interactive Vedic calculators — explore your cosmic blueprint for free.",
+    toolPanchang: "Today's Panchang",
+    toolPanchangDesc: "Live Tithi, Nakshatra, Yoga & Rahu Kaal",
+    toolMatch: "Kundli Match",
+    toolMatchDesc: "Ashtakoot Gun Milan — check compatibility",
+    toolNumerology: "Lucky Numbers",
+    toolNumerologyDesc: "Life Path, Destiny & Soul Urge numbers",
+    toolMoon: "Moon Sign",
+    toolMoonDesc: "Find your Rashi & Birth Nakshatra",
   },
   hi: {
     navGemstones: "रत्न",
@@ -106,6 +116,16 @@ const dict = {
     t3Location: "लंदन, यूके",
     qsTitle: "दिव्य भेंट",
     qsDesc: "अपने लौकिक संरेखण के लिए क्यूरेट किए गए पवित्र रत्नों और उच्च-सटीक ब्लूप्रिंट का अन्वेषण करें।",
+    toolsTitle: "निःशुल्क लौकिक उपकरण",
+    toolsDesc: "इंटरैक्टिव वैदिक कैलकुलेटर — अपनी लौकिक रूपरेखा मुफ्त में जानें।",
+    toolPanchang: "आज का पंचांग",
+    toolPanchangDesc: "लाइव तिथि, नक्षत्र, योग और राहु काल",
+    toolMatch: "कुंडली मिलान",
+    toolMatchDesc: "अष्टकूट गुण मिलान — अनुकूलता जांचें",
+    toolNumerology: "भाग्यशाली अंक",
+    toolNumerologyDesc: "जीवन पथ, भाग्य और आत्मा अंक",
+    toolMoon: "चंद्र राशि",
+    toolMoonDesc: "अपनी राशि और जन्म नक्षत्र जानें",
   }
 };
 
@@ -126,7 +146,7 @@ export default function Home() {
       
       <nav className="flex justify-center items-center gap-6 lg:gap-16 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0">
         <div className="flex items-center gap-6 lg:gap-16">
-          <Link href="/gemstones" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navGemstones}</Link>
+          <Link href="/panchang" className="hover:text-[#B78E28] transition-colors hidden md:block">{language === 'hi' ? 'पंचांग' : 'PANCHANG'}</Link>
           <Link href="/astrology" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navHoroscopes}</Link>
           <Link href="/tarot" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navTarot}</Link>
         </div>
@@ -241,6 +261,37 @@ export default function Home() {
                 <div className="w-12 h-[1px] bg-[#B78E28] group-hover:w-32 transition-all duration-700" />
               </div>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FREE COSMIC TOOLS */}
+      <section className="pt-6 pb-12 lg:pt-12 lg:pb-20 px-4 lg:px-12 relative overflow-hidden bg-[#121212] border-t border-[#7D756B]/20">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center mb-12 lg:mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 lg:mb-6 font-light leading-tight">
+              {t.toolsTitle}
+            </h2>
+            <div className="w-16 lg:w-24 h-[1px] bg-[#B78E28] mx-auto mb-6 lg:mb-8" />
+            <p className="text-[#7D756B] text-[8px] sm:text-xs uppercase tracking-[0.2em] lg:tracking-[0.3em] max-w-2xl mx-auto leading-loose px-4">
+              {t.toolsDesc}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {[
+              { href: '/panchang', icon: '🕉️', title: t.toolPanchang, desc: t.toolPanchangDesc, accent: 'border-amber-800/30 hover:border-amber-600/50' },
+              { href: '/match', icon: '💑', title: t.toolMatch, desc: t.toolMatchDesc, accent: 'border-pink-900/30 hover:border-pink-600/50' },
+              { href: '/numerology', icon: '🔢', title: t.toolNumerology, desc: t.toolNumerologyDesc, accent: 'border-indigo-900/30 hover:border-indigo-600/50' },
+              { href: '/moon-sign', icon: '🌙', title: t.toolMoon, desc: t.toolMoonDesc, accent: 'border-blue-900/30 hover:border-blue-600/50' },
+            ].map((tool, i) => (
+              <Link key={i} href={tool.href} className={`group bg-[#1A1A1A]/30 backdrop-blur-md border ${tool.accent} rounded-[2rem] p-6 lg:p-8 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(183,142,40,0.1)] flex flex-col items-center text-center`}>
+                <span className="text-3xl lg:text-4xl mb-4 group-hover:scale-110 transition-transform block">{tool.icon}</span>
+                <h3 className="text-sm font-serif text-[#E5D6C8] uppercase tracking-widest mb-2 group-hover:text-[#B78E28] transition-colors">{tool.title}</h3>
+                <p className="text-[8px] text-[#7D756B] uppercase tracking-widest leading-relaxed">{tool.desc}</p>
+                <div className="w-8 h-[1px] bg-[#B78E28]/30 group-hover:w-16 transition-all duration-700 mt-4" />
+              </Link>
+            ))}
           </div>
         </div>
       </section>

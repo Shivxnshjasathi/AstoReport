@@ -98,12 +98,16 @@ export default function CheckoutPage() {
       `📋 *Note:* We are happy to wait 4–5 days for the complete accurate report. 🌟%0A%0A` +
       `Thank you! 🙏`;
 
+    // Open WhatsApp immediately within the user gesture to avoid popup blockers
+    const waUrl = `https://wa.me/916366105204?text=${message}`;
+    window.open(waUrl, '_blank');
+
+    // Clear cart and show confirmation after a brief delay for UX
     setTimeout(() => {
       clearCart();
-      window.open(`https://wa.me/916366105204?text=${message}`, '_blank');
       setOrderDone(true);
       setIsProcessing(false);
-    }, 1500);
+    }, 800);
   };
 
   return (

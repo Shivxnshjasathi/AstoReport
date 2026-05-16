@@ -3,13 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Sparkles, BookOpen, Gem, Layers } from 'lucide-react';
+import { Home, Sparkles, BookOpen, Compass, Layers } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const navDict = {
-  en: { home: "Home", stars: "Stars", tarot: "Tarot", reports: "Reports", gems: "Gems" },
-  hi: { home: "होम", stars: "सितारे", tarot: "टैरो", reports: "रिपोर्ट", gems: "रत्न" }
+  en: { home: "Home", stars: "Stars", tarot: "Tarot", reports: "Reports", tools: "Tools" },
+  hi: { home: "होम", stars: "सितारे", tarot: "टैरो", reports: "रिपोर्ट", tools: "उपकरण" }
 };
+
+const TOOL_PATHS = ['/panchang', '/match', '/numerology', '/moon-sign'];
 
 export default function MobileNavBar() {
   const pathname = usePathname();
@@ -18,6 +20,8 @@ export default function MobileNavBar() {
 
   const isReportDetail = pathname?.startsWith('/store/') && pathname !== '/store';
   if (isReportDetail) return null;
+
+  const isToolActive = TOOL_PATHS.some(p => pathname === p);
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 w-full bg-[#121212]/95 backdrop-blur-xl border-t border-[#7D756B]/30 z-[100] pb-safe">
@@ -43,9 +47,9 @@ export default function MobileNavBar() {
           <span className="text-[8px] uppercase tracking-widest font-semibold">{t.reports}</span>
         </Link>
 
-        <Link href="/gemstones" className={`flex flex-col items-center gap-1 w-14 ${pathname === '/gemstones' ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
-          <Gem className="w-5 h-5" strokeWidth={pathname === '/gemstones' ? 2 : 1.5} />
-          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.gems}</span>
+        <Link href="/panchang" className={`flex flex-col items-center gap-1 w-14 ${isToolActive ? 'text-[#B78E28]' : 'text-[#7D756B] hover:text-[#E5D6C8]'} transition-colors`}>
+          <Compass className="w-5 h-5" strokeWidth={isToolActive ? 2 : 1.5} />
+          <span className="text-[8px] uppercase tracking-widest font-semibold">{t.tools}</span>
         </Link>
 
       </div>
