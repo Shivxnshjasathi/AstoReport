@@ -106,7 +106,7 @@ function generateMinorArcana(): TarotCard[] {
       { upright:"Apprenticeship, education, quality, engagement", reversed:"Lack of focus, perfectionism, no ambition", love:"Working on relationship skills", career:"Skill development, craftsmanship, diligence", yesNo:"yes", keywords:["craftsmanship","diligence","quality"] },
       { upright:"Abundance, luxury, self-sufficiency, financial independence", reversed:"Over-reliance on wealth, superficial", love:"Self-sufficient partner, enjoying luxury together", career:"Financial independence, enjoying success", yesNo:"yes", keywords:["abundance","luxury","independence"] },
       { upright:"Wealth, legacy, inheritance, establishment, retirement", reversed:"Financial failure, loneliness, loss", love:"Long-term stable relationship, family legacy", career:"Retirement, financial legacy, established career", yesNo:"yes", keywords:["wealth","legacy","establishment"] },
-      { upright:"Manifestation, financial opportunity, new skill", reversed:"Lack of progress, procrastination", love:"Manifesting ideal partner, new beginning", career:"New financial opportunity, scholarship", yesNo:"yes", keywords:["manifestation","opportunity","skill"] },
+      { upright:"Manifestation, financial opportunity, new skill", reversed:"Lack of progress, procrastination", love:"Manifesting ideal partner, new beginning", career:"New financial opportunity, scholarship", yesNo:"yes", keywords:["opportunity","skill"] },
       { upright:"Hard work, productivity, routine, conservatism", reversed:"Workaholic, boredom, laziness", love:"Stable and routine relationship", career:"Methodical worker, reliable employee", yesNo:"yes", keywords:["hard work","routine","productivity"] },
       { upright:"Nurturing, practical, providing, luxury, homebody", reversed:"Neglect, smothering, insecurity", love:"Nurturing, supportive, grounded partner", career:"Practical leadership, creating comfortable environment", yesNo:"yes", keywords:["nurturing","practical","luxury"] },
       { upright:"Wealth, business, leadership, security, discipline", reversed:"Financial ineptitude, obsessed with wealth", love:"Providing partner, secure relationship", career:"Business success, financial mastery", yesNo:"yes", keywords:["wealth","business","security"] },
@@ -144,6 +144,7 @@ export interface DrawnCard {
   position: string;
 }
 
+// Draw cards function
 export function drawCards(spread: SpreadType): DrawnCard[] {
   const deck = [...allTarotCards];
   const drawn: DrawnCard[] = [];
@@ -172,3 +173,211 @@ export function drawCards(spread: SpreadType): DrawnCard[] {
   }
   return drawn;
 }
+
+// Complete localized dictionary for authentic Hindi translations
+export const TAROT_TRANSLATIONS: Record<string, {
+  nameHi: string;
+  uprightHi: string;
+  reversedHi: string;
+  loveHi: string;
+  careerHi: string;
+  keywordsHi: string[];
+}> = {
+  "The Fool": {
+    nameHi: "मूर्ख (द फूल)",
+    uprightHi: "नई शुरुआत, मासूमियत, सहजता, मुक्त आत्मा",
+    reversedHi: "पीछे हटना, लापरवाही, अत्यधिक जोखिम उठाना",
+    loveHi: "नया रोमांस, प्यार में रोमांच, विश्वास की बड़ी छलांग लगाना",
+    careerHi: "नया करियर पथ, रोमांचक अवसर, नई शुरुआत",
+    keywordsHi: ["शुरुआत", "मासूमियत", "साहस"]
+  },
+  "The Magician": {
+    nameHi: "जादूगर (द मैजिशियन)",
+    uprightHi: "प्रकटीकरण, संसाधनशीलता, शक्ति, प्रेरित कार्रवाई",
+    reversedHi: "चालबाजी, खराब योजना, अप्रयुक्त आंतरिक प्रतिभा",
+    loveHi: "चुंबकीय आकर्षण, प्यार में असंभव को भी संभव बनाना",
+    careerHi: "कौशल में महारत, नया व्यवसाय, सभी संसाधनों का उपयोग",
+    keywordsHi: ["प्रकटीकरण", "शक्ति", "कौशल"]
+  },
+  "The High Priestess": {
+    nameHi: "उच्च पुजारिन (द हाई प्रीस्टेस)",
+    uprightHi: "अंतर्ज्ञान, पवित्र ज्ञान, दिव्य स्त्रीत्व, अवचेतन मन",
+    reversedHi: "गुप्त बातें, अंतर्ज्ञान से दूरी, खुद में सिमटना",
+    loveHi: "अपने साथी के बारे में अंतरात्मा की आवाज पर भरोसा करें, रहस्य",
+    careerHi: "छिपा हुआ ज्ञान सामने आएगा, अंतर्मन की सुनें",
+    keywordsHi: ["अंतर्ज्ञान", "रहस्य", "ज्ञान"]
+  },
+  "The Empress": {
+    nameHi: "महारानी (द एम्प्रेस)",
+    uprightHi: "स्त्रीत्व, सौंदर्य, प्रकृति, पोषण, प्रचुरता",
+    reversedHi: "रचनात्मक अवरोध, दूसरों पर निर्भरता, खालीपन",
+    loveHi: "सच्चा और गहरा प्यार, गहरा रोमांस, ख्याल रखने वाला साथी",
+    careerHi: "रचनात्मक कार्य फलेंगे-फूलेंगे, काम में बड़ी समृद्धि",
+    keywordsHi: ["प्रचुरता", "उत्पादकता", "पोषण"]
+  },
+  "The Emperor": {
+    nameHi: "सम्राट (द एम्परर)",
+    uprightHi: "अधिकार, अनुशासन, स्थिरता, स्थापित संरचना, पिता समान आकृति",
+    reversedHi: "तानाशाही, अत्यधिक नियंत्रण, अनुशासन की भारी कमी",
+    loveHi: "स्थिर और समर्पित रिश्ता, पारंपरिक मजबूत पारिवारिक मूल्य",
+    careerHi: "नेतृत्व की बड़ी भूमिका, अधिकार, संगठनात्मक सफलता",
+    keywordsHi: ["अधिकार", "संरचना", "नेतृत्व"]
+  },
+  "The Hierophant": {
+    nameHi: "धर्मगुरु (द हीरोफेंट)",
+    uprightHi: "आध्यात्मिक ज्ञान, पारंपरिक विश्वास, सामाजिक रीति-रिवाज",
+    reversedHi: "व्यक्तिगत विश्वास, पुरानी परंपराओं को चुनौती देना, पूर्ण स्वतंत्रता",
+    loveHi: "प्रतिबद्धता, विवाह के योग, पारंपरिक और पवित्र रिश्ता",
+    careerHi: "उचित मार्गदर्शन, संस्थागत सफलता, पारंपरिक करियर पथ",
+    keywordsHi: ["परंपरा", "ज्ञान", "संस्कार"]
+  },
+  "The Lovers": {
+    nameHi: "प्रेमी (द लवर्स)",
+    uprightHi: "प्यार, सद्भाव, मधुर संबंध, मूल्यों का संरेखण, विकल्प",
+    reversedHi: "आत्म-प्रेम की आवश्यकता, रिश्तों में कलह, असंतुलन",
+    loveHi: "गहरा आत्मिक संबंध, सोलमेट ऊर्जा, जीवनसाथी का चुनाव",
+    careerHi: "सफल व्यापारिक साझेदारी, मूल्यों पर आधारित बेहतरीन निर्णय",
+    keywordsHi: ["प्रेम", "सद्भाव", "विकल्प"]
+  },
+  "The Chariot": {
+    nameHi: "रथ (द चैरियट)",
+    uprightHi: "नियंत्रण, इच्छाशक्ति, बड़ी सफलता, त्वरित कार्रवाई, दृढ़ संकल्प",
+    reversedHi: "आत्म-अनुशासन की कमी, दिशाहीनता, कड़ा विरोध",
+    loveHi: "दृढ़ संकल्प के साथ प्यार का पीछा करना, सभी बाधाएं पार होना",
+    careerHi: "करियर में शानदार विजय, बड़ी पदोन्नति, लक्ष्य प्राप्ति",
+    keywordsHi: ["विजय", "इच्छाशक्ति", "दृढ़ संकल्प"]
+  },
+  "Strength": {
+    nameHi: "शक्ति (स्ट्रेंथ)",
+    uprightHi: "आत्मविश्वास, साहस, प्रभाव, करुणा, आंतरिक शक्ति",
+    reversedHi: "आंतरिक बल की कमी, आत्म-संदेह, अनियंत्रित क्रोध",
+    loveHi: "धैर्यवान प्यार, क्रोध और वासना पर नियंत्रण, भावनात्मक मजबूती",
+    careerHi: "शांत आत्मविश्वास की जीत, निरंतर प्रयास रंग लाएंगे",
+    keywordsHi: ["साहस", "धैर्य", "आंतरिक बल"]
+  },
+  "The Hermit": {
+    nameHi: "तपस्वी (द हर्मिट)",
+    uprightHi: "आत्म-खोज, गहरी सोच, अकेले रहना, आंतरिक मार्गदर्शन",
+    reversedHi: "अकेलापन, अवसाद, अत्यधिक अलगाव",
+    loveHi: "अकेले रहकर विचार करने की आवश्यकता, शांत मन से सोचना",
+    careerHi: "स्वयं विश्लेषण करना, व्यक्तिगत शोध, गहरे उद्देश्य की खोज",
+    keywordsHi: ["एकांत", "ज्ञान", "आत्मनिरीक्षण"]
+  },
+  "Wheel of Fortune": {
+    nameHi: "भाग्य का पहिया (व्हील ऑफ फॉर्च्यून)",
+    uprightHi: "अच्छा भाग्य, कर्मों का फल, जीवन चक्र, भाग्यशाली मोड़",
+    reversedHi: "अस्थायी रुकावट, परिवर्तन का विरोध, चक्रों को तोड़ना",
+    loveHi: "भाग्यशाली मुलाकात, रिश्ते में बहुत सुंदर मोड़ आना",
+    careerHi: "अचानक शानदार अवसर मिलना, अप्रत्याशित वित्तीय लाभ",
+    keywordsHi: ["भाग्य", "शुभ योग", "बदलाव"]
+  },
+  "Justice": {
+    nameHi: "न्याय (जस्टिस)",
+    uprightHi: "न्याय, निष्पक्षता, सत्य, कर्मों का फल, सत्य की जीत",
+    reversedHi: "अन्याय, जवाबदेही की कमी, बेईमानी से नुकसान",
+    loveHi: "निष्पक्ष और बेहद संतुलित रिश्ता, कर्मिक प्रेम का फल",
+    careerHi: "कानूनी मामलों में सफलता, निष्पक्ष परिणाम, नैतिक फैसला",
+    keywordsHi: ["सत्य", "निष्पक्षता", "कर्मफल"]
+  },
+  "The Hanged Man": {
+    nameHi: "लटका हुआ आदमी (द हैंग्ड मैन)",
+    uprightHi: "ठहराव, आत्मसमर्पण, पुरानी बातें भूलना, नया दृष्टिकोण",
+    reversedHi: "अनावश्यक देरी, अनिर्णय की स्थिति, व्यर्थ प्रतिरोध",
+    loveHi: "रिश्ते को नए नजरिए से देखना, प्रेम में परम धैर्य",
+    careerHi: "करियर में अस्थायी ठहराव, नए व्यावसायिक दृष्टिकोण की खोज",
+    keywordsHi: ["आत्मसमर्पण", "नजरिया", "धैर्य"]
+  },
+  "Death": {
+    nameHi: "मृत्यु (डेथ)",
+    uprightHi: "अंत, बड़ा परिवर्तन, नई शुरुआत, संक्रमण काल",
+    reversedHi: "परिवर्तन का विरोध, जबरदस्ती रुका रहना, धीमी प्रगति",
+    loveHi: "पुराने अनुपयोगी ढर्रों का अंत, रिश्ते का नया रूप",
+    careerHi: "करियर में एक अध्याय की समाप्ति जो बेहतर मार्ग खोलती है",
+    keywordsHi: ["परिवर्तन", "अंत", "पुनर्जन्म"]
+  },
+  "Temperance": {
+    nameHi: "संयम (टेम्परेन्स)",
+    uprightHi: "संतुलन, संयम, धैर्य, परम उद्देश्य",
+    reversedHi: "असंतुलन, अति करना, विचारों में भटकाव, पुनर्गठन",
+    loveHi: "बेहद संतुलित और सामंजस्यपूर्ण साझेदारी, प्रेम में धैर्य",
+    careerHi: "कार्य और व्यक्तिगत जीवन में संतुलन, धैर्यवान विकास",
+    keywordsHi: ["संतुलन", "धैर्य", "संयम"]
+  },
+  "The Devil": {
+    nameHi: "शैतान (द डेविल)",
+    uprightHi: "अंधकार, अत्यधिक आसक्ति, मायाजाल, प्रतिबंध",
+    reversedHi: "सीमित विचारों से मुक्ति, अनासक्ति, स्वतंत्रता",
+    loveHi: "तीव्र वासना और शारीरिक आकर्षण, संभावित सह-निर्भरता",
+    careerHi: "फंसा हुआ महसूस करना, नकारात्मक कार्य वातावरण से सावधान रहें",
+    keywordsHi: ["बंधन", "प्रलोभन", "आसक्ति"]
+  },
+  "The Tower": {
+    nameHi: "मीनार (द टॉवर)",
+    uprightHi: "अचानक तीव्र परिवर्तन, उथल-पुथल, सत्य का उद्घाटन",
+    reversedHi: "बड़ा व्यक्तिगत बदलाव, अचानक परिवर्तन का गहरा भय",
+    loveHi: "रिश्ते में अचानक उथल-पुथल, किसी बड़े सच का उजागर होना",
+    careerHi: "काम में अचानक बदलाव जो अंततः बेहतर रास्ते पर ले जाएगा",
+    keywordsHi: ["उथल-पुथल", "रहस्य", "सच्चाई"]
+  },
+  "The Star": {
+    nameHi: "तारा (द स्टार)",
+    uprightHi: "आशा, अटूट विश्वास, जीवन का उद्देश्य, आध्यात्मिक नवीनीकरण",
+    reversedHi: "निराशा, विश्वास की कमी, अध्यात्म से दूरी",
+    loveHi: "प्यार में नई सुंदर आशाएं, टूटे हुए दिल का उपचार",
+    careerHi: "रचनात्मक प्रेरणा की वापसी, सपनों का करियर संरेखित होना",
+    keywordsHi: ["आशा", "उपचार", "प्रेरणा"]
+  },
+  "The Moon": {
+    nameHi: "चंद्रमा (द मून)",
+    uprightHi: "भ्रम, भय, चिंता, अवचेतन की आवाज, अंतर्ज्ञान",
+    reversedHi: "भय और भ्रम से पूर्ण मुक्ति, दबी भावनाओं का निकास",
+    loveHi: "प्यार में भ्रम की स्थिति, भावनाओं को छिपाना",
+    careerHi: "अस्पष्ट सौदे, छिपी हुई चालों से सावधान रहने की जरूरत",
+    keywordsHi: ["भ्रम", "अंतर्ज्ञान", "अवचेतन"]
+  },
+  "The Sun": {
+    nameHi: "सूर्य (द सन)",
+    uprightHi: "सकारात्मकता, अत्यधिक आनंद, सफलता, उत्तम स्वास्थ्य, जीवन शक्ति",
+    reversedHi: "आंतरिक बच्चे की उदासी, जरूरत से ज्यादा आशावादी होना",
+    loveHi: "अत्यंत आनंदमय प्रेम, खुशहाल और जीवंत वैवाहिक जीवन",
+    careerHi: "शानदार सफलता, मान-सम्मान, बड़ी उपलब्धियां",
+    keywordsHi: ["आनंद", "सफलता", "ऊर्जा"]
+  },
+  "Judgement": {
+    nameHi: "न्याय (जजमेंट)",
+    uprightHi: "निर्णय, पुनर्जन्म, अंतरात्मा की पुकार, मोक्ष",
+    reversedHi: "आत्म-संदेह, अंतर्मन की पुकार को नजरअंदाज करना",
+    loveHi: "बिछड़े प्रेमियों का मिलन, रिश्तों का सुखद नवीनीकरण",
+    careerHi: "करियर में महत्वपूर्ण निर्णय लेने का समय, आत्म-मूल्यांकन",
+    keywordsHi: ["पुनर्जन्म", "पुकार", "जागृति"]
+  },
+  "The World": {
+    nameHi: "विश्व (द वर्ल्ड)",
+    uprightHi: "सफलतापूर्वक पूर्णता, एकीकरण, बड़ी उपलब्धि, विदेश यात्रा",
+    reversedHi: "समापन में देरी, अधूरे काम, शार्ट-कट से नुकसान",
+    loveHi: "संतुष्ट और संपूर्ण प्रेम जीवन, रिश्ता शादी में बदलना",
+    careerHi: "मुख्य लक्ष्य की प्राप्ति, बड़ी परियोजना का शानदार समापन",
+    keywordsHi: ["पूर्णता", "संतुष्टि", "समग्रता"]
+  }
+};
+
+// Hindi translations for elements, suits, and yes/no options
+export const SUIT_TRANSLATIONS: Record<string, string> = {
+  "Wands": "वांड्स (डंडे/अग्नि तत्व)",
+  "Cups": "कप्स (प्याले/जल तत्व)",
+  "Swords": "स्वॉर्ड्स (तलवारें/वायु तत्व)",
+  "Pentacles": "पेंटाकल्स (सिक्के/पृथ्वी तत्व)"
+};
+
+export const ELEMENT_TRANSLATIONS: Record<string, string> = {
+  "Fire": "अग्नि तत्व 🔥",
+  "Water": "जल तत्व 💧",
+  "Air": "वायु तत्व 🌬️",
+  "Earth": "पृथ्वी तत्व 🌿"
+};
+
+export const YES_NO_TRANSLATIONS: Record<string, string> = {
+  "yes": "✓ हाँ (सकारात्मक ऊर्जा)",
+  "no": "✗ नहीं (प्रतिकूल ऊर्जा)",
+  "maybe": "~ शायद (धैर्य रखें)"
+};
