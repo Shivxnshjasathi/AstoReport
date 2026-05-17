@@ -2,19 +2,20 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Sparkles, ArrowRight, User, Calendar, Loader2, Star, Globe, MapPin } from 'lucide-react';
+import { ArrowLeft, Sparkles, ArrowRight, User, Calendar, Loader2, Star, Globe, MapPin, Compass, Heart, Briefcase, TrendingUp, Activity } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { calculateAstroMap, type CartographyLine } from './actions';
 import LocationSearch from '../components/Form/LocationSearch';
 import { LocationData } from '@/lib/services/geocoding';
 import { motion, AnimatePresence } from 'framer-motion';
+import WorldMapSVG from '../components/Map/WorldMapSVG';
 
 const dict = {
   en: {
     back: 'BACK',
-    badge: 'ASTRO-MAP',
-    title: 'Astro-Cartography Finder',
-    subtitle: 'DISCOVER YOUR HIGHEST POWER LOCATIONS WORLDWIDE FOR RELOCATION, SUCCESS, LOVE & WEALTH',
+    badge: 'ASTRO-CARTOGRAPHY',
+    title: 'Your Power Map',
+    subtitle: 'DISCOVER WHERE ON EARTH YOUR PLANETS ALIGN FOR MAXIMUM CAREER, LOVE, HEALTH & WEALTH',
     name: 'FULL NAME',
     dob: 'DATE OF BIRTH',
     tob: 'TIME OF BIRTH',
@@ -24,15 +25,21 @@ const dict = {
     regions: 'Auspicious Relocation Regions',
     cities: 'Best Cities for Relocation',
     vibe: 'Vedic Impact',
+    mapTitle: 'INTERACTIVE ASTRO-MAP',
+    mapSubtitle: 'Hover over planetary lines to explore influence zones. Golden dots mark power cities.',
+    career: 'Career',
+    love: 'Love',
+    health: 'Health',
+    wealth: 'Wealth',
     cta: 'Want a complete relocation roadmap with coordinate analysis?',
     ctaBtn: 'ORDER GLOBAL ROADMAP — ₹199',
     descText: 'Astro-cartography projects planetary angular positions over the globe. Traveling or living on your Jupiter or Sun lines unlocks high luck, career prosperity, and supreme health.',
   },
   hi: {
     back: 'वापस',
-    badge: 'एस्ट्रो-मैप',
-    title: 'एस्ट्रो-कार्टोग्राफी फाइंडर',
-    subtitle: 'स्थानांतरण, सफलता, प्रेम और धन के लिए दुनिया भर में अपने सर्वोच्च शक्ति वाले स्थानों की खोज करें',
+    badge: 'एस्ट्रो-कार्टोग्राफी',
+    title: 'आपका शक्ति मानचित्र',
+    subtitle: 'पता लगाएं कि पृथ्वी पर आपके ग्रह अधिकतम करियर, प्रेम, स्वास्थ्य और धन के लिए कहां संरेखित हैं',
     name: 'पूरा नाम',
     dob: 'जन्म तिथि',
     tob: 'जन्म समय',
@@ -42,19 +49,104 @@ const dict = {
     regions: 'शुभ स्थानांतरण क्षेत्र',
     cities: 'स्थानांतरण के लिए सर्वोत्तम शहर',
     vibe: 'वैदिक प्रभाव',
+    mapTitle: 'इंटरैक्टिव एस्ट्रो-मैप',
+    mapSubtitle: 'प्रभाव क्षेत्रों का पता लगाने के लिए ग्रहीय रेखाओं पर होवर करें। सुनहरे बिंदु शक्ति शहरों को चिह्नित करते हैं।',
+    career: 'करियर',
+    love: 'प्रेम',
+    health: 'स्वास्थ्य',
+    wealth: 'धन',
     cta: 'क्या आप निर्देशांक विश्लेषण के साथ संपूर्ण स्थानांतरण रोडमैप चाहते हैं?',
-    ctaBtn: 'वैश्विक रोडमैप ऑर्डर करें',
+    ctaBtn: 'वैश्विक रोडमैप ऑर्डर करें — ₹199',
     descText: 'एस्ट्रो-कार्टोग्राफी दुनिया भर में ग्रहों की कोणीय स्थितियों को दर्शाती है। अपने गुरु या सूर्य रेखाओं पर यात्रा करना या रहना उच्च भाग्य, करियर समृद्धि और सर्वोच्च स्वास्थ्य को सक्रिय करता है।',
   },
 };
 
-const LINE_COLORS = {
+const LINE_COLORS: Record<string, string> = {
   Success: 'from-amber-500/10 to-orange-500/20 border-amber-500/30 text-amber-400',
   Wealth: 'from-yellow-500/10 to-emerald-500/20 border-yellow-500/30 text-yellow-400',
   Love: 'from-pink-500/10 to-rose-500/20 border-pink-500/30 text-pink-400',
   Intellect: 'from-cyan-500/10 to-blue-500/20 border-cyan-500/30 text-cyan-400',
   Discipline: 'from-zinc-500/10 to-slate-700/20 border-zinc-500/30 text-zinc-400',
 };
+
+const ENERGY_ICONS: Record<string, React.ReactNode> = {
+  Success: <Briefcase className="w-4 h-4" />,
+  Wealth: <TrendingUp className="w-4 h-4" />,
+  Love: <Heart className="w-4 h-4" />,
+  Intellect: <Compass className="w-4 h-4" />,
+  Discipline: <Activity className="w-4 h-4" />,
+};
+
+// Convert server action results to map-compatible format
+function linesToMapData(lines: CartographyLine[]) {
+  const PLANET_MAP_DATA: Record<string, { color: string; glowColor: string; mcLon: number; icLon: number; ascLat: number; cities: { name: string; lon: number; lat: number; rating: { career: number; love: number; health: number; wealth: number } }[] }> = {
+    Sun: {
+      color: '#FF6B35', glowColor: '#FF6B35',
+      mcLon: -5, icLon: 175, ascLat: 45,
+      cities: [
+        { name: 'London', lon: -0.12, lat: 51.5, rating: { career: 5, love: 3, health: 4, wealth: 4 } },
+        { name: 'Paris', lon: 2.35, lat: 48.9, rating: { career: 4, love: 5, health: 4, wealth: 3 } },
+        { name: 'New York', lon: -74, lat: 40.7, rating: { career: 5, love: 3, health: 3, wealth: 5 } },
+        { name: 'Toronto', lon: -79.4, lat: 43.7, rating: { career: 4, love: 3, health: 4, wealth: 4 } },
+      ],
+    },
+    Jupiter: {
+      color: '#F39C12', glowColor: '#F39C12',
+      mcLon: 105, icLon: -75, ascLat: 20,
+      cities: [
+        { name: 'Singapore', lon: 103.8, lat: 1.35, rating: { career: 4, love: 3, health: 4, wealth: 5 } },
+        { name: 'Bali', lon: 115.2, lat: -8.65, rating: { career: 3, love: 5, health: 5, wealth: 3 } },
+        { name: 'Los Angeles', lon: -118.2, lat: 34.1, rating: { career: 5, love: 4, health: 3, wealth: 5 } },
+        { name: 'San Francisco', lon: -122.4, lat: 37.8, rating: { career: 5, love: 3, health: 4, wealth: 5 } },
+      ],
+    },
+    Venus: {
+      color: '#E91E63', glowColor: '#E91E63',
+      mcLon: 15, icLon: -165, ascLat: 35,
+      cities: [
+        { name: 'Rome', lon: 12.5, lat: 41.9, rating: { career: 3, love: 5, health: 4, wealth: 3 } },
+        { name: 'Barcelona', lon: 2.17, lat: 41.4, rating: { career: 3, love: 5, health: 5, wealth: 3 } },
+        { name: 'Tokyo', lon: 139.7, lat: 35.7, rating: { career: 4, love: 4, health: 4, wealth: 4 } },
+        { name: 'Kyoto', lon: 135.8, lat: 35.0, rating: { career: 2, love: 5, health: 5, wealth: 2 } },
+      ],
+    },
+    Mercury: {
+      color: '#2ECC71', glowColor: '#2ECC71',
+      mcLon: 78, icLon: -102, ascLat: 15,
+      cities: [
+        { name: 'Bangalore', lon: 77.6, lat: 13.0, rating: { career: 5, love: 2, health: 3, wealth: 4 } },
+        { name: 'Singapore', lon: 103.8, lat: 1.35, rating: { career: 5, love: 3, health: 4, wealth: 5 } },
+        { name: 'Berlin', lon: 13.4, lat: 52.5, rating: { career: 4, love: 3, health: 4, wealth: 4 } },
+        { name: 'Munich', lon: 11.6, lat: 48.1, rating: { career: 4, love: 3, health: 5, wealth: 4 } },
+      ],
+    },
+    Saturn: {
+      color: '#607D8B', glowColor: '#607D8B',
+      mcLon: 18, icLon: -162, ascLat: 58,
+      cities: [
+        { name: 'Stockholm', lon: 18.1, lat: 59.3, rating: { career: 4, love: 2, health: 3, wealth: 3 } },
+        { name: 'Oslo', lon: 10.75, lat: 59.9, rating: { career: 4, love: 2, health: 4, wealth: 3 } },
+        { name: 'Sydney', lon: 151.2, lat: -33.9, rating: { career: 4, love: 3, health: 4, wealth: 4 } },
+        { name: 'Melbourne', lon: 144.96, lat: -37.8, rating: { career: 3, love: 3, health: 4, wealth: 3 } },
+      ],
+    },
+  };
+
+  return lines.map((line) => {
+    const data = PLANET_MAP_DATA[line.planet];
+    if (!data) return null;
+    return {
+      planet: line.planet,
+      color: data.color,
+      glowColor: data.glowColor,
+      energy: line.energy,
+      mcLongitude: data.mcLon,
+      icLongitude: data.icLon,
+      ascLatitude: data.ascLat,
+      cities: data.cities,
+    };
+  }).filter(Boolean) as any[];
+}
 
 export default function AstroMapPage() {
   const { language } = useLanguage();
@@ -99,7 +191,7 @@ export default function AstroMapPage() {
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-950/10 rounded-full blur-[150px]" />
       </div>
 
-      <div className="max-w-[900px] mx-auto w-full pt-6 px-4 lg:px-12 relative z-10">
+      <div className="max-w-[1100px] mx-auto w-full pt-6 px-4 lg:px-12 relative z-10">
         {/* Nav Header */}
         <div className="flex items-center justify-between border-b border-[#7D756B]/30 pb-4 mb-8">
           <Link href="/" className="flex items-center gap-2 text-[#7D756B] hover:text-[#E5D6C8] transition-colors uppercase tracking-[0.2em] text-[9px] group">
@@ -121,6 +213,10 @@ export default function AstroMapPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
+          <div className="inline-flex items-center gap-2 bg-[#B78E28]/10 border border-[#B78E28]/30 px-4 py-2 rounded-full mb-6">
+            <Globe className="w-3.5 h-3.5 text-[#B78E28]" />
+            <span className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#B78E28]">LOCATIONAL ASTROLOGY</span>
+          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#E5D6C8] uppercase tracking-[0.1em] mb-4 font-light leading-tight">
             {t.title}
           </h1>
@@ -177,7 +273,7 @@ export default function AstroMapPage() {
           </div>
         )}
 
-        {/* Results Remedies */}
+        {/* Results */}
         <AnimatePresence>
           {lines && (
             <motion.div
@@ -187,6 +283,15 @@ export default function AstroMapPage() {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
+              {/* Interactive Map */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-sm font-serif text-[#E5D6C8] uppercase tracking-[0.15em]">{t.mapTitle}</h2>
+                  <span className="text-[8px] text-[#7D756B] uppercase tracking-[0.15em]">{t.mapSubtitle}</span>
+                </div>
+                <WorldMapSVG lines={linesToMapData(lines)} language={language} />
+              </div>
+
               {/* Informative Tip */}
               <div className="p-6 bg-[#161616]/40 border border-[#7D756B]/20 rounded-3xl flex items-start gap-4">
                 <Sparkles className="w-5 h-5 text-[#B78E28] shrink-0 mt-0.5" />
@@ -209,7 +314,9 @@ export default function AstroMapPage() {
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#7D756B]/15 pb-6 mb-6">
                         <div className="flex items-center gap-4">
-                          <span className="text-2xl">🗺️</span>
+                          <div className="w-10 h-10 rounded-full bg-[#1A1A1A]/60 border border-[#7D756B]/20 flex items-center justify-center">
+                            {ENERGY_ICONS[line.energy] || <Globe className="w-4 h-4" />}
+                          </div>
                           <div>
                             <h2 className="text-xl font-serif text-[#E5D6C8] uppercase tracking-wider font-light">
                               {line.planet} Celestial Line
@@ -264,7 +371,7 @@ export default function AstroMapPage() {
                 })}
               </div>
 
-              {/* Consultation / Energized Remedies Kit CTA */}
+              {/* Consultation CTA */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

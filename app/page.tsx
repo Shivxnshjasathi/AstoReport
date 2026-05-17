@@ -104,6 +104,10 @@ const dict = {
     toolVarshphalDesc: "Your solar return forecast",
     toolLalKitab: "Lal Kitab",
     toolLalKitabDesc: "Unique & simple remedies",
+    toolSimulator: "3D Simulator",
+    toolSimulatorDesc: "Planets orbiting in real-time 3D",
+    toolAura: "Aura & Chakra",
+    toolAuraDesc: "Cosmic energy & aura scanner",
   },
   hi: {
     navGemstones: "रत्न",
@@ -200,6 +204,10 @@ const dict = {
     toolVarshphalDesc: "आपका सौर रिटर्न पूर्वानुमान",
     toolLalKitab: "लाल किताब",
     toolLalKitabDesc: "अद्वितीय और सरल उपाय",
+    toolSimulator: "3D सिम्युलेटर",
+    toolSimulatorDesc: "वास्तविक समय 3D में घूमते ग्रह",
+    toolAura: "आभा और चक्र",
+    toolAuraDesc: "लौकिक ऊर्जा और आभा स्कैनर",
   }
 };
 
@@ -213,6 +221,7 @@ export default function Home() {
       { href: '/panchang', icon: '🕉️', title: t.toolPanchang },
       { href: '/muhurat', icon: '🌅', title: t.toolMuhurat },
       { href: '/transits', icon: '🪐', title: t.toolTransits },
+      { href: '/simulator', icon: '🌀', title: t.toolSimulator },
       { href: '/festivals', icon: '📅', title: t.toolFestivals },
     ],
     life: [
@@ -224,6 +233,7 @@ export default function Home() {
     ],
     solutions: [
       { href: '/mantras', icon: '📿', title: t.toolMantras },
+      { href: '/aura', icon: '🌀', title: t.toolAura || 'Aura & Chakra' },
       { href: '/dreams', icon: '💭', title: t.toolDreams },
       { href: '/consult', icon: '📞', title: t.toolConsult },
       { href: '/gemstones-calc', icon: '💎', title: t.toolGemstones },
@@ -255,23 +265,23 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#121212] font-sans flex flex-col relative overflow-hidden">
-      
+
       <nav className="flex justify-center items-center gap-6 lg:gap-12 py-6 px-4 text-[#E5D6C8] text-[10px] lg:text-xs tracking-[0.2em] uppercase border-b border-[#7D756B]/20 w-full z-50 bg-[#121212]/80 backdrop-blur-md sticky top-0">
         <div className="flex items-center gap-6 lg:gap-12">
           <Link href="/panchang" className="hover:text-[#B78E28] transition-colors hidden md:block">{language === 'hi' ? 'पंचांग' : 'PANCHANG'}</Link>
           <Link href="/astrology" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navHoroscopes}</Link>
           <Link href="/tarot" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navTarot}</Link>
         </div>
-        
+
         <div className="flex items-center gap-4 text-[#E5D6C8] mx-4 lg:mx-8">
           <Sun className="w-5 h-5 font-light" strokeWidth={1} />
           <span className="text-2xl font-serif font-light">✧</span>
           <Moon className="w-5 h-5 font-light" strokeWidth={1} />
         </div>
-        
+
         <div className="flex items-center gap-6 lg:gap-12">
           <Link href="/store" className="hover:text-[#B78E28] transition-colors hidden md:block">{t.navReports}</Link>
-          
+
           {/* TOOLS DROPDOWN (MOVED TO RIGHT NEXT TO CONTACT) */}
           <div className="relative group hidden md:block">
             <button className="flex items-center gap-1 hover:text-[#B78E28] transition-colors uppercase tracking-[0.2em]">
@@ -306,16 +316,16 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="relative w-full min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center py-12 lg:py-20 overflow-hidden">
         {/* Parallax Celestial Background */}
-        <motion.div 
-          style={{ y: parallaxY, opacity: parallaxOpacity }} 
+        <motion.div
+          style={{ y: parallaxY, opacity: parallaxOpacity }}
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
         >
           {/* Decorative Rings */}
           <div className="absolute w-[800px] h-[800px] rounded-full border border-[#7D756B]/10 animate-[spin_120s_linear_infinite]" />
           <div className="absolute w-[600px] h-[600px] rounded-full border border-[#7D756B]/20 animate-[spin_80s_linear_infinite_reverse]" />
-          
+
           {/* Animated Zodiac Wheel Overlay */}
-          <motion.div 
+          <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
             className="absolute w-[1000px] h-[1000px] opacity-10"
@@ -325,9 +335,9 @@ export default function Home() {
         </motion.div>
 
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10 px-6 lg:px-12 w-full">
-          
+
           <div className="text-center lg:text-left order-1 lg:order-1">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -336,13 +346,13 @@ export default function Home() {
               <Sparkles className="w-3 h-3 text-[#B78E28]" />
               <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#B78E28]">{t.heroTag}</span>
             </motion.div>
-            
+
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-serif text-[#E5D6C8] leading-[1.1] mb-6 lg:mb-8 uppercase font-light">
               {t.heroTitle1} <br />
               <span className="text-[#B78E28] italic normal-case">{t.heroTitle2}</span> <br />
               {t.heroTitle3}
             </h1>
-            
+
             <p className="text-[#7D756B] text-xs lg:text-sm max-w-md mx-auto lg:mx-0 mb-12 leading-relaxed uppercase tracking-[0.2em]">
               {t.heroDesc}
             </p>
@@ -392,7 +402,7 @@ export default function Home() {
                 <div className="w-12 h-[1px] bg-[#B78E28] group-hover:w-32 transition-all duration-700" />
               </div>
             </Link>
-            
+
             <Link href="/store" className="group h-[30rem] lg:h-[40rem] relative rounded-[3rem] overflow-hidden border border-[#7D756B]/30 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/20 to-transparent z-10" />
               <Image src="/reports-showcase.png" alt="Astrology Reports" fill className="object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 50vw" quality={70} />
@@ -424,11 +434,10 @@ export default function Home() {
               <button
                 key={cat}
                 onClick={() => setActiveTab(cat)}
-                className={`px-6 py-2 rounded-full text-[9px] uppercase tracking-[0.2em] font-bold transition-all border shrink-0 ${
-                  activeTab === cat 
-                    ? 'bg-[#B78E28] text-[#121212] border-[#B78E28] shadow-[0_0_20px_rgba(183,142,40,0.3)]' 
-                    : 'bg-transparent text-[#7D756B] border-[#7D756B]/30 hover:border-[#E5D6C8]'
-                }`}
+                className={`px-6 py-2 rounded-full text-[9px] uppercase tracking-[0.2em] font-bold transition-all border shrink-0 ${activeTab === cat
+                  ? 'bg-[#B78E28] text-[#121212] border-[#B78E28] shadow-[0_0_20px_rgba(183,142,40,0.3)]'
+                  : 'bg-transparent text-[#7D756B] border-[#7D756B]/30 hover:border-[#E5D6C8]'
+                  }`}
               >
                 {catLabels[language][cat]}
               </button>
@@ -446,13 +455,13 @@ export default function Home() {
                 transition={{ duration: 0.3 }}
                 className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-4 lg:gap-6"
               >
-                {(activeTab === 'all' 
-                  ? Object.values(toolCategories).flat() 
+                {(activeTab === 'all'
+                  ? Object.values(toolCategories).flat()
                   : toolCategories[activeTab]
                 ).map((tool, i) => (
-                  <Link 
-                    key={tool.title + i} 
-                    href={tool.href} 
+                  <Link
+                    key={tool.title + i}
+                    href={tool.href}
                     className="group flex flex-col items-center gap-2"
                   >
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#1A1A1A] border border-[#7D756B]/30 flex items-center justify-center transition-all duration-500 group-hover:border-[#B78E28] group-hover:bg-[#B78E28]/10 group-hover:shadow-[0_0_20px_rgba(183,142,40,0.2)]">
@@ -550,7 +559,7 @@ export default function Home() {
         </div>
 
         <div className="max-w-[1200px] mx-auto relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -559,17 +568,17 @@ export default function Home() {
           >
             <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#B78E28]/10 blur-[100px] rounded-full group-hover:bg-[#B78E28]/20 transition-colors duration-1000" />
             <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#B78E28]/10 blur-[100px] rounded-full group-hover:bg-[#B78E28]/20 transition-colors duration-1000" />
-            
+
             <div className="max-w-3xl mx-auto relative z-10">
               <Sparkles className="w-8 h-8 text-[#B78E28] mx-auto mb-8 animate-pulse" />
               <h2 className="text-4xl lg:text-7xl font-serif text-[#E5D6C8] mb-8 uppercase font-light tracking-tight">{t.connectTitle}</h2>
               <p className="text-[#7D756B] uppercase tracking-[0.3em] text-[10px] sm:text-xs leading-loose mb-16 max-w-xl mx-auto">
                 {t.connectDesc}
               </p>
-              
+
               <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-                <a 
-                  href="tel:+916366105204" 
+                <a
+                  href="tel:+916366105204"
                   className="group flex items-center gap-4 text-[#E5D6C8] hover:text-[#B78E28] transition-all"
                 >
                   <div className="w-14 h-14 rounded-full border border-[#7D756B]/30 flex items-center justify-center group-hover:border-[#B78E28] group-hover:bg-[#B78E28]/10 transition-all">
@@ -580,11 +589,11 @@ export default function Home() {
                     <p className="text-sm font-bold tracking-widest">+91 6366105204</p>
                   </div>
                 </a>
-                
+
                 <div className="w-[1px] h-12 bg-[#7D756B]/20 hidden sm:block" />
-                
-                <a 
-                  href="https://wa.me/916366105204" 
+
+                <a
+                  href="https://wa.me/916366105204"
                   target="_blank"
                   className="group flex items-center gap-4 text-[#E5D6C8] hover:text-[#25D366] transition-all"
                 >
@@ -606,7 +615,7 @@ export default function Home() {
       <footer className="w-full bg-[#121212] pt-20 lg:pt-32 pb-12 relative overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-24 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
-            
+
             <div className="lg:col-span-2">
               <div className="flex items-center gap-4 mb-8">
                 <Sun className="w-6 h-6 text-[#B78E28]" />
@@ -616,7 +625,7 @@ export default function Home() {
                 {t.footerAbout}
               </p>
               {/* Share Button (Referral) */}
-              <button 
+              <button
                 onClick={handleShare}
                 className="inline-flex items-center gap-4 text-[#B78E28] hover:text-[#E5D6C8] transition-colors group"
               >
@@ -641,29 +650,27 @@ export default function Home() {
             <div>
               <h4 className="text-[#E5D6C8] font-serif uppercase tracking-[0.15em] mb-8">{t.footerLang}</h4>
               <div className="flex flex-col space-y-4">
-                <button 
+                <button
                   onClick={() => setLanguage('en')}
-                  className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all w-max font-bold text-[9px] tracking-[0.3em] ${
-                    language === 'en' 
-                      ? 'border-[#B78E28] bg-[#B78E28]/10 text-[#E5D6C8]' 
-                      : 'border-[#7D756B]/30 text-[#7D756B] hover:border-[#B78E28]/50 transition-colors'
-                  }`}
+                  className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all w-max font-bold text-[9px] tracking-[0.3em] ${language === 'en'
+                    ? 'border-[#B78E28] bg-[#B78E28]/10 text-[#E5D6C8]'
+                    : 'border-[#7D756B]/30 text-[#7D756B] hover:border-[#B78E28]/50 transition-colors'
+                    }`}
                 >
                   ENGLISH
                 </button>
-                <button 
+                <button
                   onClick={() => setLanguage('hi')}
-                  className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all w-max font-bold text-[9px] tracking-[0.3em] ${
-                    language === 'hi' 
-                      ? 'border-[#B78E28] bg-[#B78E28]/10 text-[#E5D6C8]' 
-                      : 'border-[#7D756B]/30 text-[#7D756B] hover:border-[#B78E28]/50 transition-colors'
-                  }`}
+                  className={`flex items-center gap-3 px-5 py-4 rounded-2xl border transition-all w-max font-bold text-[9px] tracking-[0.3em] ${language === 'hi'
+                    ? 'border-[#B78E28] bg-[#B78E28]/10 text-[#E5D6C8]'
+                    : 'border-[#7D756B]/30 text-[#7D756B] hover:border-[#B78E28]/50 transition-colors'
+                    }`}
                 >
                   HINDI (हिन्दी)
                 </button>
               </div>
             </div>
-            
+
           </div>
 
           <div className="border-t border-[#7D756B]/20 pt-12 space-y-8">
