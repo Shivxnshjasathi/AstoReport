@@ -17,13 +17,14 @@ export interface KundliData {
   houseRashis: { [key: number]: number }; // House Number -> Rashi Number
 }
 
-export const calculateKundli = (
+export const calculateKundli = async (
   dateOrDateTime: Date | DateTime,
   lat: number,
   lon: number,
   division: number = 1
-): KundliData => {
+): Promise<KundliData> => {
   const client = new NodeJHora({ latitude: lat, longitude: lon });
+  await client.init();
   const birthDateLuxon = dateOrDateTime instanceof DateTime 
     ? dateOrDateTime 
     : DateTime.fromJSDate(dateOrDateTime);

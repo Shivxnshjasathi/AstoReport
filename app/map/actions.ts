@@ -75,7 +75,7 @@ export async function calculateAstroMap(
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate Kundli
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
 
     // Filter active lines based on strong planetary longitudes in the birth chart
     const activeLines: CartographyLine[] = Object.values(CELESTIAL_LINES);

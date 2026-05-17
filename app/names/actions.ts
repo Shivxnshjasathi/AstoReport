@@ -97,7 +97,7 @@ export async function calculateBabyNames(
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate birth chart
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
     
     // Extract Moon placement details
     const moon = chart.planets.find((p) => p.name === 'Moon');

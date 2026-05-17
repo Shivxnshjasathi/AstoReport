@@ -43,7 +43,7 @@ export async function calculateVarshphal(
     const age = targetYear - birthYear;
     
     // Calculate birth chart
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
 
     // Calculate Muntha House: (Lagna Rashi + Age) % 12
     const lagna = chart.lagnaRashi;

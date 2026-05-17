@@ -31,7 +31,7 @@ export async function calculateDoshaReport(
 ) {
   try {
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
 
     // 1. Helper: Find which house a planet is in
     const getPlanetHouse = (planetName: string): number => {

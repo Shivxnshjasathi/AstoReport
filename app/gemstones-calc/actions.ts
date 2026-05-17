@@ -307,7 +307,7 @@ export async function calculateGemstones(
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate Lagna using current core NodeJHora engine wrapper
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
     const lagna = chart.lagnaRashi;
     
     const recommendations = GEMSTONES_MAP[lagna] || GEMSTONES_MAP[1];

@@ -23,7 +23,7 @@ export async function scanYogas(
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate full birth chart
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
     const resolvedYogas: YogaScanResult[] = [];
 
     // Extract planet arrays for easier scanning

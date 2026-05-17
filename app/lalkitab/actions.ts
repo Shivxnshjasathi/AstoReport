@@ -143,7 +143,7 @@ export async function calculateLalKitab(
     const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate houses using the core calculator
-    const chart = calculateKundli(birthDate, lat, lon);
+    const chart = await calculateKundli(birthDate, lat, lon);
     const resolvedRemedies: LalKitabRemedy[] = [];
 
     // Map planety positions to LAL KITAB remedies
