@@ -2,8 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ShieldAlert, ShieldCheck, Zap, Info, Loader2 } from 'lucide-react';
+import { ArrowLeft, ShieldAlert, ShieldCheck, Zap, Info, Loader2, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { calculateDoshaReport, type DoshaReportResult } from './actions';
+import LocationSearch from '../components/Form/LocationSearch';
+import { LocationData } from '@/lib/services/geocoding';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const dict = {
@@ -11,16 +14,16 @@ const dict = {
     back: "BACK",
     badge: "KUNDLI CHECKER",
     title: "Dosha Analysis",
-    subtitle: "IDENTIFY CELESTIAL BLOCKS IN YOUR DESTINY.",
+    subtitle: "IDENTIFY CELESTIAL BLOCKS AND KARMIC DEBTS IN YOUR DESTINY.",
     labelName: "Full Name",
     labelDate: "Birth Date",
     labelTime: "Birth Time",
     labelPlace: "Birth Place",
     btnCheck: "ANALYZE DOSHAS",
-    scanning: "Scanning your Kundli...",
-    resultsTitle: "Your Dosha Report",
+    scanning: "Calculating planetary alignments...",
+    resultsTitle: "Your Dosha Analysis",
     manglik: "Mangal Dosha",
-    sadesati: "Sade Sati",
+    sadesati: "Shani Sade Sati",
     pitra: "Pitra Dosha",
     kaalsarp: "Kaal Sarp Dosha",
     statusPresent: "PRESENT",
@@ -28,20 +31,20 @@ const dict = {
     statusPartial: "PARTIAL",
     remedy: "Suggested Remedy",
     wantReport: "Get detailed Dosha Report",
-    buyNow: "BUY FULL ANALYSIS",
+    buyNow: "BUY FULL ANALYSIS — ₹199",
   },
   hi: {
     back: "वापस",
     badge: "कुंडली चेकर",
     title: "दोष विश्लेषण",
-    subtitle: "अपने भाग्य में स्वर्गीय बाधाओं को पहचानें।",
+    subtitle: "अपने भाग्य में स्वर्गीय बाधाओं और कर्म ऋणों को पहचानें।",
     labelName: "पूरा नाम",
     labelDate: "जन्म तिथि",
     labelTime: "जन्म समय",
     labelPlace: "जन्म स्थान",
     btnCheck: "दोषों का विश्लेषण करें",
-    scanning: "आपकी कुंडली स्कैन की जा रही है...",
-    resultsTitle: "आपकी दोष रिपोर्ट",
+    scanning: "ग्रह संरेखण की गणना हो रही है...",
+    resultsTitle: "आपका दोष विश्लेषण",
     manglik: "मंगल दोष",
     sadesati: "साढ़े साती",
     pitra: "पितृ दोष",
@@ -58,29 +61,45 @@ const dict = {
 export default function DoshaPage() {
   const { language } = useLanguage();
   const t = dict[language];
+  
+  const [name, setName] = useState('');
+  const [dob, setDob] = useState('');
+  const [tob, setTob] = useState('');
+  const [location, setLocation] = useState<LocationData | null>(null);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleCheck = (e: React.FormEvent) => {
+  const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!location) {
+      alert(language === 'hi' ? 'कृपया एक स्थान चुनें' : 'Please select a location');
+      return;
+    }
     setLoading(true);
+    setError(null);
+    setResults(null);
     
-    // Simulate complex calculation using NPM logic
-    setTimeout(() => {
-      setResults({
-        manglik: { status: 'partial', desc: language === 'hi' ? 'अल्पांश मंगल दोष - विवाह में देरी हो सकती है।' : 'Partial Manglik - May cause minor delays in marriage.' },
-        sadesati: { status: 'absent', desc: language === 'hi' ? 'अभी आप साढ़े साती के प्रभाव में नहीं हैं।' : 'You are currently not under the influence of Sade Sati.' },
-        pitra: { status: 'absent', desc: language === 'hi' ? 'कोई पितृ दोष नहीं पाया गया।' : 'No Pitra Dosha detected in your chart.' },
-        kaalsarp: { status: 'present', desc: language === 'hi' ? 'काल सर्प दोष पाया गया - कार्यों में बाधाएं आ सकती हैं।' : 'Kaal Sarp Dosha detected - May cause hurdles in undertakings.' },
-      });
-      setLoading(false);
-    }, 2500);
+    const res = await calculateDoshaReport(
+      dob,
+      tob,
+      location.lat,
+      location.lon,
+      location.timezone
+    );
+
+    if (res.success && res.data) {
+      setResults(res.data);
+    } else {
+      setError(res.error || 'Vedic Dosha calculation failed');
+    }
+    setLoading(false);
   };
 
   return (
     <main className="min-h-screen bg-[#121212] font-sans text-[#E5D6C8] selection:bg-[#B78E28]/30">
       {/* BACKGROUND DECOR */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-[#B78E28]/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-[#B78E28]/5 rounded-full blur-[120px]" />
       </div>
@@ -104,21 +123,24 @@ export default function DoshaPage() {
 
             <form onSubmit={handleCheck} className="space-y-6 bg-[#1A1A1A]/50 backdrop-blur-xl border border-[#7D756B]/20 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
               <div className="grid sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
+                <div className="space-y-2 col-span-2">
                   <label className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] font-bold ml-1">{t.labelName}</label>
-                  <input required type="text" placeholder="Arjun Sharma" className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors" />
+                  <input required type="text" placeholder="Arjun Sharma" value={name} onChange={e => setName(e.target.value)}
+                    className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] font-bold ml-1">{t.labelDate}</label>
-                  <input required type="date" className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors" />
+                  <input required type="date" value={dob} onChange={e => setDob(e.target.value)}
+                    className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors [color-scheme:dark]" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] font-bold ml-1">{t.labelTime}</label>
-                  <input required type="time" className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors" />
+                  <input required type="time" value={tob} onChange={e => setTob(e.target.value)}
+                    className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors [color-scheme:dark]" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] font-bold ml-1">{t.labelPlace}</label>
-                  <input required type="text" placeholder="New Delhi, India" className="w-full bg-[#121212]/50 border border-[#7D756B]/30 rounded-2xl py-4 px-6 text-sm focus:outline-none focus:border-[#B78E28] transition-colors" />
+                <div className="space-y-2 col-span-2 border-b border-[#7D756B]/30 pb-2">
+                  <label className="text-[10px] text-[#B78E28] uppercase tracking-[0.2em] font-bold ml-1 mb-1 block">{t.labelPlace}</label>
+                  <LocationSearch onSelect={setLocation} />
                 </div>
               </div>
 
@@ -145,12 +167,18 @@ export default function DoshaPage() {
           {/* RIGHT: RESULTS */}
           <div className="relative">
             <AnimatePresence mode="wait">
+              {error && (
+                <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="p-4 bg-red-950/20 border border-red-800/40 rounded-2xl text-center text-red-400 text-xs">
+                  {error}
+                </motion.div>
+              )}
+
               {!results && !loading && (
                 <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="h-full flex flex-col items-center justify-center text-center p-12 border border-[#7D756B]/20 rounded-[3rem] bg-[#1A1A1A]/20 dashed-border">
                   <div className="w-24 h-24 rounded-full bg-[#B78E28]/5 border border-[#B78E28]/20 flex items-center justify-center mb-8">
                     <ShieldCheck className="w-10 h-10 text-[#B78E28]/40" />
                   </div>
-                  <p className="text-[#7D756B] uppercase tracking-[0.2em] text-[10px] leading-relaxed">Enter your birth details to reveal potential celestial afflictions and their remedies.</p>
+                  <p className="text-[#7D756B] uppercase tracking-[0.2em] text-[10px] leading-relaxed">Enter your birth details to reveal potential celestial afflictions and ancestral karmic debts.</p>
                 </motion.div>
               )}
 
@@ -193,12 +221,14 @@ export default function DoshaPage() {
                                dosha.data.status === 'partial' ? t.statusPartial : t.statusAbsent}
                             </span>
                           </div>
-                          <p className="text-[9px] text-[#7D756B] leading-relaxed uppercase tracking-wider">{dosha.data.desc}</p>
+                          <p className="text-[10px] leading-relaxed text-[#7D756B] font-light">
+                            {language === 'hi' ? dosha.data.desc.hi : dosha.data.desc.en}
+                          </p>
                         </div>
                       ))}
                     </div>
 
-                    <Link href="/store" className="mt-10 block w-full bg-[#121212] border border-[#B78E28]/40 hover:bg-[#B78E28] hover:text-[#121212] transition-all duration-500 py-5 rounded-2xl text-center text-[10px] font-black uppercase tracking-[0.4em]">
+                    <Link href="/consult" className="mt-10 block w-full bg-[#121212] border border-[#B78E28]/40 hover:bg-[#B78E28] hover:text-[#121212] transition-all duration-500 py-5 rounded-2xl text-center text-[10px] font-black uppercase tracking-[0.4em]">
                       {t.buyNow}
                     </Link>
                   </div>

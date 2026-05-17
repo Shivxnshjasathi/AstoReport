@@ -11,8 +11,7 @@ export async function getKundaliReport(
   timezone: string
 ) {
   try {
-    const birthDateJS = new Date(dateStr);
-    const birthDateLuxon = DateTime.fromJSDate(birthDateJS, { zone: timezone });
+    const birthDateLuxon = DateTime.fromISO(dateStr, { zone: timezone });
     
     const client = new NodeJHora({ latitude: lat, longitude: lon });
     await client.init();
@@ -36,6 +35,7 @@ export async function getKundaliReport(
       rashi: Math.floor(p.longitude / 30) + 1,
       navamsaRashi: (Math.floor((p.longitude * 9) / 30) % 12) + 1,
       nakshatra: p.nakshatra?.name || 'Unknown',
+      isRetrograde: p.isRetrograde || false,
     }));
 
     const lagnaLongitude = chart.houses.ascendant;
@@ -48,6 +48,7 @@ export async function getKundaliReport(
         planets,
         lagnaRashi,
         navamsaLagnaRashi,
+        lagnaLongitude,
         currentDasha: {
           mahadasha: currentMahadasha ? {
             planet: currentMahadasha.planet,

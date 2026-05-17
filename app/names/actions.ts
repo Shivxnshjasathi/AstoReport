@@ -94,8 +94,7 @@ export async function calculateBabyNames(
   timezone: string
 ) {
   try {
-    const combinedStr = `${dobStr}T${tobStr}`;
-    const birthDate = new Date(combinedStr);
+    const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate birth chart
     const chart = calculateKundli(birthDate, lat, lon);

@@ -118,8 +118,8 @@ const ReportContent = () => {
     );
   }
 
-  const buildChartData = (planets: any[], lagnaRashi: number, isD9 = false) => {
-    const housePlanets: { [key: number]: string[] } = {};
+  const buildChartData = (planets: any[], lagnaRashi: number, isD9 = false, lagnaDegree = 0) => {
+    const housePlanets: { [key: number]: any[] } = {};
     const houseRashis: { [key: number]: number } = {};
 
     for (let h = 1; h <= 12; h++) {
@@ -127,11 +127,45 @@ const ReportContent = () => {
       houseRashis[h] = ((lagnaRashi + h - 2) % 12) + 1;
     }
 
+    const PLANET_ABBRS: Record<string, string> = {
+      Sun: 'सू',
+      Moon: 'च',
+      Mars: 'मं',
+      Mercury: 'बु',
+      Jupiter: 'गु',
+      Venus: 'शु',
+      Saturn: 'श',
+      Rahu: 'रा',
+      Ketu: 'के',
+      Uranus: 'यू',
+      Neptune: 'ने',
+      Pluto: 'प्लू',
+      Lagna: 'ल'
+    };
+
+    // Add Lagna to House 1
+    housePlanets[1].push({
+      name: 'Lagna',
+      displayName: 'ल',
+      degree: Math.floor(lagnaDegree % 30),
+      isRetrograde: false
+    });
+
     planets.forEach((p: any) => {
       const rashi = isD9 ? p.navamsaRashi : p.rashi;
+      const rawDeg = isD9 ? (p.longitude * 9) : p.longitude;
+      const deg = Math.floor(rawDeg % 30);
+      const isRetro = p.isRetrograde || false;
+      
       for (let h = 1; h <= 12; h++) {
         if (houseRashis[h] === rashi) {
-          housePlanets[h].push(p.name);
+          const displayName = PLANET_ABBRS[p.name] || p.name;
+          housePlanets[h].push({
+            name: p.name,
+            displayName,
+            degree: deg,
+            isRetrograde: isRetro
+          });
           break;
         }
       }
@@ -140,8 +174,8 @@ const ReportContent = () => {
     return { houses: housePlanets, houseRashis };
   };
 
-  const d1 = buildChartData(data.planets, data.lagnaRashi);
-  const d9 = buildChartData(data.planets, data.navamsaLagnaRashi, true);
+  const d1 = buildChartData(data.planets, data.lagnaRashi, false, data.lagnaLongitude || 0);
+  const d9 = buildChartData(data.planets, data.navamsaLagnaRashi, true, data.lagnaLongitude ? (data.lagnaLongitude * 9) : 0);
 
 
   return (

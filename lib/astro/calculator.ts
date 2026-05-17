@@ -18,13 +18,17 @@ export interface KundliData {
 }
 
 export const calculateKundli = (
-  date: Date,
+  dateOrDateTime: Date | DateTime,
   lat: number,
   lon: number,
   division: number = 1
 ): KundliData => {
   const client = new NodeJHora({ latitude: lat, longitude: lon });
-  const { planets, houses } = client.getChart(DateTime.fromJSDate(date));
+  const birthDateLuxon = dateOrDateTime instanceof DateTime 
+    ? dateOrDateTime 
+    : DateTime.fromJSDate(dateOrDateTime);
+
+  const { planets, houses } = client.getChart(birthDateLuxon);
 
   const processedPlanets: PlanetData[] = planets.map((p: any) => {
     let rashi = 0;

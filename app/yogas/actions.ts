@@ -20,8 +20,7 @@ export async function scanYogas(
   timezone: string
 ) {
   try {
-    const combinedStr = `${dobStr}T${tobStr}`;
-    const birthDate = new Date(combinedStr);
+    const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate full birth chart
     const chart = calculateKundli(birthDate, lat, lon);

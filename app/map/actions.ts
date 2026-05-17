@@ -72,8 +72,7 @@ export async function calculateAstroMap(
   timezone: string
 ) {
   try {
-    const combinedStr = `${dobStr}T${tobStr}`;
-    const birthDate = new Date(combinedStr);
+    const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate Kundli
     const chart = calculateKundli(birthDate, lat, lon);

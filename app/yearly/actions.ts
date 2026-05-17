@@ -38,9 +38,8 @@ export async function calculateVarshphal(
   targetYear: number
 ) {
   try {
-    const combinedStr = `${dobStr}T${tobStr}`;
-    const birthDate = new Date(combinedStr);
-    const birthYear = birthDate.getFullYear();
+    const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
+    const birthYear = birthDate.year;
     const age = targetYear - birthYear;
     
     // Calculate birth chart

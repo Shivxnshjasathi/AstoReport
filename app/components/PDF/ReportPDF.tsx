@@ -53,7 +53,7 @@ const NORTH_INDIAN_HOUSES: Record<number, { x: number; y: number; w: number; h: 
 
 const RASHI_NAMES = ['','Ar','Ta','Ge','Ca','Le','Vi','Li','Sc','Sg','Cp','Aq','Pi'];
 
-const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, string[]>; houseRashis: Record<number, number> }) => (
+const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, any[]>; houseRashis: Record<number, number> }) => (
   <Svg width={240} height={240}>
     {/* Outer border */}
     <Rect x={0} y={0} width={240} height={240} stroke="#7D756B" strokeWidth={1} fill="none" />
@@ -61,7 +61,8 @@ const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, string[]>;
     {[1,2,3,4,5,6,7,8].map(h => {
       const cell = NORTH_INDIAN_HOUSES[h];
       if (!cell || cell.w === 0) return null;
-      const planets = (houses[h] || []).join(' ');
+      const rawPlanets = houses[h] || [];
+      const planets = rawPlanets.map(p => typeof p === 'string' ? p : p.displayName).join(' ');
       const rashi = RASHI_NAMES[houseRashis[h]] || '';
       return (
         <G key={h}>
@@ -89,7 +90,8 @@ const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, string[]>;
         { x: 146, y: 122 }, // 12 right
       ];
       const pos = positions[i];
-      const planets = (houses[h] || []).join(' ');
+      const rawPlanets = houses[h] || [];
+      const planets = rawPlanets.map(p => typeof p === 'string' ? p : p.displayName).join(' ');
       const rashi = RASHI_NAMES[houseRashis[h]] || '';
       return (
         <G key={h}>
@@ -108,9 +110,9 @@ interface ReportPDFProps {
   locName: string;
   planets: any[];
   dasha: any;
-  d1Houses: Record<number, string[]>;
+  d1Houses: Record<number, any[]>;
   d1HouseRashis: Record<number, number>;
-  d9Houses: Record<number, string[]>;
+  d9Houses: Record<number, any[]>;
   d9HouseRashis: Record<number, number>;
 }
 

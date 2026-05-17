@@ -140,8 +140,7 @@ export async function calculateLalKitab(
   timezone: string
 ) {
   try {
-    const combinedStr = `${dobStr}T${tobStr}`;
-    const birthDate = new Date(combinedStr);
+    const birthDate = DateTime.fromISO(`${dobStr}T${tobStr}`, { zone: timezone });
     
     // Calculate houses using the core calculator
     const chart = calculateKundli(birthDate, lat, lon);
