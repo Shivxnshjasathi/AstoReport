@@ -53,6 +53,80 @@ const NORTH_INDIAN_HOUSES: Record<number, { x: number; y: number; w: number; h: 
 
 const RASHI_NAMES = ['','Ar','Ta','Ge','Ca','Le','Vi','Li','Sc','Sg','Cp','Aq','Pi'];
 
+const formatPlanetPDF = (p: any) => {
+  if (typeof p === 'string') return p;
+  let suffix = '';
+  if (p.degree > 0) {
+    suffix += p.degree.toString().padStart(2, '0');
+  }
+  if (p.isRetrograde) suffix += 'R';
+  if (p.isCombust) suffix += 'C';
+  if (p.isExalted) suffix += 'E';
+  if (p.isDebilitated) suffix += 'D';
+  return suffix ? `${p.displayName}${suffix}` : p.displayName;
+};
+
+const formatPlanetNamePDF = (p: any, planetsList: any[]) => {
+  const sunPlanet = planetsList.find(pl => pl.name === 'Sun');
+  const sunLong = sunPlanet ? sunPlanet.longitude : 0;
+  const rashi = p.rashi;
+  const isRetro = p.isRetrograde || false;
+
+  const isCombust = (() => {
+    if (['Sun', 'Moon', 'Rahu', 'Ketu'].includes(p.name)) return false;
+    const diff = Math.min(
+      Math.abs(p.longitude - sunLong),
+      360 - Math.abs(p.longitude - sunLong)
+    );
+    if (p.name === 'Mars' && diff <= 17) return true;
+    if (p.name === 'Mercury') {
+      const limit = isRetro ? 12 : 14;
+      if (diff <= limit) return true;
+    }
+    if (p.name === 'Jupiter' && diff <= 11) return true;
+    if (p.name === 'Venus') {
+      const limit = isRetro ? 8 : 10;
+      if (diff <= limit) return true;
+    }
+    if (p.name === 'Saturn' && diff <= 15) return true;
+    return false;
+  })();
+
+  const isExalted = (() => {
+    if (p.name === 'Sun' && rashi === 1) return true;
+    if (p.name === 'Moon' && rashi === 2) return true;
+    if (p.name === 'Mars' && rashi === 10) return true;
+    if (p.name === 'Mercury' && rashi === 6) return true;
+    if (p.name === 'Jupiter' && rashi === 4) return true;
+    if (p.name === 'Venus' && rashi === 12) return true;
+    if (p.name === 'Saturn' && rashi === 7) return true;
+    if (p.name === 'Rahu' && rashi === 2) return true;
+    if (p.name === 'Ketu' && rashi === 8) return true;
+    return false;
+  })();
+
+  const isDebilitated = (() => {
+    if (p.name === 'Sun' && rashi === 7) return true;
+    if (p.name === 'Moon' && rashi === 8) return true;
+    if (p.name === 'Mars' && rashi === 4) return true;
+    if (p.name === 'Mercury' && rashi === 12) return true;
+    if (p.name === 'Jupiter' && rashi === 10) return true;
+    if (p.name === 'Venus' && rashi === 6) return true;
+    if (p.name === 'Saturn' && rashi === 1) return true;
+    if (p.name === 'Rahu' && rashi === 8) return true;
+    if (p.name === 'Ketu' && rashi === 2) return true;
+    return false;
+  })();
+
+  let suffix = '';
+  if (isRetro) suffix += 'R';
+  if (isCombust) suffix += 'C';
+  if (isExalted) suffix += 'E';
+  if (isDebilitated) suffix += 'D';
+
+  return suffix ? `${p.name} (${suffix})` : p.name;
+};
+
 const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, any[]>; houseRashis: Record<number, number> }) => (
   <Svg width={240} height={240}>
     {/* Outer border */}
@@ -62,7 +136,7 @@ const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, any[]>; ho
       const cell = NORTH_INDIAN_HOUSES[h];
       if (!cell || cell.w === 0) return null;
       const rawPlanets = houses[h] || [];
-      const planets = rawPlanets.map(p => typeof p === 'string' ? p : p.displayName).join(' ');
+      const planets = rawPlanets.map(formatPlanetPDF).join(' ');
       const rashi = RASHI_NAMES[houseRashis[h]] || '';
       return (
         <G key={h}>
@@ -91,7 +165,7 @@ const KundliGrid = ({ houses, houseRashis }: { houses: Record<number, any[]>; ho
       ];
       const pos = positions[i];
       const rawPlanets = houses[h] || [];
-      const planets = rawPlanets.map(p => typeof p === 'string' ? p : p.displayName).join(' ');
+      const planets = rawPlanets.map(formatPlanetPDF).join(' ');
       const rashi = RASHI_NAMES[houseRashis[h]] || '';
       return (
         <G key={h}>
@@ -152,7 +226,7 @@ export const ReportPDF = ({ name, dob, tob, locName, planets, dasha, d1Houses, d
         </View>
         {planets.map((p, idx) => (
           <View key={idx} style={styles.tableRow}>
-            <Text style={styles.cellText}>{p.name}</Text>
+            <Text style={styles.cellText}>{formatPlanetNamePDF(p, planets)}</Text>
             <Text style={styles.cellText}>{Math.floor(p.longitude % 30)}°</Text>
             <Text style={styles.cellText}>{p.rashi}</Text>
             <Text style={styles.cellText}>{p.nakshatra}</Text>

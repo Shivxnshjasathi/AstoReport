@@ -28,6 +28,7 @@ const reportDict = {
     planet: "Planet",
     longitude: "Longitude",
     rashi: "Rashi",
+    status: "Status",
     currentDasha: "Current Vimshottari Dasha",
     maha: "Maha Dasha",
     antar: "Antar Dasha",
@@ -55,6 +56,7 @@ const reportDict = {
     planet: "ग्रह",
     longitude: "देशांतर",
     rashi: "राशि",
+    status: "स्थिति",
     currentDasha: "वर्तमान विंशोत्तरी दशा",
     maha: "महा दशा",
     antar: "अंतर दशा",
@@ -148,15 +150,73 @@ const ReportContent = () => {
       name: 'Lagna',
       displayName: 'ल',
       degree: Math.floor(lagnaDegree % 30),
-      isRetrograde: false
+      isRetrograde: false,
+      isCombust: false,
+      isExalted: false,
+      isDebilitated: false
     });
+
+    // Find Sun's longitude for combust calculations (use actual longitude from the main planet list)
+    const sunPlanet = planets.find((pl) => pl.name === 'Sun');
+    const sunLong = sunPlanet ? sunPlanet.longitude : 0;
 
     planets.forEach((p: any) => {
       const rashi = isD9 ? p.navamsaRashi : p.rashi;
       const rawDeg = isD9 ? (p.longitude * 9) : p.longitude;
       const deg = Math.floor(rawDeg % 30);
       const isRetro = p.isRetrograde || false;
-      
+
+      // Combustion calculation:
+      const isCombust = (() => {
+        if (['Sun', 'Moon', 'Rahu', 'Ketu', 'Lagna'].includes(p.name)) return false;
+        
+        // Calculate difference in degrees (taking care of 360 boundary)
+        const diff = Math.min(
+          Math.abs(p.longitude - sunLong),
+          360 - Math.abs(p.longitude - sunLong)
+        );
+
+        if (p.name === 'Mars' && diff <= 17) return true;
+        if (p.name === 'Mercury') {
+          const limit = isRetro ? 12 : 14;
+          if (diff <= limit) return true;
+        }
+        if (p.name === 'Jupiter' && diff <= 11) return true;
+        if (p.name === 'Venus') {
+          const limit = isRetro ? 8 : 10;
+          if (diff <= limit) return true;
+        }
+        if (p.name === 'Saturn' && diff <= 15) return true;
+        return false;
+      })();
+
+      // Exaltation / Debilitation calculations based on rashi (1-12)
+      const isExalted = (() => {
+        if (p.name === 'Sun' && rashi === 1) return true;
+        if (p.name === 'Moon' && rashi === 2) return true;
+        if (p.name === 'Mars' && rashi === 10) return true;
+        if (p.name === 'Mercury' && rashi === 6) return true;
+        if (p.name === 'Jupiter' && rashi === 4) return true;
+        if (p.name === 'Venus' && rashi === 12) return true;
+        if (p.name === 'Saturn' && rashi === 7) return true;
+        if (p.name === 'Rahu' && rashi === 2) return true;
+        if (p.name === 'Ketu' && rashi === 8) return true;
+        return false;
+      })();
+
+      const isDebilitated = (() => {
+        if (p.name === 'Sun' && rashi === 7) return true;
+        if (p.name === 'Moon' && rashi === 8) return true;
+        if (p.name === 'Mars' && rashi === 4) return true;
+        if (p.name === 'Mercury' && rashi === 12) return true;
+        if (p.name === 'Jupiter' && rashi === 10) return true;
+        if (p.name === 'Venus' && rashi === 6) return true;
+        if (p.name === 'Saturn' && rashi === 1) return true;
+        if (p.name === 'Rahu' && rashi === 8) return true;
+        if (p.name === 'Ketu' && rashi === 2) return true;
+        return false;
+      })();
+
       for (let h = 1; h <= 12; h++) {
         if (houseRashis[h] === rashi) {
           const displayName = PLANET_ABBRS[p.name] || p.name;
@@ -164,7 +224,10 @@ const ReportContent = () => {
             name: p.name,
             displayName,
             degree: deg,
-            isRetrograde: isRetro
+            isRetrograde: isRetro,
+            isCombust,
+            isExalted,
+            isDebilitated
           });
           break;
         }
@@ -275,16 +338,111 @@ const ReportContent = () => {
                     <th className="py-4 font-normal">{t.planet}</th>
                     <th className="py-4 font-normal">{t.longitude}</th>
                     <th className="py-4 font-normal">{t.rashi}</th>
+                    <th className="py-4 font-normal text-right">{t.status}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#7D756B]/20">
-                  {data.planets.map((p: any, idx: number) => (
-                    <tr key={idx} className="hover:bg-[#E5D6C8]/5 transition-colors">
-                      <td className="py-4 text-[#E5D6C8]">{p.name}</td>
-                      <td className="py-4 font-mono text-[#B78E28]">{formatDegrees(p.longitude % 30)}</td>
-                      <td className="py-4 text-[#7D756B]">{p.rashi}</td>
-                    </tr>
-                  ))}
+                  {data.planets.map((p: any, idx: number) => {
+                    // Sun's longitude for combust calculations (use actual longitude from the main planet list)
+                    const sunPlanet = data.planets.find((pl: any) => pl.name === 'Sun');
+                    const sunLong = sunPlanet ? sunPlanet.longitude : 0;
+                    const isRetro = p.isRetrograde || false;
+
+                    // Combustion calculation:
+                    const isCombust = (() => {
+                      if (['Sun', 'Moon', 'Rahu', 'Ketu', 'Lagna'].includes(p.name)) return false;
+                      const diff = Math.min(
+                        Math.abs(p.longitude - sunLong),
+                        360 - Math.abs(p.longitude - sunLong)
+                      );
+                      if (p.name === 'Mars' && diff <= 17) return true;
+                      if (p.name === 'Mercury') {
+                        const limit = isRetro ? 12 : 14;
+                        if (diff <= limit) return true;
+                      }
+                      if (p.name === 'Jupiter' && diff <= 11) return true;
+                      if (p.name === 'Venus') {
+                        const limit = isRetro ? 8 : 10;
+                        if (diff <= limit) return true;
+                      }
+                      if (p.name === 'Saturn' && diff <= 15) return true;
+                      return false;
+                    })();
+
+                    // Exaltation / Debilitation calculations based on rashi (1-12)
+                    const isExalted = (() => {
+                      if (p.name === 'Sun' && p.rashi === 1) return true;
+                      if (p.name === 'Moon' && p.rashi === 2) return true;
+                      if (p.name === 'Mars' && p.rashi === 10) return true;
+                      if (p.name === 'Mercury' && p.rashi === 6) return true;
+                      if (p.name === 'Jupiter' && p.rashi === 4) return true;
+                      if (p.name === 'Venus' && p.rashi === 12) return true;
+                      if (p.name === 'Saturn' && p.rashi === 7) return true;
+                      if (p.name === 'Rahu' && p.rashi === 2) return true;
+                      if (p.name === 'Ketu' && p.rashi === 8) return true;
+                      return false;
+                    })();
+
+                    const isDebilitated = (() => {
+                      if (p.name === 'Sun' && p.rashi === 7) return true;
+                      if (p.name === 'Moon' && p.rashi === 8) return true;
+                      if (p.name === 'Mars' && p.rashi === 4) return true;
+                      if (p.name === 'Mercury' && p.rashi === 12) return true;
+                      if (p.name === 'Jupiter' && p.rashi === 10) return true;
+                      if (p.name === 'Venus' && p.rashi === 6) return true;
+                      if (p.name === 'Saturn' && p.rashi === 1) return true;
+                      if (p.name === 'Rahu' && p.rashi === 8) return true;
+                      if (p.name === 'Ketu' && p.rashi === 2) return true;
+                      return false;
+                    })();
+
+                    const hasMark = isRetro || isCombust || isExalted || isDebilitated;
+
+                    return (
+                      <tr key={idx} className="hover:bg-[#E5D6C8]/5 transition-colors">
+                        <td className="py-4 text-[#E5D6C8] font-medium flex items-center gap-1">
+                          <span>{p.name}</span>
+                          {hasMark && (
+                            <span className="text-[10px] text-[#B78E28]/80 font-normal font-sans ml-1 tracking-[0.05em]">
+                              {isRetro && 'ᴿ'}
+                              {isCombust && 'ᶜ'}
+                              {isExalted && 'ᴱ'}
+                              {isDebilitated && 'ᴰ'}
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-4 font-mono text-[#B78E28]">{formatDegrees(p.longitude % 30)}</td>
+                        <td className="py-4 text-[#7D756B]">{p.rashi}</td>
+                        <td className="py-4 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
+                            {isRetro && (
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#FFB300]/10 text-[#FFB300] border border-[#FFB300]/30" title="Retrograde">
+                                R
+                              </span>
+                            )}
+                            {isCombust && (
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#FF3D00]/10 text-[#FF3D00] border border-[#FF3D00]/30" title="Combust">
+                                C
+                              </span>
+                            )}
+                            {isExalted && (
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#2E7D32]/10 text-[#2E7D32] border border-[#2E7D32]/30" title="Exalted">
+                                E
+                              </span>
+                            )}
+                            {isDebilitated && (
+                              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[9px] font-bold bg-[#C2185B]/10 text-[#C2185B] border border-[#C2185B]/30" title="Debilitated">
+                                D
+                              </span>
+                            )}
+                            {!hasMark && (
+                              <span className="text-[#7D756B] text-[10px]">-</span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
